@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: zipkin
+  cloud:
+    config:
+      uri: ${config.uri}
+      fail-fast: true
+      username: ${user.username}
+      password: ${user.password}
+      retry:
+        initial-interval: 2000
+        max-interval: 10000
+        multiplier: 2
+        max-attempts: 10

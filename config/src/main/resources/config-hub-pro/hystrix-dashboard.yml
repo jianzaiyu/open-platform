@@ -1,0 +1,6 @@
+server:
+  port: 8004
+
+spring:
+  zipkin:
+    enabled: false

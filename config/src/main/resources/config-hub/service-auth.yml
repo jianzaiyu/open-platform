@@ -1,4 +1,5 @@
 server:
+  context-path: /uaa
   port: 8011
 
 pagehelper:
@@ -12,18 +13,6 @@ mybatis:
   mapperLocations: classpath:cn/ce/**/mapper/*.xml
   scanPackages: cn.ce.**.dao
   typeAliasesPackage: cn.ce.**.entity
-
-security:
-  oauth2:
-    resource:
-      user-info-uri: http://localhost:8011/uaa/current
-    client:
-      id: service-account
-      client-secret: 123456
-      access-token-uri: http://localhost:8011/uaa/oauth/token
-      grant-type: client_credentials,refresh_token
-      scope: get,post
-      authorities: all
 
 spring:
   zipkin:

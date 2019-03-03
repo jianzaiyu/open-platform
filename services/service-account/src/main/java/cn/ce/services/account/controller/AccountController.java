@@ -3,7 +3,11 @@ package cn.ce.services.account.controller;
 import cn.ce.services.account.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 /**
  * @author: ggs
@@ -15,5 +19,8 @@ public class AccountController {
     @Autowired
     private UserService userService;
 
-
+    @GetMapping("hello")
+    public String hello(@AuthenticationPrincipal Principal principal) {
+        return "hello" + principal.getName();
+    }
 }

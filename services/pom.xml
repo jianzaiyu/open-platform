@@ -15,6 +15,7 @@
 
     <modules>
         <module>service-account</module>
+        <module>service-auth</module>
     </modules>
 
     <dependencies>

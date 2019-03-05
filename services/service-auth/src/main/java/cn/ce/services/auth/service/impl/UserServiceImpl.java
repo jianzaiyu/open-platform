@@ -1,7 +1,7 @@
-package cn.ce.services.account.service.impl;
+package cn.ce.services.auth.service.impl;
 
-import cn.ce.services.account.entity.User;
-import cn.ce.services.account.service.UserService;
+import cn.ce.services.auth.entity.User;
+import cn.ce.services.auth.service.UserService;
 import org.springframework.stereotype.Service;
 
 /**

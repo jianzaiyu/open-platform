@@ -1,12 +1,12 @@
-package cn.ce.services.account.dao;
+package cn.ce.services.auth.service;
 
-import cn.ce.services.account.entity.User;
+import cn.ce.services.auth.entity.User;
 
 /**
-*@auther ggs
-*@date 2019-03-01 13:39:28.959
-*/
-public interface UserDao {
+ * @author: ggs
+ * @date: 2019-03-01 14:57
+ **/
+public interface UserService {
     int deleteByPrimaryKey(Integer id);
 
     int insert(User record);

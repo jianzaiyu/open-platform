@@ -1,5 +1,6 @@
-package cn.ce.services.account.controller;
+package cn.ce.services.auth.controller;
 
+import cn.ce.services.auth.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,9 +16,11 @@ import java.security.Principal;
 @Api("账户管理")
 @RestController
 public class AccountController {
+    @Autowired
+    private UserService userService;
 
     @GetMapping("hello")
-    public String hello() {
-        return "hello";
+    public String hello(@AuthenticationPrincipal Principal principal) {
+        return "hello" + principal.getName();
     }
 }

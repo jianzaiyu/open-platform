@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ce.services.auth.dao.ThirdOauthDao">
+  <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.ThirdOauth">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="oauth_id" jdbcType="VARCHAR" property="oauthId" />
+    <result column="oauth_type" jdbcType="VARCHAR" property="oauthType" />
+    <result column="key_token" jdbcType="VARCHAR" property="keyToken" />
+    <result column="refresh_token" jdbcType="VARCHAR" property="refreshToken" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, oauth_id, oauth_type, key_token, refresh_token, expire_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from third_oauth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from third_oauth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.ce.services.auth.entity.ThirdOauth">
+    insert into third_oauth (id, uid, oauth_id, 
+      oauth_type, key_token, refresh_token, 
+      expire_time)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{oauthId,jdbcType=VARCHAR}, 
+      #{oauthType,jdbcType=VARCHAR}, #{keyToken,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, 
+      #{expireTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.ThirdOauth">
+    insert into third_oauth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="oauthId != null">
+        oauth_id,
+      </if>
+      <if test="oauthType != null">
+        oauth_type,
+      </if>
+      <if test="keyToken != null">
+        key_token,
+      </if>
+      <if test="refreshToken != null">
+        refresh_token,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="oauthId != null">
+        #{oauthId,jdbcType=VARCHAR},
+      </if>
+      <if test="oauthType != null">
+        #{oauthType,jdbcType=VARCHAR},
+      </if>
+      <if test="keyToken != null">
+        #{keyToken,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshToken != null">
+        #{refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.ThirdOauth">
+    update third_oauth
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="oauthId != null">
+        oauth_id = #{oauthId,jdbcType=VARCHAR},
+      </if>
+      <if test="oauthType != null">
+        oauth_type = #{oauthType,jdbcType=VARCHAR},
+      </if>
+      <if test="keyToken != null">
+        key_token = #{keyToken,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshToken != null">
+        refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.ThirdOauth">
+    update third_oauth
+    set uid = #{uid,jdbcType=VARCHAR},
+      oauth_id = #{oauthId,jdbcType=VARCHAR},
+      oauth_type = #{oauthType,jdbcType=VARCHAR},
+      key_token = #{keyToken,jdbcType=VARCHAR},
+      refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

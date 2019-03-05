@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ce.services.account.dao.UserDao">
-  <resultMap id="BaseResultMap" type="cn.ce.services.account.entity.User">
+<mapper namespace="cn.ce.services.auth.dao.UserDao">
+  <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="VARCHAR" property="uid" />
     <result column="userName" jdbcType="VARCHAR" property="username" />
@@ -9,19 +9,19 @@
     <result column="userRealName" jdbcType="VARCHAR" property="userrealname" />
     <result column="telNumber" jdbcType="VARCHAR" property="telnumber" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
-    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
-    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
-    <result column="state" jdbcType="TINYINT" property="state" />
     <result column="orgId" jdbcType="VARCHAR" property="orgid" />
     <result column="orgName" jdbcType="VARCHAR" property="orgname" />
     <result column="enterpriseName" jdbcType="VARCHAR" property="enterprisename" />
     <result column="userType" jdbcType="TINYINT" property="usertype" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, uid, userName, password, userRealName, telNumber, email, regTime, last_login_ip, 
-    last_login_time, state, orgId, orgName, enterpriseName, userType, avatar
+    id, uid, userName, password, userRealName, telNumber, email, orgId, orgName, enterpriseName, 
+    userType, avatar, state, last_login_ip, last_login_time, regTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,25 +29,31 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where userName = #{userName,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.ce.services.account.entity.User">
+  <insert id="insert" parameterType="cn.ce.services.auth.entity.User">
     insert into user (id, uid, userName, 
       password, userRealName, telNumber, 
-      email, regTime, last_login_ip, 
-      last_login_time, state, orgId, 
-      orgName, enterpriseName, userType, 
-      avatar)
+      email, orgId, orgName, 
+      enterpriseName, userType, avatar, 
+      state, last_login_ip, last_login_time, 
+      regTime)
     values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{userrealname,jdbcType=VARCHAR}, #{telnumber,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{regtime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, #{orgid,jdbcType=VARCHAR}, 
-      #{orgname,jdbcType=VARCHAR}, #{enterprisename,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, 
-      #{avatar,jdbcType=VARCHAR})
+      #{email,jdbcType=VARCHAR}, #{orgid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR}, 
+      #{enterprisename,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR}, 
+      #{state,jdbcType=TINYINT}, #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{regtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.ce.services.account.entity.User">
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -71,18 +77,6 @@
       <if test="email != null">
         email,
       </if>
-      <if test="regtime != null">
-        regTime,
-      </if>
-      <if test="lastLoginIp != null">
-        last_login_ip,
-      </if>
-      <if test="lastLoginTime != null">
-        last_login_time,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
       <if test="orgid != null">
         orgId,
       </if>
@@ -97,6 +91,18 @@
       </if>
       <if test="avatar != null">
         avatar,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="regtime != null">
+        regTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -121,18 +127,6 @@
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="regtime != null">
-        #{regtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastLoginIp != null">
-        #{lastLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="lastLoginTime != null">
-        #{lastLoginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=TINYINT},
-      </if>
       <if test="orgid != null">
         #{orgid,jdbcType=VARCHAR},
       </if>
@@ -148,9 +142,21 @@
       <if test="avatar != null">
         #{avatar,jdbcType=VARCHAR},
       </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regtime != null">
+        #{regtime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.account.entity.User">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.User">
     update user
     <set>
       <if test="uid != null">
@@ -171,18 +177,6 @@
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="regtime != null">
-        regTime = #{regtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastLoginIp != null">
-        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="lastLoginTime != null">
-        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=TINYINT},
-      </if>
       <if test="orgid != null">
         orgId = #{orgid,jdbcType=VARCHAR},
       </if>
@@ -198,10 +192,22 @@
       <if test="avatar != null">
         avatar = #{avatar,jdbcType=VARCHAR},
       </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regtime != null">
+        regTime = #{regtime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ce.services.account.entity.User">
+  <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.User">
     update user
     set uid = #{uid,jdbcType=VARCHAR},
       userName = #{username,jdbcType=VARCHAR},
@@ -209,15 +215,15 @@
       userRealName = #{userrealname,jdbcType=VARCHAR},
       telNumber = #{telnumber,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      regTime = #{regtime,jdbcType=TIMESTAMP},
-      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
-      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=TINYINT},
       orgId = #{orgid,jdbcType=VARCHAR},
       orgName = #{orgname,jdbcType=VARCHAR},
       enterpriseName = #{enterprisename,jdbcType=VARCHAR},
       userType = #{usertype,jdbcType=TINYINT},
-      avatar = #{avatar,jdbcType=VARCHAR}
+      avatar = #{avatar,jdbcType=VARCHAR},
+      state = #{state,jdbcType=TINYINT},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      regTime = #{regtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ce.services.account.dao.RoleDao">
-  <resultMap id="BaseResultMap" type="cn.ce.services.account.entity.Role">
+<mapper namespace="cn.ce.services.auth.dao.RoleDao">
+  <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.Role">
     <id column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="belong_sys" jdbcType="VARCHAR" property="belongSys" />
-    <result column="create_uid" jdbcType="VARCHAR" property="createUid" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    role_id, role_name, description, belong_sys, create_uid, create_time
+    role_id, role_name, description, belong_sys, create_id, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -22,15 +22,15 @@
     delete from role
     where role_id = #{roleId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.ce.services.account.entity.Role">
+  <insert id="insert" parameterType="cn.ce.services.auth.entity.Role">
     insert into role (role_id, role_name, description, 
-      belong_sys, create_uid, create_time
+      belong_sys, create_id, create_time
       )
     values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{belongSys,jdbcType=VARCHAR}, #{createUid,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      #{belongSys,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.ce.services.account.entity.Role">
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.Role">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="roleId != null">
@@ -45,8 +45,8 @@
       <if test="belongSys != null">
         belong_sys,
       </if>
-      <if test="createUid != null">
-        create_uid,
+      <if test="createId != null">
+        create_id,
       </if>
       <if test="createTime != null">
         create_time,
@@ -65,15 +65,15 @@
       <if test="belongSys != null">
         #{belongSys,jdbcType=VARCHAR},
       </if>
-      <if test="createUid != null">
-        #{createUid,jdbcType=VARCHAR},
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.account.entity.Role">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.Role">
     update role
     <set>
       <if test="roleName != null">
@@ -85,8 +85,8 @@
       <if test="belongSys != null">
         belong_sys = #{belongSys,jdbcType=VARCHAR},
       </if>
-      <if test="createUid != null">
-        create_uid = #{createUid,jdbcType=VARCHAR},
+      <if test="createId != null">
+        create_id = #{createId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -94,12 +94,12 @@
     </set>
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ce.services.account.entity.Role">
+  <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.Role">
     update role
     set role_name = #{roleName,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       belong_sys = #{belongSys,jdbcType=VARCHAR},
-      create_uid = #{createUid,jdbcType=VARCHAR},
+      create_id = #{createId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>

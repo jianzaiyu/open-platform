@@ -1,10 +1,10 @@
-package cn.ce.services.account.dao;
+package cn.ce.services.auth.dao;
 
-import cn.ce.services.account.entity.Role;
+import cn.ce.services.auth.entity.Role;
 
 /**
 *@auther ggs
-*@date 2019-03-01 13:39:28.960
+*@date 2019-03-05 11:20:48.440
 */
 public interface RoleDao {
     int deleteByPrimaryKey(Integer roleId);

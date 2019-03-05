@@ -1,4 +1,4 @@
-package cn.ce.services.account.entity;
+package cn.ce.services.auth.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
 *@auther GGs
-*@date 2019-03-01 13:39:28
+*@date 2019-03-05 11:20:48
 */
 @Data
 public class User implements Serializable {
@@ -24,14 +24,6 @@ public class User implements Serializable {
 
     private String email;
 
-    private Date regtime;
-
-    private String lastLoginIp;
-
-    private Date lastLoginTime;
-
-    private Byte state;
-
     private String orgid;
 
     private String orgname;
@@ -47,6 +39,14 @@ public class User implements Serializable {
     private Byte usertype;
 
     private String avatar;
+
+    private Byte state;
+
+    private String lastLoginIp;
+
+    private Date lastLoginTime;
+
+    private Date regtime;
 
     private static final long serialVersionUID = 1L;
 }

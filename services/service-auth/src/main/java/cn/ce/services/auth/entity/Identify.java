@@ -1,4 +1,4 @@
-package cn.ce.services.account.entity;
+package cn.ce.services.auth.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
 *@auther GGs
-*@date 2019-03-01 13:39:28
+*@date 2019-03-05 11:20:48
 */
 @Data
 public class Identify implements Serializable {

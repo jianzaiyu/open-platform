@@ -1,10 +1,13 @@
-package cn.ce.services.account.dao;
+package cn.ce.services.auth.dao;
 
-import cn.ce.services.account.entity.RUserrole;
+import cn.ce.services.auth.entity.RUserrole;
+import cn.ce.services.auth.entity.UserRoleDetail;
+
+import java.util.List;
 
 /**
 *@auther ggs
-*@date 2019-03-01 13:39:28.950
+*@date 2019-03-05 11:20:48.431
 */
 public interface RUserroleDao {
     int deleteByPrimaryKey(Integer urId);
@@ -14,6 +17,8 @@ public interface RUserroleDao {
     int insertSelective(RUserrole record);
 
     RUserrole selectByPrimaryKey(Integer urId);
+
+    List<UserRoleDetail> selectByUId(String uid);
 
     int updateByPrimaryKeySelective(RUserrole record);
 

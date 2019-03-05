@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.ce.services.account.dao.IdentifyDao">
-  <resultMap id="BaseResultMap" type="cn.ce.services.account.entity.Identify">
+<mapper namespace="cn.ce.services.auth.dao.IdentifyDao">
+  <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.Identify">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="card_front" jdbcType="VARCHAR" property="cardFront" />
@@ -23,7 +23,7 @@
     delete from identify
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.ce.services.account.entity.Identify">
+  <insert id="insert" parameterType="cn.ce.services.auth.entity.Identify">
     insert into identify (id, card_number, card_front, 
       card_back, check_state, check_note, 
       auth_time)
@@ -31,7 +31,7 @@
       #{cardBack,jdbcType=VARCHAR}, #{checkState,jdbcType=TINYINT}, #{checkNote,jdbcType=VARCHAR}, 
       #{authTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.ce.services.account.entity.Identify">
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.Identify">
     insert into identify
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.account.entity.Identify">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.Identify">
     update identify
     <set>
       <if test="cardNumber != null">
@@ -104,7 +104,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ce.services.account.entity.Identify">
+  <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.Identify">
     update identify
     set card_number = #{cardNumber,jdbcType=VARCHAR},
       card_front = #{cardFront,jdbcType=VARCHAR},

@@ -1,6 +1,7 @@
 package cn.ce.services.account.config;
 
 import feign.RequestInterceptor;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 @Configuration
 @EnableOAuth2Client
+@EnableOAuth2Sso
 @EnableConfigurationProperties
 public class Oauth2ClientConfig {
 

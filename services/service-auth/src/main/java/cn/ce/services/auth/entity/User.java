@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
 *@auther GGs
 *@date 2019-03-05 11:20:48
@@ -12,10 +14,10 @@ import lombok.Data;
 public class User implements Serializable {
     private Integer id;
 
-    private String uid;
-
+    private String userCode;
+    @NotBlank(message = "用户名不能为空")
     private String username;
-
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     private String userrealname;

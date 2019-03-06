@@ -48,7 +48,7 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(new InMemoryTokenStore())
-                .allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST)
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
     }

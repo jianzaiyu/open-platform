@@ -27,40 +27,40 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 @MapperScanner(basePackages = "${mybatis.scanPackages}", sqlSessionFactoryRef = "sqlSessionFactory")
 public class PrimaryDSConfig {
 
-//    private static final String AOP_POINTCUT_EXPRESSION = "execution(* cn.ce..services..*.*(..))";
-//
-//    @Bean
-//    public TransactionInterceptor txAdvice(PlatformTransactionManager platformTransactionManager) {
-//        //正常事务
-//        DefaultTransactionAttribute txAttr_REQUIRED = new DefaultTransactionAttribute();
-//        txAttr_REQUIRED.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//        //只读事务
-//        DefaultTransactionAttribute txAttr_REQUIRED_READONLY = new DefaultTransactionAttribute();
-//        txAttr_REQUIRED_READONLY.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//        txAttr_REQUIRED_READONLY.setReadOnly(true);
-//
-//        NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
-//        source.addTransactionalMethod("save*", txAttr_REQUIRED);
-//        source.addTransactionalMethod("batch*", txAttr_REQUIRED);
-//        source.addTransactionalMethod("insert*", txAttr_REQUIRED);
-//        source.addTransactionalMethod("delete*", txAttr_REQUIRED);
-//        source.addTransactionalMethod("update*", txAttr_REQUIRED);
-//        source.addTransactionalMethod("exec*", txAttr_REQUIRED);
-//        source.addTransactionalMethod("get*", txAttr_REQUIRED_READONLY);
-//        source.addTransactionalMethod("select*", txAttr_REQUIRED_READONLY);
-//        source.addTransactionalMethod("query*", txAttr_REQUIRED_READONLY);
-//        source.addTransactionalMethod("find*", txAttr_REQUIRED_READONLY);
-//        source.addTransactionalMethod("list*", txAttr_REQUIRED_READONLY);
-//        source.addTransactionalMethod("count*", txAttr_REQUIRED_READONLY);
-//        source.addTransactionalMethod("build*", txAttr_REQUIRED_READONLY);
-//
-//        return new TransactionInterceptor(platformTransactionManager, source);
-//    }
-//
-//    @Bean
-//    public Advisor txAdviceAdvisor(TransactionInterceptor txAdvice) {
-//        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-//        pointcut.setExpression(AOP_POINTCUT_EXPRESSION);
-//        return new DefaultPointcutAdvisor(pointcut, txAdvice);
-//    }
+    private static final String AOP_POINTCUT_EXPRESSION = "execution(* cn.ce..services..*.*(..))";
+
+    @Bean
+    public TransactionInterceptor txAdvice(PlatformTransactionManager platformTransactionManager) {
+        //正常事务
+        DefaultTransactionAttribute txAttr_REQUIRED = new DefaultTransactionAttribute();
+        txAttr_REQUIRED.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        //只读事务
+        DefaultTransactionAttribute txAttr_REQUIRED_READONLY = new DefaultTransactionAttribute();
+        txAttr_REQUIRED_READONLY.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        txAttr_REQUIRED_READONLY.setReadOnly(true);
+
+        NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
+        source.addTransactionalMethod("save*", txAttr_REQUIRED);
+        source.addTransactionalMethod("batch*", txAttr_REQUIRED);
+        source.addTransactionalMethod("insert*", txAttr_REQUIRED);
+        source.addTransactionalMethod("delete*", txAttr_REQUIRED);
+        source.addTransactionalMethod("update*", txAttr_REQUIRED);
+        source.addTransactionalMethod("exec*", txAttr_REQUIRED);
+        source.addTransactionalMethod("get*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("select*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("query*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("find*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("list*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("count*", txAttr_REQUIRED_READONLY);
+        source.addTransactionalMethod("build*", txAttr_REQUIRED_READONLY);
+
+        return new TransactionInterceptor(platformTransactionManager, source);
+    }
+
+    @Bean
+    public Advisor txAdviceAdvisor(TransactionInterceptor txAdvice) {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression(AOP_POINTCUT_EXPRESSION);
+        return new DefaultPointcutAdvisor(pointcut, txAdvice);
+    }
 }

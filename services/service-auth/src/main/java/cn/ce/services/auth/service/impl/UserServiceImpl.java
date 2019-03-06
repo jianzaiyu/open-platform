@@ -1,7 +1,9 @@
 package cn.ce.services.auth.service.impl;
 
+import cn.ce.services.auth.dao.UserDao;
 import cn.ce.services.auth.entity.User;
 import cn.ce.services.auth.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,33 +12,35 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserDao userDao;
     @Override
     public int deleteByPrimaryKey(Integer id) {
-        return 0;
+        return userDao.deleteByPrimaryKey(id);
     }
 
     @Override
     public int insert(User record) {
-        return 0;
+        return userDao.insert(record);
     }
 
     @Override
     public int insertSelective(User record) {
-        return 0;
+        return userDao.insertSelective(record);
     }
 
     @Override
     public User selectByPrimaryKey(Integer id) {
-        return null;
+        return userDao.selectByPrimaryKey(id);
     }
 
     @Override
     public int updateByPrimaryKeySelective(User record) {
-        return 0;
+        return userDao.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public int updateByPrimaryKey(User record) {
-        return 0;
+        return userDao.updateByPrimaryKey(record);
     }
 }

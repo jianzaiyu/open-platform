@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
 *@auther GGs
 *@date 2019-03-05 11:20:48
@@ -11,7 +13,7 @@ import lombok.Data;
 @Data
 public class Role implements Serializable {
     private Integer roleId;
-
+    @NotBlank(message = "角色名不能为空")
     private String roleName;
 
     /**

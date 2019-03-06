@@ -1,4 +1,4 @@
-package cn.ce.services.auth.dao;
+package cn.ce.services.auth.service;
 
 import cn.ce.services.auth.entity.RUserrole;
 import cn.ce.services.auth.entity.UserRoleDetail;
@@ -6,10 +6,10 @@ import cn.ce.services.auth.entity.UserRoleDetail;
 import java.util.List;
 
 /**
-*@auther ggs
-*@date 2019-03-05 11:20:48.431
-*/
-public interface RUserroleDao {
+ * @author ggs
+ * @date 2019/3/6 22:30
+ */
+public interface RUserroleService {
     int deleteByPrimaryKey(Integer urId);
 
     int insert(RUserrole record);

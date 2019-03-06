@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<User> users = userDao.selectByUserName(userName);
         if (users != null && users.size() != 0) {
             User user = users.get(0);
-            List<UserRoleDetail> userRoleDetails = rUserroleDao.selectByUId(user.getUid());
+            List<UserRoleDetail> userRoleDetails = rUserroleDao.selectByUId(user.getId());
             List<GrantedAuthority> authorities = new ArrayList<>();
             for (UserRoleDetail userRoleDetail : userRoleDetails) {
                 authorities.add(new SimpleGrantedAuthority(userRoleDetail.getRoleName()));

@@ -17,25 +17,25 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * @date 2019/3/4 0:55
  */
 @Configuration
-@EnableOAuth2Client
+//@EnableOAuth2Client
 @EnableOAuth2Sso
-@EnableConfigurationProperties
+//@EnableConfigurationProperties
 public class Oauth2ClientConfig {
 
-    @Bean
-    @ConfigurationProperties(prefix = "security.oauth2.client")
-    public ClientCredentialsResourceDetails clientCredentialsResourceDetails() {
-        return new ClientCredentialsResourceDetails();
-    }
-
-    @Bean
-    public RequestInterceptor requestInterceptor() {
-        return new OAuth2FeignRequestInterceptor(new DefaultOAuth2ClientContext()
-                , clientCredentialsResourceDetails());
-    }
-
-    @Bean
-    public OAuth2RestTemplate oAuth2RestTemplate() {
-        return new OAuth2RestTemplate(clientCredentialsResourceDetails());
-    }
+//    @Bean
+//    @ConfigurationProperties(prefix = "security.oauth2.client")
+//    public ClientCredentialsResourceDetails clientCredentialsResourceDetails() {
+//        return new ClientCredentialsResourceDetails();
+//    }
+//
+//    @Bean
+//    public RequestInterceptor requestInterceptor() {
+//        return new OAuth2FeignRequestInterceptor(new DefaultOAuth2ClientContext()
+//                , clientCredentialsResourceDetails());
+//    }
+//
+//    @Bean
+//    public OAuth2RestTemplate oAuth2RestTemplate() {
+//        return new OAuth2RestTemplate(clientCredentialsResourceDetails());
+//    }
 }

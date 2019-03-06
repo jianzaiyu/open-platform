@@ -1,112 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ce.services.auth.dao.IdentifyDao">
-  <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.Identify">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="card_front" jdbcType="VARCHAR" property="cardFront" />
-    <result column="card_back" jdbcType="VARCHAR" property="cardBack" />
-    <result column="check_state" jdbcType="TINYINT" property="checkState" />
-    <result column="check_note" jdbcType="VARCHAR" property="checkNote" />
-    <result column="auth_time" jdbcType="TIMESTAMP" property="authTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, card_number, card_front, card_back, check_state, check_note, auth_time
+    <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.Identify">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="card_front" jdbcType="VARCHAR" property="cardFront"/>
+        <result column="card_back" jdbcType="VARCHAR" property="cardBack"/>
+        <result column="check_state" jdbcType="TINYINT" property="checkState"/>
+        <result column="check_note" jdbcType="VARCHAR" property="checkNote"/>
+        <result column="auth_time" jdbcType="TIMESTAMP" property="authTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uid, card_number, card_front, card_back, check_state, check_note, auth_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from identify
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from identify
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from identify
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.ce.services.auth.entity.Identify">
-    insert into identify (id, card_number, card_front, 
-      card_back, check_state, check_note, 
-      auth_time)
-    values (#{id,jdbcType=INTEGER}, #{cardNumber,jdbcType=VARCHAR}, #{cardFront,jdbcType=VARCHAR}, 
-      #{cardBack,jdbcType=VARCHAR}, #{checkState,jdbcType=TINYINT}, #{checkNote,jdbcType=VARCHAR}, 
-      #{authTime,jdbcType=TIMESTAMP})
+    <insert id="insert" parameterType="cn.ce.services.auth.entity.Identify">
+    insert into identify (id, uid, card_number, 
+      card_front, card_back, check_state, 
+      check_note, auth_time)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{cardNumber,jdbcType=VARCHAR}, 
+      #{cardFront,jdbcType=VARCHAR}, #{cardBack,jdbcType=VARCHAR}, #{checkState,jdbcType=TINYINT}, 
+      #{checkNote,jdbcType=VARCHAR}, #{authTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.Identify">
-    insert into identify
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="cardNumber != null">
-        card_number,
-      </if>
-      <if test="cardFront != null">
-        card_front,
-      </if>
-      <if test="cardBack != null">
-        card_back,
-      </if>
-      <if test="checkState != null">
-        check_state,
-      </if>
-      <if test="checkNote != null">
-        check_note,
-      </if>
-      <if test="authTime != null">
-        auth_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="cardNumber != null">
-        #{cardNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="cardFront != null">
-        #{cardFront,jdbcType=VARCHAR},
-      </if>
-      <if test="cardBack != null">
-        #{cardBack,jdbcType=VARCHAR},
-      </if>
-      <if test="checkState != null">
-        #{checkState,jdbcType=TINYINT},
-      </if>
-      <if test="checkNote != null">
-        #{checkNote,jdbcType=VARCHAR},
-      </if>
-      <if test="authTime != null">
-        #{authTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.Identify">
+    <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.Identify"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into identify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="cardNumber != null">
+                card_number,
+            </if>
+            <if test="cardFront != null">
+                card_front,
+            </if>
+            <if test="cardBack != null">
+                card_back,
+            </if>
+            <if test="checkState != null">
+                check_state,
+            </if>
+            <if test="checkNote != null">
+                check_note,
+            </if>
+                auth_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="cardNumber != null">
+                #{cardNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="cardFront != null">
+                #{cardFront,jdbcType=VARCHAR},
+            </if>
+            <if test="cardBack != null">
+                #{cardBack,jdbcType=VARCHAR},
+            </if>
+            <if test="checkState != null">
+                #{checkState,jdbcType=TINYINT},
+            </if>
+            <if test="checkNote != null">
+                #{checkNote,jdbcType=VARCHAR},
+            </if>
+                CURRENT_TIMESTAMP
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.Identify">
+        update identify
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="cardNumber != null">
+                card_number = #{cardNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="cardFront != null">
+                card_front = #{cardFront,jdbcType=VARCHAR},
+            </if>
+            <if test="cardBack != null">
+                card_back = #{cardBack,jdbcType=VARCHAR},
+            </if>
+            <if test="checkState != null">
+                check_state = #{checkState,jdbcType=TINYINT},
+            </if>
+            <if test="checkNote != null">
+                check_note = #{checkNote,jdbcType=VARCHAR},
+            </if>
+            <if test="authTime != null">
+                auth_time = #{authTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.Identify">
     update identify
-    <set>
-      <if test="cardNumber != null">
-        card_number = #{cardNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="cardFront != null">
-        card_front = #{cardFront,jdbcType=VARCHAR},
-      </if>
-      <if test="cardBack != null">
-        card_back = #{cardBack,jdbcType=VARCHAR},
-      </if>
-      <if test="checkState != null">
-        check_state = #{checkState,jdbcType=TINYINT},
-      </if>
-      <if test="checkNote != null">
-        check_note = #{checkNote,jdbcType=VARCHAR},
-      </if>
-      <if test="authTime != null">
-        auth_time = #{authTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.Identify">
-    update identify
-    set card_number = #{cardNumber,jdbcType=VARCHAR},
+    set uid = #{uid,jdbcType=INTEGER},
+      card_number = #{cardNumber,jdbcType=VARCHAR},
       card_front = #{cardFront,jdbcType=VARCHAR},
       card_back = #{cardBack,jdbcType=VARCHAR},
       check_state = #{checkState,jdbcType=TINYINT},

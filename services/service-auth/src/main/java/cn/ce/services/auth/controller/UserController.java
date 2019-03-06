@@ -1,6 +1,5 @@
 package cn.ce.services.auth.controller;
 
-import cn.ce.framework.base.support.IdentifierGenerateSupport;
 import cn.ce.services.auth.entity.User;
 import cn.ce.services.auth.service.UserService;
 import io.swagger.annotations.Api;
@@ -30,12 +29,11 @@ public class UserController {
 
     @PostMapping
     public void insertSelective(@RequestBody @Valid User user){
-        user.setUserCode(IdentifierGenerateSupport.genRandomUUID32());
         userService.insertSelective(user);
     }
 
     @PutMapping
-    public void update(@RequestBody User user){
+    public void updateByPrimaryKeySelective(@RequestBody User user){
         userService.updateByPrimaryKeySelective(user);
     }
 

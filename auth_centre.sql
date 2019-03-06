@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 10.12.40.224
-Source Server Version : 50636
-Source Host           : 10.12.40.224:3306
+Source Server         : local
+Source Server Version : 80013
+Source Host           : 127.0.0.1:3306
 Source Database       : auth_centre
 
 Target Server Type    : MYSQL
-Target Server Version : 50636
+Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2019-03-06 19:29:04
+Date: 2019-03-07 01:41:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,8 +43,8 @@ CREATE TABLE `clientdetails` (
 -- ----------------------------
 DROP TABLE IF EXISTS `identify`;
 CREATE TABLE `identify` (
-  `id` int(11) NOT NULL,
-  `uid` varchar(45) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) unsigned DEFAULT NULL,
   `card_number` varchar(20) DEFAULT NULL,
   `card_front` varchar(150) DEFAULT NULL,
   `card_back` varchar(150) DEFAULT NULL,
@@ -167,11 +167,11 @@ CREATE TABLE `oauth_refresh_token` (
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
-  `role_id` int(10) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `role_name` varchar(64) DEFAULT NULL,
   `description` varchar(200) DEFAULT '' COMMENT '描述',
   `belong_sys` varchar(45) DEFAULT NULL,
-  `create_id` varchar(45) DEFAULT NULL,
+  `create_id` int(11) unsigned DEFAULT NULL,
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -179,31 +179,35 @@ CREATE TABLE `role` (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
+INSERT INTO `role` VALUES ('1', 'ROLE_ADMIN', '管理员', 'openplatform', '1', '2019-03-06 23:36:31');
+INSERT INTO `role` VALUES ('2', 'ROLE_USER', '普通用户', 'openplatform', '1', '2019-03-06 23:36:57');
 
 -- ----------------------------
 -- Table structure for r_userrole
 -- ----------------------------
 DROP TABLE IF EXISTS `r_userrole`;
 CREATE TABLE `r_userrole` (
-  `ur_id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` varchar(45) DEFAULT NULL,
+  `ur_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) unsigned DEFAULT NULL,
   `role_id` int(10) DEFAULT NULL,
   `create_id` varchar(45) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`ur_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of r_userrole
 -- ----------------------------
+INSERT INTO `r_userrole` VALUES ('1', '1', '1', '1', '2019-03-06 23:37:20');
+INSERT INTO `r_userrole` VALUES ('2', '1', '2', '1', '2019-03-06 23:43:35');
 
 -- ----------------------------
 -- Table structure for third_oauth
 -- ----------------------------
 DROP TABLE IF EXISTS `third_oauth`;
 CREATE TABLE `third_oauth` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` varchar(45) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) unsigned DEFAULT NULL,
   `oauth_id` varchar(64) DEFAULT NULL,
   `oauth_type` varchar(32) DEFAULT NULL,
   `key_token` varchar(128) DEFAULT NULL,
@@ -221,8 +225,7 @@ CREATE TABLE `third_oauth` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userCode` varchar(45) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `userName` varchar(64) DEFAULT NULL,
   `password` varchar(64) DEFAULT NULL,
   `userRealName` varchar(64) DEFAULT NULL,
@@ -243,4 +246,4 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'e0da6d1b7c0a401394ce80079145c9a2', 'admin', '$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS', '大米', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2019-03-05 14:44:48', '2019-03-05 14:44:50');
+INSERT INTO `user` VALUES ('1', 'admin', '$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS', '大米', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2019-03-05 14:44:48', '2019-03-05 14:44:50');

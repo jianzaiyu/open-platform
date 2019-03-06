@@ -1,14 +1,14 @@
 package cn.ce.services.auth.entity;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
 *@auther GGs
-*@date 2019-03-05 11:20:48
+*@date 2019-03-06 22:22:20
 */
 @Data
 public class Role implements Serializable {
@@ -22,8 +22,8 @@ public class Role implements Serializable {
     private String description;
 
     private String belongSys;
-
-    private String createId;
+    @NotBlank(message = "创建者ID不能为空")
+    private Integer createId;
 
     /**
      * 创建日期

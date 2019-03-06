@@ -3,7 +3,6 @@
 <mapper namespace="cn.ce.services.auth.dao.UserDao">
   <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.User">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="userCode" jdbcType="VARCHAR" property="userCode" />
     <result column="userName" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="userRealName" jdbcType="VARCHAR" property="userrealname" />
@@ -15,50 +14,48 @@
     <result column="userType" jdbcType="TINYINT" property="usertype" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="state" jdbcType="TINYINT" property="state" />
-    <result column="lastLoginIp" jdbcType="VARCHAR" property="lastLoginIp" />
-    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="lastLoginIp" jdbcType="VARCHAR" property="lastloginip" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
     <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userCode, userName, password, userRealName, telNumber, email, orgId, orgName, enterpriseName,
+    id, userName, password, userRealName, telNumber, email, orgId, orgName, enterpriseName, 
     userType, avatar, state, lastLoginIp, lastLoginTime, regTime
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
   <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user
     where userName = #{userName,jdbcType=VARCHAR}
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.ce.services.auth.entity.User" keyProperty="id" useGeneratedKeys="true">
-    insert into user (id, userCode, userName,
-      password, userRealName, telNumber, 
-      email, orgId, orgName, 
-      enterpriseName, userType, avatar, 
-      state, lastLoginIp, lastLoginTime,
-      regTime)
-    values (#{id,jdbcType=INTEGER}, #{userCode,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
-      #{password,jdbcType=VARCHAR}, #{userrealname,jdbcType=VARCHAR}, #{telnumber,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{orgid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR}, 
-      #{enterprisename,jdbcType=VARCHAR}, #{usertype,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR}, 
-      1, #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP},
-      CURRENT_TIMESTAMP)
+  <insert id="insert" parameterType="cn.ce.services.auth.entity.User">
+    insert into user (id, userName, password, 
+      userRealName, telNumber, email, 
+      orgId, orgName, enterpriseName, 
+      userType, avatar, state, 
+      lastLoginIp, lastLoginTime, regTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{userrealname,jdbcType=VARCHAR}, #{telnumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{orgid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR}, #{enterprisename,jdbcType=VARCHAR}, 
+      #{usertype,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
+      #{lastloginip,jdbcType=VARCHAR}, #{lastlogintime,jdbcType=TIMESTAMP}, #{regtime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.User" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.User"
+          keyProperty="id" useGeneratedKeys="true">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userCode != null">
-        userCode,
-      </if>
       <if test="username != null">
         userName,
       </if>
@@ -90,18 +87,15 @@
         avatar,
       </if>
         state,
-      <if test="lastLoginIp != null">
+      <if test="lastloginip != null">
         lastLoginIp,
       </if>
-      <if test="lastLoginTime != null">
+      <if test="lastlogintime != null">
         lastLoginTime,
       </if>
-        regTime,
+        regTime
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userCode != null">
-        #{userCode,jdbcType=VARCHAR},
-      </if>
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
@@ -133,21 +127,18 @@
         #{avatar,jdbcType=VARCHAR},
       </if>
         1,
-      <if test="lastLoginIp != null">
-        #{lastLoginIp,jdbcType=VARCHAR},
+      <if test="lastloginip != null">
+        #{lastloginip,jdbcType=VARCHAR},
       </if>
-      <if test="lastLoginTime != null">
-        #{lastLoginTime,jdbcType=TIMESTAMP},
+      <if test="lastlogintime != null">
+        #{lastlogintime,jdbcType=TIMESTAMP},
       </if>
-        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.auth.entity.User">
     update user
     <set>
-      <if test="userCode != null">
-        userCode = #{userCode,jdbcType=VARCHAR},
-      </if>
       <if test="username != null">
         userName = #{username,jdbcType=VARCHAR},
       </if>
@@ -181,11 +172,11 @@
       <if test="state != null">
         state = #{state,jdbcType=TINYINT},
       </if>
-      <if test="lastLoginIp != null">
-        lastLoginIp = #{lastLoginIp,jdbcType=VARCHAR},
+      <if test="lastloginip != null">
+        lastLoginIp = #{lastloginip,jdbcType=VARCHAR},
       </if>
-      <if test="lastLoginTime != null">
-        lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
+      <if test="lastlogintime != null">
+        lastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
       </if>
       <if test="regtime != null">
         regTime = #{regtime,jdbcType=TIMESTAMP},
@@ -195,8 +186,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.User">
     update user
-    set userCode = #{userCode,jdbcType=VARCHAR},
-      userName = #{username,jdbcType=VARCHAR},
+    set userName = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       userRealName = #{userrealname,jdbcType=VARCHAR},
       telNumber = #{telnumber,jdbcType=VARCHAR},
@@ -207,8 +197,8 @@
       userType = #{usertype,jdbcType=TINYINT},
       avatar = #{avatar,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},
-      lastLoginIp = #{lastLoginIp,jdbcType=VARCHAR},
-      lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
+      lastLoginIp = #{lastloginip,jdbcType=VARCHAR},
+      lastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
       regTime = #{regtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

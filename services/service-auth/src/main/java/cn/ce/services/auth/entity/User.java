@@ -1,20 +1,18 @@
 package cn.ce.services.auth.entity;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
 *@auther GGs
-*@date 2019-03-05 11:20:48
+*@date 2019-03-06 22:22:20
 */
 @Data
 public class User implements Serializable {
     private Integer id;
-
-    private String userCode;
     @NotBlank(message = "用户名不能为空")
     private String username;
     @NotBlank(message = "密码不能为空")
@@ -44,9 +42,9 @@ public class User implements Serializable {
 
     private Byte state;
 
-    private String lastLoginIp;
+    private String lastloginip;
 
-    private Date lastLoginTime;
+    private Date lastlogintime;
 
     private Date regtime;
 

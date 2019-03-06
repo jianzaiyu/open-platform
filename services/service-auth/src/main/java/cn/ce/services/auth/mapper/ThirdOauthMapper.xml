@@ -3,7 +3,7 @@
 <mapper namespace="cn.ce.services.auth.dao.ThirdOauthDao">
   <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.ThirdOauth">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="oauth_id" jdbcType="VARCHAR" property="oauthId" />
     <result column="oauth_type" jdbcType="VARCHAR" property="oauthType" />
     <result column="key_token" jdbcType="VARCHAR" property="keyToken" />
@@ -27,16 +27,14 @@
     insert into third_oauth (id, uid, oauth_id, 
       oauth_type, key_token, refresh_token, 
       expire_time)
-    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{oauthId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{oauthId,jdbcType=VARCHAR}, 
       #{oauthType,jdbcType=VARCHAR}, #{keyToken,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, 
       #{expireTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.ThirdOauth">
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.ThirdOauth"
+          useGeneratedKeys="true" keyProperty="id">
     insert into third_oauth
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="uid != null">
         uid,
       </if>
@@ -57,11 +55,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="uid != null">
-        #{uid,jdbcType=VARCHAR},
+        #{uid,jdbcType=INTEGER},
       </if>
       <if test="oauthId != null">
         #{oauthId,jdbcType=VARCHAR},
@@ -84,7 +79,7 @@
     update third_oauth
     <set>
       <if test="uid != null">
-        uid = #{uid,jdbcType=VARCHAR},
+        uid = #{uid,jdbcType=INTEGER},
       </if>
       <if test="oauthId != null">
         oauth_id = #{oauthId,jdbcType=VARCHAR},
@@ -106,7 +101,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.ThirdOauth">
     update third_oauth
-    set uid = #{uid,jdbcType=VARCHAR},
+    set uid = #{uid,jdbcType=INTEGER},
       oauth_id = #{oauthId,jdbcType=VARCHAR},
       oauth_type = #{oauthType,jdbcType=VARCHAR},
       key_token = #{keyToken,jdbcType=VARCHAR},

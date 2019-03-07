@@ -1,6 +1,5 @@
 package cn.ce.services.auth.config;
 
-import cn.ce.framework.base.support.IdentifierGenerateSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,9 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.anonymous().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and().authorizeRequests().anyRequest().authenticated()
+        http.anonymous().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .authorizeRequests().anyRequest().authenticated()
                 .and().csrf().disable();
+//        http.authorizeRequests().anyRequest().permitAll();
     }
 
     @Autowired

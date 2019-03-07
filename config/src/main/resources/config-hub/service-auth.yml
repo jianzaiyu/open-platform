@@ -1,7 +1,7 @@
 server:
   port: 8011
-  servlet:
-    context-path: /uaa
+#  servlet:
+#    context-path: /uaa
 
 pagehelper:
   supportMethodsArguments: true
@@ -38,12 +38,12 @@ spring:
         max-wait: 10s
         max-idle: 20
   datasource:
-    #url: jdbc:mysql://10.12.40.224:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
-    #username: onlineDB
-    #password: bo28jsl29a
-    url: jdbc:mysql://localhost:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 123456
+    url: jdbc:mysql://10.12.40.224:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: onlineDB
+    password: bo28jsl29a
+#    url: jdbc:mysql://localhost:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: 123456
     driverClassName: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

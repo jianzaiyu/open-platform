@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -12,6 +13,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+
+import javax.sql.DataSource;
 
 
 /**
@@ -28,22 +31,27 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()")
+                .allowFormAuthenticationForClients();
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("browser").secret("{bcrypt}$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS")
-                .authorizedGrantTypes("refresh_token", "password", "implicit")
-                .scopes("read", "write").authorities("ROLE_BROWSER")
-                .and()
-                .withClient("service-account")
-                .secret("{bcrypt}$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS")
-                .authorizedGrantTypes("client_credentials", "refresh_token")
-                .scopes("read", "write").authorities("ROLE_CLIENT");
+        clients.jdbc(dataSource).passwordEncoder(new BCryptPasswordEncoder());
+//        clients.inMemory()
+//                .withClient("browser").secret("{bcrypt}$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS")
+//                .authorizedGrantTypes("refresh_token", "password", "implicit")
+//                .scopes("read", "write").authorities("ROLE_BROWSER")
+//                .and()
+//                .withClient("INNER_SERVICE")
+//                .secret("{bcrypt}$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS")
+//                .authorizedGrantTypes("client_credentials")
+//                .scopes("ALL").authorities("ROLE_CLIENT");
     }
 
     @Override

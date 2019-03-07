@@ -18,14 +18,20 @@ import java.security.Principal;
 public class AccountController {
 
     @GetMapping("helloadmin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String helloadmin() {
         return "hello";
     }
 
     @GetMapping("hellouser")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public String hellouser() {
+        return "hello";
+    }
+
+    @GetMapping("hellouser1")
+    @PreAuthorize("hasAuthority('ROLE_USER1')")
+    public String hellouser1() {
         return "hello";
     }
 }

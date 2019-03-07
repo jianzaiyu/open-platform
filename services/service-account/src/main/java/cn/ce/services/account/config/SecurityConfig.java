@@ -19,8 +19,9 @@ public class SecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and().authorizeRequests().anyRequest().authenticated()
+        http
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .authorizeRequests().anyRequest().authenticated()
                 .and().csrf().disable();
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * @author ggs
  * @date 2019/3/6 22:34
  */
-@Api("用户角色信息管理")
+@Api(description = "用户角色信息管理")
 @Validated
 @RestController
 @RequestMapping("userrole")

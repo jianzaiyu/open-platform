@@ -3,10 +3,12 @@ package cn.ce.services.auth.controller;
 import cn.ce.services.auth.entity.User;
 import cn.ce.services.auth.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -14,7 +16,7 @@ import java.security.Principal;
  * @author: ggs
  * @date: 2019-03-01 15:03
  **/
-@Api("用户信息管理")
+@Api(description = "用户信息管理")
 @Validated
 @RestController
 @RequestMapping("user")
@@ -28,17 +30,17 @@ public class UserController {
     }
 
     @PostMapping
-    public void insertSelective(@RequestBody @Valid User user){
+    public void insertSelective(@RequestBody @Valid User user) {
         userService.insertSelective(user);
     }
 
     @PutMapping
-    public void updateByPrimaryKeySelective(@RequestBody User user){
+    public void updateByPrimaryKeySelective(@RequestBody User user) {
         userService.updateByPrimaryKeySelective(user);
     }
 
     @GetMapping
-    public User selectByPrimaryKey(@RequestParam Integer id){
+    public User selectByPrimaryKey(@RequestParam Integer id) {
         return userService.selectByPrimaryKey(id);
     }
 }

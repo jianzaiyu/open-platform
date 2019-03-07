@@ -12,7 +12,7 @@ import javax.validation.Valid;
  * @author: ggs
  * @date: 2019-03-06 19:01
  **/
-@Api("角色信息管理")
+@Api(description = "角色信息管理")
 @Validated
 @RestController
 @RequestMapping("role")

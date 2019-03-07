@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 80013
-Source Host           : 127.0.0.1:3306
+Source Server         : 10.12.40.224
+Source Server Version : 50636
+Source Host           : 10.12.40.224:3306
 Source Database       : auth_centre
 
 Target Server Type    : MYSQL
-Target Server Version : 80013
+Target Server Version : 50636
 File Encoding         : 65001
 
-Date: 2019-03-07 01:41:26
+Date: 2019-03-07 18:57:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -116,7 +116,8 @@ CREATE TABLE `oauth_client_details` (
 -- ----------------------------
 -- Records of oauth_client_details
 -- ----------------------------
-INSERT INTO `oauth_client_details` VALUES ('browser', null, '123456', 'read,write', null, null, null, null, null, null, null);
+INSERT INTO `oauth_client_details` VALUES ('inner_service', 'inner_service', '{bcrypt}$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS', 'ALL', 'client_credentials', null, 'ROLE_CLIENT', null, null, '我是客户端', 'true');
+INSERT INTO `oauth_client_details` VALUES ('ui', 'ui', '{bcrypt}$2a$10$EYdy3ks6rzIj5yRav/4O5OV0VIBNcA7iAA/rsghW4wD9wYbLE5gZS', 'ALL', 'password,refresh_token', null, 'ROLE_UI', '3600', '36000', '我是前端', 'true');
 
 -- ----------------------------
 -- Table structure for oauth_client_token
@@ -180,7 +181,7 @@ CREATE TABLE `role` (
 -- Records of role
 -- ----------------------------
 INSERT INTO `role` VALUES ('1', 'ROLE_ADMIN', '管理员', 'openplatform', '1', '2019-03-06 23:36:31');
-INSERT INTO `role` VALUES ('2', 'ROLE_USER', '普通用户', 'openplatform', '1', '2019-03-06 23:36:57');
+INSERT INTO `role` VALUES ('2', 'ROLE_USER1', '普通用户', 'openplatform', '1', '2019-03-06 23:36:57');
 
 -- ----------------------------
 -- Table structure for r_userrole

@@ -16,9 +16,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * @author ggs
  * @date 2019/3/4 0:55
  */
-@Configuration
+//@Configuration
 //@EnableOAuth2Client
-@EnableOAuth2Sso
+//@EnableOAuth2Sso
 //@EnableConfigurationProperties
 public class Oauth2ClientConfig {
 

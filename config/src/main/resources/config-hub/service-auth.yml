@@ -15,6 +15,11 @@ mybatis:
   scanPackages: cn.ce.**.dao
   typeAliasesPackage: cn.ce.**.entity
 
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+
 spring:
   zipkin:
     enabled: true

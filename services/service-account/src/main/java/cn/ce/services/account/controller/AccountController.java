@@ -25,8 +25,8 @@ public class AccountController {
 
     @GetMapping("hellouser")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public String hellouser() {
-        return "hello";
+    public String hellouser(Principal principal) {
+        return "hello "+principal.getName();
     }
 
     @GetMapping("hellouser1")

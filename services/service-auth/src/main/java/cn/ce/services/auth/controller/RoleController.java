@@ -25,9 +25,9 @@ public class RoleController {
         roleService.insertSelective(role);
     }
 
-    @DeleteMapping
-    public void deleteByPrimaryKey(@RequestParam Integer roleId) {
-        roleService.deleteByPrimaryKey(roleId);
+    @DeleteMapping("{id}")
+    public void deleteByPrimaryKey(@PathVariable Integer id) {
+        roleService.deleteByPrimaryKey(id);
     }
 
     @PutMapping
@@ -35,8 +35,8 @@ public class RoleController {
         roleService.updateByPrimaryKeySelective(role);
     }
 
-    @GetMapping
-    public Role selectByPrimaryKey(@RequestParam Integer roleId) {
-        return roleService.selectByPrimaryKey(roleId);
+    @GetMapping("{id}")
+    public Role selectByPrimaryKey(@RequestParam Integer id) {
+        return roleService.selectByPrimaryKey(id);
     }
 }

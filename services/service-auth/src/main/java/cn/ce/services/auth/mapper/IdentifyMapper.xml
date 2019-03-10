@@ -5,6 +5,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="uid" jdbcType="INTEGER" property="uid"/>
         <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
         <result column="card_front" jdbcType="VARCHAR" property="cardFront"/>
         <result column="card_back" jdbcType="VARCHAR" property="cardBack"/>
         <result column="check_state" jdbcType="TINYINT" property="checkState"/>
@@ -12,7 +13,7 @@
         <result column="auth_time" jdbcType="TIMESTAMP" property="authTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, uid, card_number, card_front, card_back, check_state, check_note, auth_time
+    id, uid, real_name, card_number, card_front, card_back, check_state, check_note, auth_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -25,10 +26,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="cn.ce.services.auth.entity.Identify">
-    insert into identify (id, uid, card_number, 
+    insert into identify (id, uid, real_name, card_number,
       card_front, card_back, check_state, 
       check_note, auth_time)
-    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{cardNumber,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{realName,jdbcType=VARCHAR}, #{cardNumber,jdbcType=VARCHAR},
       #{cardFront,jdbcType=VARCHAR}, #{cardBack,jdbcType=VARCHAR}, #{checkState,jdbcType=TINYINT}, 
       #{checkNote,jdbcType=VARCHAR}, #{authTime,jdbcType=TIMESTAMP})
   </insert>
@@ -38,6 +39,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="uid != null">
                 uid,
+            </if>
+            <if test="realName != null">
+                real_name,
             </if>
             <if test="cardNumber != null">
                 card_number,
@@ -59,6 +63,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uid != null">
                 #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
             </if>
             <if test="cardNumber != null">
                 #{cardNumber,jdbcType=VARCHAR},
@@ -84,6 +91,9 @@
             <if test="uid != null">
                 uid = #{uid,jdbcType=INTEGER},
             </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
             <if test="cardNumber != null">
                 card_number = #{cardNumber,jdbcType=VARCHAR},
             </if>
@@ -108,6 +118,7 @@
     <update id="updateByPrimaryKey" parameterType="cn.ce.services.auth.entity.Identify">
     update identify
     set uid = #{uid,jdbcType=INTEGER},
+      real_name = #{realName,jdbcType=VARCHAR},
       card_number = #{cardNumber,jdbcType=VARCHAR},
       card_front = #{cardFront,jdbcType=VARCHAR},
       card_back = #{cardBack,jdbcType=VARCHAR},

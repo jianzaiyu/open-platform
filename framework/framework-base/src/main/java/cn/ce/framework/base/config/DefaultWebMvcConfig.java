@@ -36,6 +36,15 @@ public class DefaultWebMvcConfig implements WebMvcConfigurer {
         return new GlobalResponseAdvice();
     }
 
+    /**
+     * 处理1000个样本：
+     a.在样本量为1 10 100的时候，也就是对象大小为1k 10k 100k 的时候，GSON的性能一直领先.
+     在这三个量级的情况下， GSON > JSONSMART > JACKSON >  FASTJSON
+     b.在样本量 1000 ，也就是对象大小为 1M 的时候，SMARTJSON 反超 GSON
+     在这个量级下， SMARTJSON > GSON >  FASTJSON > JACKSON
+     c.在样本量 10000 100000，也就是对象大小为 10M 100M的时候，JSON 变慢的最明显,JACKSON 与 FASTJSON 性能最优最稳定
+     在这个量级下， JACKSON > FASTJSON > SMARTJSON >  GSON 。
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 //        super.configureMessageConverters(converters);

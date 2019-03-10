@@ -8,6 +8,7 @@ import cn.ce.framework.base.support.RequestLogSupport;
 import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -72,6 +73,14 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(value = HttpStatus.OK)
     public Result handleBusinessException(HttpServletRequest request,
                                           BusinessException ex) {
+        RequestLogSupport.handleLog(request, ex);
+        return new Result<>(HttpStatus.OK, ResultCode.SYS0002, new JSONArray(), ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Result handleSecurityException(HttpServletRequest request,
+                                          AccessDeniedException ex) {
         RequestLogSupport.handleLog(request, ex);
         return new Result<>(HttpStatus.OK, ResultCode.SYS0002, new JSONArray(), ex.getMessage());
     }

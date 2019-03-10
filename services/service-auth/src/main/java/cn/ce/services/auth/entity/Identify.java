@@ -15,6 +15,8 @@ public class Identify implements Serializable {
 
     private Integer uid;
 
+    private String realName;
+
     private String cardNumber;
 
     private String cardFront;

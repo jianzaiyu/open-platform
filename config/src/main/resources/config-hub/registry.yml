@@ -5,13 +5,13 @@ spring:
   zipkin:
     enabled: true
 #单机版
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-  server:
-    enable-self-preservation: false #关闭自我保护
-    eviction-interval-timer-in-ms: 3000
-    waitTimeInMsWhenSyncEmpty: 0 #Eureka服务器获取不到集群里对等服务器上的实例时，需要等待的时间
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    register-with-eureka: false
+#    fetch-registry: false
+#  server:
+#    enable-self-preservation: false #关闭自我保护
+#    eviction-interval-timer-in-ms: 3000
+#    waitTimeInMsWhenSyncEmpty: 0 #Eureka服务器获取不到集群里对等服务器上的实例时，需要等待的时间

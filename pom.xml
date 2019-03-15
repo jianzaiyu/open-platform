@@ -215,7 +215,9 @@
                 <user.password>password</user.password>
                 <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
-                <registry.uri>http://${user.username}:${user.password}@localhost:8001/eureka/</registry.uri>
+                <registry.uri1>http://${user.username}:${user.password}@10.12.51.210:8001/eureka/</registry.uri1>
+                <registry.uri2>http://${user.username}:${user.password}@10.12.51.211:8001/eureka/</registry.uri2>
+                <registry.uri>${registry.uri1},${registry.uri2}</registry.uri>
                 <hbase.zookeeper.quorum>10.12.40.168:2181,10.12.40.170:2181,10.12.40.171:2181</hbase.zookeeper.quorum>
             </properties>
         </profile>

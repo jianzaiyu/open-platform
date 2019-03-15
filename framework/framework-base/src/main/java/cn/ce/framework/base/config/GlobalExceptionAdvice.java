@@ -8,6 +8,7 @@ import cn.ce.framework.base.support.RequestLogSupport;
 import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -78,9 +79,17 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public Result handleSecurityException(HttpServletRequest request,
                                           AccessDeniedException ex) {
+        RequestLogSupport.handleLog(request, ex);
+        return new Result<>(HttpStatus.UNAUTHORIZED, ResultCode.SYS0003, new JSONArray(), ex.getMessage());
+    }
+
+    @ExceptionHandler(MailException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Result handleMailExceptionException(HttpServletRequest request,
+                                               MailException ex) {
         RequestLogSupport.handleLog(request, ex);
         return new Result<>(HttpStatus.OK, ResultCode.SYS0002, new JSONArray(), ex.getMessage());
     }
@@ -93,7 +102,6 @@ public class GlobalExceptionAdvice {
         return new Result<>(HttpStatus.NOT_FOUND, ResultCode.SYS0000, new JSONArray(), ex.getMessage());
     }
 
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Result handleAllException(HttpServletRequest request,
@@ -101,6 +109,5 @@ public class GlobalExceptionAdvice {
         RequestLogSupport.handleLog(request, ex);
         return new Result<>(HttpStatus.INTERNAL_SERVER_ERROR, ResultCode.SYS0001, new JSONArray());
     }
-
 }
 

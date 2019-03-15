@@ -9,7 +9,6 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="orgId" jdbcType="VARCHAR" property="orgid" />
     <result column="orgName" jdbcType="VARCHAR" property="orgname" />
-    <result column="enterpriseName" jdbcType="VARCHAR" property="enterprisename" />
     <result column="userType" jdbcType="TINYINT" property="usertype" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="state" jdbcType="TINYINT" property="state" />
@@ -18,7 +17,7 @@
     <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userName, password, telNumber, email, orgId, orgName, enterpriseName,
+    id, userName, password, telNumber, email, orgId, orgName,
     userType, avatar, state, lastLoginIp, lastLoginTime, regTime
   </sql>
   <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -40,13 +39,13 @@
   <insert id="insert" parameterType="cn.ce.services.auth.entity.User">
     insert into user (id, userName, password, 
       telNumber, email,
-      orgId, orgName, enterpriseName, 
+      orgId, orgName,
       userType, avatar, state, 
       lastLoginIp, lastLoginTime, regTime
       )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{telnumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
-      #{orgid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR}, #{enterprisename,jdbcType=VARCHAR}, 
+      #{orgid,jdbcType=VARCHAR}, #{orgname,jdbcType=VARCHAR},
       #{usertype,jdbcType=TINYINT}, #{avatar,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, 
       #{lastloginip,jdbcType=VARCHAR}, #{lastlogintime,jdbcType=TIMESTAMP}, #{regtime,jdbcType=TIMESTAMP}
       )
@@ -72,9 +71,6 @@
       </if>
       <if test="orgname != null">
         orgName,
-      </if>
-      <if test="enterprisename != null">
-        enterpriseName,
       </if>
       <if test="usertype != null">
         userType,
@@ -109,9 +105,6 @@
       </if>
       <if test="orgname != null">
         #{orgname,jdbcType=VARCHAR},
-      </if>
-      <if test="enterprisename != null">
-        #{enterprisename,jdbcType=VARCHAR},
       </if>
       <if test="usertype != null">
         #{usertype,jdbcType=TINYINT},
@@ -150,9 +143,6 @@
       <if test="orgname != null">
         orgName = #{orgname,jdbcType=VARCHAR},
       </if>
-      <if test="enterprisename != null">
-        enterpriseName = #{enterprisename,jdbcType=VARCHAR},
-      </if>
       <if test="usertype != null">
         userType = #{usertype,jdbcType=TINYINT},
       </if>
@@ -182,7 +172,6 @@
       email = #{email,jdbcType=VARCHAR},
       orgId = #{orgid,jdbcType=VARCHAR},
       orgName = #{orgname,jdbcType=VARCHAR},
-      enterpriseName = #{enterprisename,jdbcType=VARCHAR},
       userType = #{usertype,jdbcType=TINYINT},
       avatar = #{avatar,jdbcType=VARCHAR},
       state = #{state,jdbcType=TINYINT},

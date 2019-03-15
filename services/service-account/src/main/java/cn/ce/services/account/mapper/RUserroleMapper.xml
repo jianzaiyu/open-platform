@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ce.services.account.dao.RUserroleDao">
+  <resultMap id="BaseResultMap" type="cn.ce.services.account.entity.RUserrole">
+    <id column="ur_id" jdbcType="INTEGER" property="urId" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap id="DetailResultMap" extends="BaseResultMap" type="cn.ce.services.account.entity.UserRoleDetail">
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="belong_sys" jdbcType="VARCHAR" property="belongSys" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    r_userrole.ur_id, r_userrole.uid, r_userrole.role_id, r_userrole.create_id, r_userrole.create_time
+  </sql>
+  <select id="selectByUId" parameterType="java.lang.Integer" resultMap="DetailResultMap">
+    select
+    role.role_name,role.description,role.belong_sys,
+    <include refid="Base_Column_List" />
+    from r_userrole
+    left join role
+    on r_userrole.role_id = role.role_id
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from r_userrole
+    where ur_id = #{urId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from r_userrole
+    where ur_id = #{urId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.ce.services.account.entity.RUserrole">
+    insert into r_userrole (ur_id, uid, role_id, 
+      create_id, create_time)
+    values (#{urId,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
+      #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.ce.services.account.entity.RUserrole"
+          useGeneratedKeys="true" keyProperty="urId">
+    insert into r_userrole
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="createId != null">
+        create_id,
+      </if>
+      <if test="createTime != null">
+        create_time
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+        CURRENT_TIMESTAMP
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.ce.services.account.entity.RUserrole">
+    update r_userrole
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="createId != null">
+        create_id = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ur_id = #{urId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.ce.services.account.entity.RUserrole">
+    update r_userrole
+    set uid = #{uid,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      create_id = #{createId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where ur_id = #{urId,jdbcType=INTEGER}
+  </update>
+</mapper>

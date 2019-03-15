@@ -30,6 +30,20 @@ spring:
   transaction:
     default-timeout: 60s
     rollback-on-commit-failure: true
+  mail:
+    host: smtp.300.cn
+    port: 25
+    sender: sla@300.cn
+    username: sla@300.cn
+    password: Q1w2e3r4
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: false
   cache:
     type: redis
   redis:
@@ -43,12 +57,12 @@ spring:
         max-wait: 10s
         max-idle: 20
   datasource:
-#    url: jdbc:mysql://10.12.40.224:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
-#    username: onlineDB
-#    password: bo28jsl29a
-    url: jdbc:mysql://localhost:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 123456
+    url: jdbc:mysql://10.12.40.224:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: onlineDB
+    password: bo28jsl29a
+#    url: jdbc:mysql://localhost:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: 123456
     driverClassName: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

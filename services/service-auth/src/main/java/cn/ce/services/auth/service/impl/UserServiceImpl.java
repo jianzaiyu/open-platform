@@ -6,6 +6,8 @@ import cn.ce.services.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: ggs
  * @date: 2019-03-01 14:58
@@ -42,5 +44,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateByPrimaryKey(User record) {
         return userDao.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public User selectByUserName(String name) {
+        return userDao.selectByUserName(name);
     }
 }

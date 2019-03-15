@@ -12,7 +12,8 @@ public enum ResultCode {
     //系统相关状态码
     SYS0000("系统正常")
     ,SYS0001("系统错误")
-    ,SYS0002("业务错误");
+    ,SYS0002("业务错误")
+    ,SYS0003("认证失败");
 
     private String desc;
 

@@ -1,6 +1,7 @@
 package cn.ce.services.account.controller;
 
 import cn.ce.framework.base.exception.BusinessException;
+import cn.ce.framework.redis.support.RedisUtil;
 import cn.ce.services.account.entity.User;
 import cn.ce.services.account.service.UserService;
 import io.swagger.annotations.Api;
@@ -24,18 +25,26 @@ import javax.validation.Valid;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @PostMapping
     @ApiOperation("增加一个用户")
-    public void insertSelective(@RequestBody @Valid User user) {
-        if (userService.selectByUserName(user.getUsername()) == null) {
-            if (!StringUtils.isEmpty(user.getPassword())) {
-                user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            }
-            userService.insertSelective(user);
-        } else {
-            throw new BusinessException("用户名重复");
+    public void insertSelective(@RequestBody @Valid User user, @RequestHeader String Authorization) {
+        String token = redisUtil.get("email_register_" + user.getEmail());
+        if (token == null || !Authorization.contains(token)) {
+            throw new BusinessException("链接失效,请重新发送!");
         }
+
+        if (userService.selectByUserName(user.getUsername()) != null) {
+            throw new BusinessException("用户名重复!");
+        }
+
+        if (userService.selectByEmail(user.getEmail()) != null) {
+            throw new BusinessException("邮箱地址已经被注册!");
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        userService.insertSelective(user);
     }
 
     @PutMapping
@@ -51,7 +60,7 @@ public class UserController {
     @ApiOperation("查询用户信息")
     public User selectByPrimaryKey(@PathVariable Integer id) {
         User user = userService.selectByPrimaryKey(id);
-        user.setPassword("");
+        user.setPassword("N/A");
         return user;
     }
 
@@ -61,9 +70,11 @@ public class UserController {
         return userService.selectByUserName(userName) != null;
     }
 
-    @GetMapping
+    @GetMapping("username/{userName}")
     @ApiOperation("查询用户By_userName")
-    public User selectUserByUserName(@RequestParam String userName) {
-        return userService.selectByUserName(userName);
+    public User selectUserByUserName(@PathVariable String userName) {
+        User user = userService.selectByUserName(userName);
+        user.setPassword("N/A");
+        return user;
     }
 }

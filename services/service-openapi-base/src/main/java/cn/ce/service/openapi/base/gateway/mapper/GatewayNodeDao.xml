@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.gateway.dao.IMysqlGwNodeDao">
+	<resultMap type="cn.ce.service.openapi.base.gateway.entity.GatewayNodeEntity"
+		id="nodeMap">
+		<id column="node_id" property="nodeId" />
+		<result column="node_name" property="nodeName" />
+		<result column="node_url" property="nodeUrl" />
+		<result column="node_desc" property="nodeDesc" />
+		<result column="col_id" property="colId" />
+		<result column="node_status" property="nodeStatus" />
+	</resultMap>
+
+	<sql id="nodeCondition">
+		<where>
+			<if test="nodeId != null and nodeId != ''">
+				node_id=#{nodeId}
+			</if>
+			<if test="nodeName != null and nodeName != ''">
+				AND node_name like concat(concat("%",#{nodeName}),"%")
+			</if>
+			<if test="nodeUrl != null and nodeUrl != ''">
+				AND node_url=#{nodeUrl}
+			</if>
+			<if test="colId != null and colId != ''">
+				AND col_id=#{colId}
+			</if>
+			<if test="nodeStatus != null">
+				AND node_status=#{nodeStatus}
+			</if>
+		</where>
+	</sql>
+
+	<select id="checkByUrl" resultType="int">
+		select count(*) from gw_node where node_url=#{nodeUrl}
+	</select>
+
+	<select id="checkByUrlExp" resultType="int">
+		select count(*) from gw_node where node_url=#{nodeUrl} AND node_id !=
+		#{nodeId}
+	</select>
+
+	<insert id="addGatewayNode"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.GatewayNodeEntity">
+		insert into gw_node
+		(node_id,node_name,node_url,node_desc,col_id,node_status)
+		values
+		(#{nodeId},#{nodeName},#{nodeUrl},#{nodeDesc},#{colId},#{nodeStatus})
+	</insert>
+
+	<select id="findById" resultMap="nodeMap">
+		select * from gw_node where node_id=#{nodeId}
+	</select>
+
+	<update id="update"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.GatewayNodeEntity">
+		update gw_node
+		<set>
+			<if test="nodeName!= null and nodeName != ''">
+				node_name=#{nodeName},
+			</if>
+			<if test="nodeUrl != null and nodeUrl != ''">
+				node_url=#{nodeUrl},
+			</if>
+			<if test="nodeDesc != null and nodeDesc != ''">
+				node_desc=#{nodeDesc},
+			</if>
+			<if test="colId != null and colId != ''">
+				col_id=#{colId},
+			</if>
+			<if test="nodeStatus != null">
+				node_status=#{nodeStatus}
+			</if>
+		</set>
+		where node_id=#{nodeId}
+	</update>
+
+	<select id="findListSize" resultType="int"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.QueryGwNodeEntity">
+		select count(node_id) from gw_node
+		<include refid="nodeCondition" />
+	</select>
+
+	<select id="getPagedList" resultMap="nodeMap"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.QueryGwNodeEntity">
+		select * from gw_node
+		<include refid="nodeCondition" />
+		limit #{startNum},#{pageSize}
+	</select>
+
+	<delete id="deleteById">
+		delete from gw_node where node_id=#{nodeId}
+	</delete>
+	
+	<select id="findByColId" resultMap="nodeMap">
+		select * from gw_node where col_id=#{colId}
+	</select>
+	
+	<select id="getAll" resultMap="nodeMap">
+		select * from gw_node
+	</select>
+	
+	<delete id="deleteAll">
+		delete from gw_node
+	</delete>
+</mapper>

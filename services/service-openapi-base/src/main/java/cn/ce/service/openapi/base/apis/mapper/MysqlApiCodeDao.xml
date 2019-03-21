@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlApiCodeDao">
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiCodeEntity"
+		id="apiCodeMap">
+		<id column="code_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="code_name" property="codeName" />
+		<result column="code_desc" property="codeDesc" />
+	</resultMap>
+
+	<insert id="save" parameterType="cn.ce.service.openapi.base.apis.entity.ApiCodeEntity">
+		INSERT INTO api_code
+		(code_id,api_id,code_name,code_desc)
+		VALUES
+		(#{id},#{apiId},#{codeName},#{codeDesc})
+	</insert>
+
+	<select id="findByApiId" resultMap="apiCodeMap">
+		select * from api_code where api_id=#{apiId}
+	</select>
+	
+	<delete id="deleteByApiId">
+		delete from api_code where api_id=#{apiId}
+	</delete>
+
+</mapper>

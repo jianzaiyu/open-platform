@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.gateway.dao.IMysqlGwColonyDao">
+
+	<resultMap type="cn.ce.service.openapi.base.gateway.entity.GatewayColonyEntity"
+		id="colonyMap">
+		<id column="col_id" property="colId" />
+		<result column="col_name" property="colName" />
+		<result column="col_url" property="colUrl" />
+		<result column="w_col_url" property="wColUrl" />
+		<result column="col_status" property="colStatus" />
+		<result column="col_desc" property="colDesc" />
+	</resultMap>
+
+	<sql id="colCondition">
+		<where>
+			<if test="colId != null and colId != ''">
+				col_id=#{colId}
+			</if>
+			<if test="colName != null and colName != ''">
+				AND col_name like concat(concat("%",#{colName}),"%")
+			</if>
+			<if test="colUrl != null and colUrl != ''">
+				AND col_url = #{colUrl}
+			</if>
+			<if test="wColUrl != null and wColUrl != ''">
+				AND w_col_url = #{wColUrl}
+			</if>
+			<if test="colStatus != null and colStatus != ''">
+				AND col_status = #{colStatus}
+			</if>
+		</where>
+	</sql>
+
+	<select id="checkByUrl" resultType="int">
+		select count(*) from gw_colony where col_url=#{colUrl}
+	</select>
+
+	<select id="checkByUrlExp" resultType="int">
+		select count(*) from gw_colony where col_url=#{colUrl} AND col_id !=
+		#{colId}
+	</select>
+
+	<insert id="addGatewayCol"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.GatewayColonyEntity">
+		insert into gw_colony
+		(col_id,col_name,col_url,w_col_url,col_status,col_desc)
+		values
+		(#{colId},#{colName},#{colUrl},#{wColUrl},#{colStatus},#{colDesc})
+	</insert>
+
+	<select id="findById" resultMap="colonyMap">
+		select * from gw_colony where col_id=#{colId}
+	</select>
+
+	<update id="update"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.GatewayColonyEntity">
+		update gw_colony
+		<set>
+			<if test="colName!= null and colName != ''">
+				col_name=#{colName},
+			</if>
+			<if test="colUrl != null and colUrl != ''">
+				col_url=#{colUrl},
+			</if>
+			<if test="wColUrl != null and wColUrl != ''">
+				w_col_url=#{wColUrl},
+			</if>
+			<if test="colStatus != null">
+				col_status=#{colStatus},
+			</if>
+			<if test="colDesc != null and colDesc != ''">
+				col_desc=#{colDesc}
+			</if>
+		</set>
+		where col_id=#{colId}
+	</update>
+
+	<select id="findListSize" resultType="int"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.QueryGwColonyEntity">
+		select count(col_id) from gw_colony
+		<include refid="colCondition" />
+	</select>
+
+	<select id="getPagedList" resultMap="colonyMap"
+		parameterType="cn.ce.service.openapi.base.gateway.entity.QueryGwColonyEntity">
+		select * from gw_colony
+		<include refid="colCondition" />
+		limit #{startNum},#{pageSize}
+	</select>
+
+	<delete id="deleteById">
+		delete from gw_colony where col_id=#{colId}
+	</delete>
+	
+	<select id="getAll" resultMap="colonyMap">
+		select * from gw_colony
+	</select>
+	
+	<delete id="deleteAll">
+		delete from gw_colony
+	</delete>
+</mapper>

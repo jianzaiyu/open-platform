@@ -31,7 +31,10 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/configuration/security").permitAll()
                 // swagger end
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
+                .antMatchers(HttpMethod.POST, "/mail").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/duplicate/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/username/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/hello").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().disable()
@@ -45,18 +48,4 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
         resources.accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
     }
-
-//    @Override
-//    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-//        resources.tokenStore(new JwtTokenStore(jwtAccessTokenConverter()));
-//    }
-//
-//    @Bean
-//    public JwtAccessTokenConverter jwtAccessTokenConverter() throws IOException {
-//        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-//        jwtAccessTokenConverter.setVerifierKey(
-//                new String(FileCopyUtils.copyToByteArray(
-//                        new ClassPathResource("public.cert").getInputStream())));
-//        return jwtAccessTokenConverter;
-//    }
 }

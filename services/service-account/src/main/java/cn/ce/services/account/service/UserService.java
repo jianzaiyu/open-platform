@@ -21,4 +21,8 @@ public interface UserService {
     int updateByPrimaryKey(User record);
 
     User selectByUserName(String name);
+
+    User selectByEmail(String email);
+
+    User selectByTelNumber(String telNumber);
 }

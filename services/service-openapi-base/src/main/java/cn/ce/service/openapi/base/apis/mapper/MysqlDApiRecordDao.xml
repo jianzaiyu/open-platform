@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlDApiRecordDao">
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.DApiRecordEntity"
+		id="downloadMap">
+		<id column="down_id" property="id" />
+		<result column="opera_time" property="operaTime" />
+		<result column="total_num" property="totalNum" />
+		<result column="opera_user_name" property="operaUserName" />
+		<result column="opera_user_id" property="userId" />
+		
+		<collection property="apiIds" ofType="string" javaType="list">  
+            <result column="api_id" javaType="string"/>  
+        </collection>  
+	</resultMap>
+
+	<insert id="save" parameterType="cn.ce.service.openapi.base.apis.entity.DApiRecordEntity">
+		insert into record_down_des
+		(down_id,opera_time,total_num,opera_user_name,opera_user_id)
+		values
+		(#{id},#{operaTime},#{totalNum},#{operaUserName},#{userId})
+	</insert>
+
+	<insert id="saveBoundApis">
+		INSERT into record_down_bound_api
+			(down_id,api_id)
+		VALUES
+			<foreach collection="apiIds" item="item" index="index" separator=",">
+				(#{downId},#{item})
+			</foreach>
+	</insert>
+
+	<select id="findTotalOneById" resultMap="downloadMap">
+		select d.*,a.api_id from record_down_des d inner join record_down_bound_api a
+		ON d.down_id=a.down_id and d.down_id = #{recordId}
+	</select>
+	
+</mapper>

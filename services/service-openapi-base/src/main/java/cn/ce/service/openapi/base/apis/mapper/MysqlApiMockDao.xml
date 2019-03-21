@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlApiMockDao">
+    <resultMap id="apiMockResult" type="cn.ce.service.openapi.base.apis.entity.ApiMock">
+        <id column="mock_id" property="mockId"/>
+        <result column="version_id" property="versionId"/>
+        <result column="action" property="action"/>
+        <result column="code" property="code"/>
+        <result column="header_str" property="headerStr"/>
+        <result column="mock_str" property="mockStr"/>
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <insert id="insert" parameterType="cn.ce.service.openapi.base.apis.entity.ApiMock">
+        insert into api_mock(mock_id,version_id,action,code,header_str,mock_str,create_time)
+        values (
+          #{mockId},#{versionId},#{action},#{code},#{headerStr},#{mockStr},#{createTime}
+        )
+    </insert>
+
+    <delete id="deleteByVersionId" parameterType="java.lang.String">
+        delete from api_mock where version_id = #{versionId}
+    </delete>
+    
+    <select id="selectByVersionId" resultMap="apiMockResult">
+        select * from api_mock where version_id=#{versionId}
+    </select>
+
+</mapper>

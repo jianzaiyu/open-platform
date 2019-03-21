@@ -11,14 +11,12 @@ pagehelper:
   params: count=countSql
 
 mybatis:
-  mapperLocations: classpath:cn/ce/**/mapper/*.xml
+  mapperLocations: classpath*:cn/ce/**/mapper/*.xml
   scanPackages: cn.ce.**.dao
   typeAliasesPackage: cn.ce.**.entity
 
-#security:
-#  oauth2:
-#    resource:
-#      filter-order: 3
+swagger2:
+  enabled: false
 
 spring:
   zipkin:
@@ -30,20 +28,6 @@ spring:
   transaction:
     default-timeout: 60s
     rollback-on-commit-failure: true
-  mail:
-    host: smtp.300.cn
-    port: 25
-    sender: sla@300.cn
-    username: sla@300.cn
-    password: Q1w2e3r4
-    default-encoding: UTF-8
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: false
   cache:
     type: redis
   redis:

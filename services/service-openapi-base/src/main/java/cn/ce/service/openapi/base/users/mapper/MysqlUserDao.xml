@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="cn.ce.service.openapi.base.users.dao.IMysqlUserDao">
+  
+  	<resultMap type="cn.ce.service.openapi.base.users.entity.User" id="userMap">
+  		<id column="user_id" property="id"/>
+  		<result column="user_name" property="userName"/>
+  		<result column="password" property="password"/>
+  		<result column="email" property="email"/>
+  		<result column="app_secret" property="appSecret"/>
+  		<result column="state" property="state"/>
+  		<result column="user_type" property="userType"/>
+  		<result column="reg_time" property="regTime"/>
+  		<result column="check_code" property="checkCode"/>
+  		<result column="check_state" property="checkState"/>
+  		<result column="enterprise_id" property="enterpriseId"/>
+  		<result column="enterprise_name" property="enterpriseName"/>
+  		<result column="id_card" property="idCard"/>
+  		<result column="user_real_name" property="userRealName"/>
+  		<result column="check_mem" property="checkMem"/>
+  	</resultMap>
+
+	<sql id="userCondition">
+		<where>
+			<if test="userName!= null">
+				AND user_name = #{userName}
+			</if>
+			<if test="email!= null">
+				AND email = #{email}
+			</if>
+			<if test="enterpriseName!= null">
+				AND enterprise_name = #{enterpriseName}
+			</if>
+			<if test="idCard!= null">
+				AND id_card = #{idCard}
+			</if>
+			<if test="userRealName!= null">
+				AND user_real_name = #{userRealName}
+			</if>
+			<if test="state!= null">
+				AND state=#{state}
+			</if>
+			<if test="userType!= null">
+				AND user_type = #{userType}
+			</if>
+			<if test="checkState!=null">
+				AND check_state=#{checkState}
+			</if>
+		</where>
+	</sql>
+	 
+  	<insert id="save" parameterType="cn.ce.service.openapi.base.users.entity.User" >
+  		INSERT into user
+	  		(user_id,user_name,password,email,app_secret,state,user_type,reg_time,check_code,check_state
+	  			,enterprise_name,id_card,user_real_name,check_mem)
+  		VALUES
+  			(#{id},#{userName},	#{password},#{email},#{appSecret},#{state},#{userType},
+  				#{regTime},#{checkCode},#{checkState},#{enterpriseName},#{idCard},#{userRealName},#{checkMem})
+  	</insert>
+  
+  	<update id="update" parameterType="cn.ce.service.openapi.base.users.entity.User">
+  		update user
+  		<set>
+<!--   			<if test="userName != null">
+  				user_name=#{userName},
+  			</if> -->
+  			<if test="password != null">
+  				password=#{password},
+  			</if>
+<!--   			<if test="email != null">
+  				email=#{email},
+  			</if> -->
+  			
+  			<if test="checkState != null">
+  				check_state=#{checkState},
+  			</if>
+  			<if test="idCard != null">
+  				id_card=#{idCard},
+  			</if>
+  			<if test="userRealName != null">
+  				user_real_name=#{userRealName},
+  			</if>
+  			<if test="enterpriseName != null">
+  				enterprise_name=#{enterpriseName},
+  			</if>
+  			<if test="checkMem != null">
+  				check_mem=#{checkMem}
+  			</if>
+  			<if test="state != null">
+  				state=#{state}
+  			</if>
+  		</set>
+  		where user_id=#{id}
+  	</update>
+  	
+  	
+  	<select id="findById" resultMap="userMap">
+  		select * from user where user_id=#{userId}
+  	</select>
+  	
+  	<select id="findByUserName" resultMap="userMap">
+  		select * from user where user_name=#{userName}
+  	</select>
+  	
+  	<select id="findByEmail" resultMap="userMap">
+  		select * from user where email=#{email}
+  	</select>
+  	
+  	<select id="checkUserName" resultType="int">
+  		select count(user_id) from user where user_name=#{userName}
+  	</select>
+  	
+  	<select id="checkEmail" resultType="int">
+  		select count(user_id) from user where email=#{email}
+  	</select>
+  	
+  	<select id="checkIdCard" resultType="int">
+  		select count(user_id) from user where 
+  			id_card = #{idCard} and check_state = #{checkState}
+  	</select>
+  	
+  	<select id="checkIdCard1" resultType="int">
+  		select count(user_id) from user where 
+  			id_card = #{idCard}
+  	</select>
+  	
+  	<select id="findListSize" resultType="int">
+  		select count(user_id) from user
+  		<include refid="userCondition" />
+  	</select>
+  	
+  	<select id="getPagedList" resultMap="userMap">
+  		select * from user
+  		<include refid="userCondition" />
+  		limit #{startNum},#{pageSize}
+  	</select>
+  	
+  	<delete id="deleteAll">
+  		delete from user
+  	</delete>
+  </mapper>

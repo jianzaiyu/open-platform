@@ -17,6 +17,10 @@ public interface UserDao {
 
     User selectByUserName(String userName);
 
+    User selectByEmail(String email);
+
+    User selectByTelNumber(String email);
+
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);

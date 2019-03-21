@@ -1,7 +1,9 @@
 package cn.ce.services.account.controller;
 
+import cn.ce.framework.base.support.IdentifierGenerateSupport;
 import cn.ce.framework.mail.entity.Mail;
 import cn.ce.framework.mail.service.MailService;
+import cn.ce.framework.redis.support.RedisUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -23,9 +25,16 @@ import javax.validation.Valid;
 public class MailController {
     @Autowired
     private MailService mailService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @PostMapping
     public void postMail(@RequestBody @Valid Mail mail) {
+        String token = IdentifierGenerateSupport.genRandomUUID8();
+        redisUtil.setForTimeMIN("email_register_" + mail.getReceiver()
+                , token, 2);
+        mail.setContent(mail.getContent() + "&token=" + token);
         mailService.sendSimpleMail(mail);
     }
+
 }

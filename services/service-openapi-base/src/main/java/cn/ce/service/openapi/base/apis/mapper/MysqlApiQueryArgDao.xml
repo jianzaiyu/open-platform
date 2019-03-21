@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlApiQueryArgDao">
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiArgEntity"
+		id="apiArgMap">
+		<id column="arg_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="arg_name" property="argName" />
+		<result column="arg_type" property="argType" />
+		<result column="required" property="required" />
+		<result column="example" property="example" />
+		<result column="arg_desc" property="argDesc" />
+		<result column="is_important" property="imported"/>
+	</resultMap>
+
+	<insert id="save" parameterType="cn.ce.service.openapi.base.apis.entity.ApiArgEntity">
+		INSERT INTO api_query_arg
+		(arg_id,api_id,arg_name,arg_type,required,example,arg_desc)
+		VALUES
+		(#{id},#{apiId},#{argName},#{argType},#{required},#{example},#{argDesc})
+	</insert>
+
+	<select id="findByApiId" resultMap="apiArgMap">
+		select * from api_query_arg where api_id = #{apiId}
+	</select>
+	
+	<delete id="deleteByApiId">
+		delete from api_query_arg where api_id=#{apiId}
+	</delete>
+	
+	<delete id="deleteByImport">
+		delete from api_query_arg where is_import = 1
+	</delete>
+	
+	<insert id="saveImport">
+		INSERT INTO api_query_arg
+			(arg_id,api_id,arg_name,arg_type,required,example,arg_desc,is_import)
+		VALUES
+			(#{id},#{apiId},#{argName},#{argType},#{required},#{example},#{argDesc},#{imported})
+	</insert>
+</mapper>

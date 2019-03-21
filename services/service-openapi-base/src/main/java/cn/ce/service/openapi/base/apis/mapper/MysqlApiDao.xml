@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlApiDao">
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiHeaderEntity"
+		id="apiHeaderMap">
+		<id column="header_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="header_name" property="headerName" />
+		<result column="header_type" property="headerType" />
+		<result column="required" property="required" />
+		<result column="example" property="example" />
+		<result column="header_desc" property="headerDesc" />
+	</resultMap>
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiArgEntity"
+		id="apiArgMap">
+		<id column="arg_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="arg_name" property="argName" />
+		<result column="arg_type" property="argType" />
+		<result column="required" property="required" />
+		<result column="example" property="example" />
+		<result column="arg_desc" property="argDesc" />
+	</resultMap>
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiResultEntity"
+		id="apiResultMap">
+		<id column="result_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="ret_name" property="retName" />
+		<result column="ret_type" property="retType" />
+		<result column="example" property="example" />
+		<result column="result_desc" property="desc" />
+	</resultMap>
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiResultExampleEntity"
+		id="apiRexampleMap">
+		<id column="rex_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="rex_name" property="rexName" />
+		<result column="rex_type" property="rexType" />
+		<result column="state_code" property="stateCode" />
+		<result column="rex_value" property="rexValue" />
+	</resultMap>
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiCodeEntity"
+		id="apiCodeMap">
+		<id column="code_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="code_name" property="codeName" />
+		<result column="code_desc" property="codeDesc" />
+	</resultMap>
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.NewApiEntity"
+		id="apiMap">
+		<id column="api_id" property="id" />
+		<result column="open_apply_id" property="openApplyId" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="api_ch_name" property="apiChName" />
+		<result column="app_code" property="appCode" /> <!-- 所属开放应用的code码 -->
+		<result column="default_target_url" property="defaultTargetUrl" />
+		<result column="listen_path" property="listenPath" />
+		<result column="http_method" property="httpMethod" />
+		<result column="version_id" property="versionId" /> <!-- 一组不同版本的api拥有相同的id -->
+		<result column="version" property="version" />	<!-- 版本号 -->
+		<result column="version_remark" property="versionRemark" /> <!-- 版本说明 -->
+		<result column="new_version" property="newVersion" /> <!-- 是否是新版本 boolean类型 -->
+		<result column="api_type" property="apiType" /> <!-- 开放还是保留 -->
+		<result column="api_desc" property="desc" />
+		<result column="state" property="state" /> <!-- 状态是否可用 默认为0,禁用为1 -->
+		<result column="check_state" property="checkState" />
+		<result column="check_mem" property="checkMem" /> <!-- 审核备注 -->
+		<result column="quota_max" property="quotaMax" /> <!-- 最大配额 -->
+		<result column="quota_renew_ms" property="quotaRenewalRate" /> <!-- 最大配额 重置周期 -->
+		<result column="rate" property="rate" /> <!-- 频次 -->
+		<result column="per" property="per" /> <!-- 访问频次计数周期 -->
+		<result column="api_source" property="apiSource" /> <!-- api来源 0,null代表提供者录入1代表文件导入 -->
+		<!-- <result column="enterprise_id" property="enterpriseId"/> -->
+		<result column="enterprise_name" property="enterpriseName" />
+		<result column="resource_type" property="resourceType" /> <!-- 资源类型 -->
+		<result column="resource_type_name" property="resourceTypeName" />
+		<result column="create_time" property="createTime" />
+		<result column="request_body_type" property="requestBodyType" />
+		<result column="request_body_type" property="responseBodyType" />
+		<result column="protocol" property="protocol" />
+		<result column="org_path" property="orgPath" />
+
+		<association property="retExample" column="api_id"
+			resultMap="apiRexampleMap" columnPrefix="re_"
+			javaType="cn.ce.service.openapi.base.apis.entity.ApiResultExampleEntity" />
+
+		<collection property="headers" javaType="ArrayList"
+			ofType="cn.ce.service.openapi.base.apis.entity.ApiHeaderEntity"
+			columnPrefix="hd_" resultMap="apiHeaderMap" />
+
+		<collection property="args" javaType="ArrayList"
+			ofType="cn.ce.service.openapi.base.apis.entity.ApiArgEntity"
+			columnPrefix="ag_" resultMap="apiArgMap" />
+		
+		<collection property="queryArgs" javaType="ArrayList"
+			ofType="cn.ce.service.openapi.base.apis.entity.ApiArgEntity"
+			columnPrefix="qag_" resultMap="apiArgMap" />
+			
+		<collection property="result" javaType="ArrayList"
+			ofType="cn.ce.service.openapi.base.apis.entity.ApiResultEntity"
+			columnPrefix="ru_" resultMap="apiResultMap" />
+
+		<collection property="errCodes" javaType="ArrayList"
+			ofType="cn.ce.service.openapi.base.apis.entity.ApiCodeEntity"
+			columnPrefix="ac_" resultMap="apiCodeMap" />
+
+	</resultMap>
+
+	<sql id="basicSelect">
+		SELECT ad.*,
+		hd.header_id as hd_header_id,
+		hd.api_id as hd_api_id,
+		hd.header_name as hd_header_name,
+		hd.header_type as hd_header_type,
+		hd.required as hd_required,
+		hd.example as hd_example,
+		hd.header_desc as hd_header_desc,
+		ag.arg_id as ag_arg_id,
+		ag.api_id as ag_api_id,
+		ag.arg_name as ag_arg_name,
+		ag.arg_type as ag_arg_type,
+		ag.required as ag_required,
+		ag.example as ag_example,
+		ag.arg_desc as ag_arg_desc,
+		qag.arg_id as qag_arg_id,
+		qag.api_id as qag_api_id,
+		qag.arg_name as qag_arg_name,
+		qag.arg_type as qag_arg_type,
+		qag.required as qag_required,
+		qag.example as qag_example,
+		qag.arg_desc as qag_arg_desc,
+		ru.result_id as ru_result_id,
+		ru.api_id as ru_api_id,
+		ru.ret_name as ru_ret_name,
+		ru.ret_type as ru_ret_type,
+		ru.example as ru_example,
+		re.rex_id as re_rex_id,
+		re.api_id as re_api_id,
+		re.rex_name as re_rex_name,
+		re.rex_type as re_rex_type,
+		re.state_code as re_state_code,
+		re.rex_value as re_rex_value,
+		ac.code_id as ac_code_id,
+		ac.api_id as ac_api_id,
+		ac.code_name as ac_code_name,
+		ac.code_desc as ac_code_desc
+	</sql>
+
+
+	<sql id="apiDetailCondition">
+		<where>
+			<if test="openApplyId!= null and openApplyId != ''">
+				AND ad.open_apply_id = #{openApplyId}
+			</if>
+			<if test="userId!= null and userId != ''">
+				AND ad.user_id = #{userId}
+			</if>
+			<if test="checkState!= null">
+				AND ad.check_state = #{checkState}
+			</if>
+			<if test="apiChName!= null and apiChName != ''">
+				AND ad.api_ch_name like concat(concat("%",#{apiChName}),"%")
+			</if>
+			<if test="apiType!= null and apiType != ''">
+				AND ad.api_type = #{apiType}
+			</if>
+			<if test="enterpriseName!= null and enterpriseName != ''">
+				AND ad.enterprise_name = #{enterpriseName}
+			</if>
+			<if test="apiSource!= null">
+				AND ad.api_source = #{apiSource}
+			</if>
+		</where>
+	</sql>	
+	
+	<sql id="basicPagedConn">
+		select * from api_detail ad
+		<include refid="apiDetailCondition" />
+		order by create_time desc
+		limit
+		<choose>
+			<when test="startNum == null or startNum == '0'">
+				0,
+			</when>
+			<otherwise>
+				#{startNum},
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="pageSize == null or pageSize == '0' ">
+				10
+			</when>
+			<otherwise>
+				#{pageSize}
+			</otherwise>
+		</choose>
+	</sql>
+
+	<sql id="findByIdsAndNameLikeBic">
+		select * from api_detail where api_id in
+		<foreach collection="apiIds" item="item" index="index" 
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="apiName != null and apiName != ''">
+			and api_ch_name like concat(concat("%",#{apiName}),"%")
+		</if>
+		<if test="checkState != null">
+			and check_state = #{checkState}
+		</if>
+	</sql>
+	
+	<insert id="save" parameterType="cn.ce.service.openapi.base.apis.entity.ApiEntity">
+		INSERT INTO api_detail
+		(api_id,open_apply_id,user_id,user_name,api_ch_name,app_code,default_target_url
+		,listen_path,http_method,version_id,version,version_remark,new_version,api_type
+		,api_desc,state,check_state,check_mem,quota_max,quota_renew_ms,rate,per,api_source
+		,enterprise_name,resource_type,resource_type_name,create_time
+		,request_body_type,response_body_type,protocol,org_path)
+		VALUES
+		(#{id},#{openApplyId},#{userId},#{userName},#{apiChName},#{appCode},#{defaultTargetUrl}
+		,#{listenPath},#{httpMethod}
+		,#{apiVersion.versionId},#{apiVersion.version},#{apiVersion.versionRemark},#{apiVersion.newVersion}
+		,#{apiType},#{desc},#{state},#{checkState},#{checkMem},#{quotaMax},#{quotaRenewalRate}
+		,#{rate},#{per},#{apiSource},#{enterpriseName},#{resourceType},#{resourceTypeName}
+		,#{createTime}
+		,#{requestBodyType},#{responseBodyType},#{protocol},#{orgPath})
+	</insert>
+
+	<insert id="save1" parameterType="cn.ce.service.openapi.base.apis.entity.NewApiEntity">
+		INSERT INTO api_detail
+		(api_id,open_apply_id,user_id,user_name,api_ch_name,app_code,default_target_url
+		,listen_path,http_method,version_id,version,version_remark,new_version,api_type
+		,api_desc,state,check_state,check_mem,quota_max,quota_renew_ms,rate,per,api_source
+		,enterprise_name,resource_type,resource_type_name,create_time
+		,request_body_type,response_body_type,protocol,org_path)
+		VALUES
+		(#{id},#{openApplyId},#{userId},#{userName},#{apiChName},#{appCode},#{defaultTargetUrl}
+		,#{listenPath},#{httpMethod}
+		,#{versionId},#{version},#{versionRemark},#{newVersion}
+		,#{apiType},#{desc},#{state},#{checkState},#{checkMem},#{quotaMax},#{quotaRenewalRate}
+		,#{rate},#{per},#{apiSource},#{enterpriseName},#{resourceType},#{resourceTypeName}
+		,#{createTime}
+		,#{requestBodyType},#{responseBodyType},#{protocol},#{orgPath})
+	</insert>
+
+	<select id="findByListenPath" resultMap="apiMap">
+		select * from api_detail
+		where listen_path=#{listenPath}
+		order by create_time desc
+	</select>
+
+	<select id="checkListenPath" resultType="int">
+		select
+		count(api_id) from api_detail where listen_path=#{listenPath}
+	</select>
+
+	<select id="findById" resultMap="apiMap">
+		select * from api_detail where
+		api_id=#{apiId}
+	</select>
+
+	<select id="findTotalOneById" resultMap="apiMap">
+		SELECT ad.*,
+			hd.header_id as hd_header_id,
+			hd.api_id as hd_api_id,
+			hd.header_name as hd_header_name,
+			hd.header_type as hd_header_type,
+			hd.header_desc as hd_header_desc,
+			hd.required as hd_required,
+			hd.example as hd_example,
+			ag.arg_id as ag_arg_id,
+			ag.api_id as ag_api_id,
+			ag.arg_name as ag_arg_name,
+			ag.arg_type as ag_arg_type,
+			ag.arg_desc as ag_arg_desc,
+			ag.required as ag_required,
+			ag.example as ag_example,
+			qag.arg_id as qag_arg_id,
+			qag.api_id as qag_api_id,
+			qag.arg_name as qag_arg_name,
+			qag.arg_type as qag_arg_type,
+			qag.required as qag_required,
+			qag.example as qag_example,
+			qag.arg_desc as qag_arg_desc,
+			ru.result_id as ru_result_id,
+			ru.api_id as ru_api_id,
+			ru.ret_name as ru_ret_name,
+			ru.ret_type as ru_ret_type,
+			ru.example as ru_example,
+			ru.result_desc as ru_result_desc,
+			re.rex_id as re_rex_id,
+			re.api_id as re_api_id,
+			re.rex_name as re_rex_name,
+			re.rex_type as re_rex_type,
+			re.state_code as re_state_code,
+			re.rex_value as re_rex_value,
+			ac.code_id as ac_code_id,
+			ac.api_id as ac_api_id,
+			ac.code_name as ac_code_name,
+			ac.code_desc as ac_code_desc
+		FROM
+			api_detail ad LEFT JOIN api_header hd ON ad.api_id = hd.api_id
+			LEFT JOIN api_arg ag ON ad.api_id = ag.api_id
+			LEFT JOIN api_query_arg qag ON ad.api_id = qag.api_id
+			LEFT JOIN api_result ru ON ad.api_id = ru.api_id 
+			LEFT JOIN api_result_example re ON ad.api_id = re.api_id
+			LEFT JOIN api_code ac ON ad.api_id = ac.api_id
+			WHERE ad.api_id = #{apiId}
+	</select>
+
+	<insert id="saveOrUpdateEntity" parameterType="cn.ce.service.openapi.base.apis.entity.NewApiEntity">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from api_detail where api_id = #{id}
+		</selectKey>
+		<if test="count > 0">
+			update api_detail
+			set
+			open_apply_id=#{openApplyId},user_id=#{userId},user_name=#{userName}
+			,api_ch_name=#{apiChName},app_code=#{appCode},default_target_url=#{defaultTargetUrl}
+			,listen_path=#{listenPath},http_method=#{httpMethod},version_id=#{versionId}
+			,version=#{version},version_remark=#{versionRemark},new_version=#{newVersion}
+			,api_type=#{apiType},api_desc=#{desc},state=#{state},check_state=#{checkState}
+			,check_mem=#{checkMem},quota_max=#{quotaMax},quota_renew_ms=#{quotaRenewalRate}
+			,rate=#{rate},per=#{per},api_source=#{apiSource},enterprise_name=#{enterpriseName}
+			,resource_type=#{resourceType},resource_type_name=#{resourceTypeName}
+			,create_time=#{createTime}
+			,request_body_type=#{requestBodyType}
+			,response_body_type=#{responseBodyType}
+			,protocol=#{protocol}
+			,org_path=#{orgPath}
+			where api_id = #{id}
+		</if>
+		<if test="count==0">
+			INSERT INTO api_detail
+			(api_id,open_apply_id,user_id,user_name,api_ch_name,app_code,default_target_url
+			,listen_path,http_method,version_id,version,version_remark,new_version,api_type
+			,api_desc,state,check_state,check_mem,quota_max,quota_renew_ms,rate,per,api_source
+			,enterprise_name,resource_type,resource_type_name,create_time
+			,request_body_type,response_body_type,protocol,org_path)
+			VALUES
+			(#{id},#{openApplyId},#{userId},#{userName},#{apiChName},#{appCode},#{defaultTargetUrl}
+			,#{listenPath},#{httpMethod}
+			,#{versionId},#{version},#{versionRemark},#{newVersion}
+			,#{apiType},#{desc},#{state},#{checkState},#{checkMem},#{quotaMax},#{quotaRenewalRate}
+			,#{rate},#{per},#{apiSource},#{enterpriseName},#{resourceType},#{resourceTypeName}
+			,#{createTime}
+			,#{request_body_type},#{response_body_type},#{protocol},#{orgPath})
+		</if>
+
+	</insert>
+
+	<select id="findVersionNum" resultType="int">
+		select count(api_id) from
+		api_detail where version_id=#{versionId} and version=#{version}
+	</select>
+	
+	<select id="findVersionNumExpId" resultType="int">
+		select count(api_id) from
+		api_detail where version_id=#{versionId} and version=#{version} and api_id != #{apiId}
+	</select>
+
+	<update id="updateVersionByVersionId">
+		update api_detail
+		set new_version = #{newVersion}
+		where version_id=#{versionId}
+	</update>
+
+	<update id="updateCheckState">
+		update api_detail
+		set check_state=#{checkState}
+		where
+		api_id=#{apiId}
+	</update>
+
+	<select id="findListSize" resultType="int">
+		SELECT count(*) FROM api_detail ad
+		<include refid="apiDetailCondition" />
+	</select>
+	
+	<select id="getPagedList" resultMap="apiMap" 
+		parameterType="cn.ce.service.openapi.base.apis.entity.QueryApiEntity">
+		<include refid="basicPagedConn" />
+	</select>
+	
+	<select id="checkApiChName" resultType="int">
+		select count(api_id) from api_detail where api_ch_name=#{apiChName} 
+			and open_apply_id=#{openApplyId}
+	</select>
+	
+	<select id="checkVersion" resultType="int">
+		select count(api_id) from api_detail where version_id=#{versionId} 
+			and version=#{version}
+	</select>
+	
+	<select id="findByOpenApply" parameterType="string" resultMap="apiMap">
+		select * from api_detail where open_apply_id=#{openApplyId}
+	</select>
+	
+	<select id="findByIdsAndNameLikeNum" resultType="int">
+		select count(*) from (<include refid="findByIdsAndNameLikeBic" />) table1
+	</select>
+	
+	<select id="findByIdsAndNameLike" resultMap="apiMap">
+		<include refid="findByIdsAndNameLikeBic" />
+		limit #{startIndex},#{pageSize}
+	</select>
+	
+	<select id="findByIds" resultMap="apiMap">
+		select * from api_detail where api_id in
+		<foreach collection="apiIds" item="item" index="index" 
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="findByVersionId" resultMap="apiMap">
+		select * from api_detail where version_id = #{versionId}
+	</select>
+	
+	<select id="findByVersionIds" parameterType="java.util.List" resultMap="apiMap">
+		select * from api_detail where version_id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		order by field(version_id,
+		<foreach collection="list" item="item" separator=",">
+			#{item}
+		</foreach>
+		)
+	</select>
+	<select id="findByVersionIdExp" resultMap="apiMap">
+		select * from api_detail where version_id = #{versionId} AND api_id != #{id}
+	</select>
+	
+	<select id="findIdByCheckState" resultType="string">
+		select api_id from api_detail where check_state = #{checkState}
+	</select>
+	
+	<select id="findIdByIdsOrOpenApplys" resultType="string">
+		select api_id from api_detail 
+		<where>
+			(
+				<trim prefixOverrides="AND |OR">
+					<if test="null != apiIds and apiIds.size > 0">
+						AND api_id in
+							<foreach collection="apiIds" index="index" item="item" open="(" close=")" separator=",">
+								#{item}
+							</foreach>
+					</if>
+					<if test="null != appIds and appIds.size > 0">
+						OR open_apply_id in
+						<foreach collection="appIds" index="index" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+			)
+			AND check_state = #{checkState}
+		</where>
+	</select>
+	
+	<select id="findTotalOnesByIdsAndCheckState" resultMap="apiMap">
+		SELECT ad.*,
+			hd.header_id as hd_header_id,
+			hd.api_id as hd_api_id,
+			hd.header_name as hd_header_name,
+			hd.header_type as hd_header_type,
+			hd.required as hd_required,
+			hd.example as hd_example,
+			hd.header_desc as hd_header_desc,
+			ag.arg_id as ag_arg_id,
+			ag.api_id as ag_api_id,
+			ag.arg_name as ag_arg_name,
+			ag.arg_type as ag_arg_type,
+			ag.required as ag_required,
+			ag.example as ag_example,
+			ag.arg_desc as ag_arg_desc,
+			qag.arg_id as qag_arg_id,
+			qag.api_id as qag_api_id,
+			qag.arg_name as qag_arg_name,
+			qag.arg_type as qag_arg_type,
+			qag.required as qag_required,
+			qag.example as qag_example,
+			qag.arg_desc as qag_arg_desc,
+			ru.result_id as ru_result_id,
+			ru.api_id as ru_api_id,
+			ru.ret_name as ru_ret_name,
+			ru.ret_type as ru_ret_type,
+			ru.example as ru_example,
+			re.rex_id as re_rex_id,
+			re.api_id as re_api_id,
+			re.rex_name as re_rex_name,
+			re.rex_type as re_rex_type,
+			re.state_code as re_state_code,
+			re.rex_value as re_rex_value,
+			ac.code_id as ac_code_id,
+			ac.api_id as ac_api_id,
+			ac.code_name as ac_code_name,
+			ac.code_desc as ac_code_desc
+		FROM
+			api_detail ad LEFT JOIN api_header hd ON ad.api_id = hd.api_id
+			LEFT JOIN api_arg ag ON ad.api_id = ag.api_id
+			LEFT JOIN api_query_arg qag ON ad.api_id = qag.api_id
+			LEFT JOIN api_result ru ON ad.api_id = ru.api_id 
+			LEFT JOIN api_result_example re ON ad.api_id = re.api_id
+			LEFT JOIN api_code ac ON ad.api_id = ac.api_id
+			WHERE ad.check_state = #{checkState} AND
+			ad.api_id in 
+			<foreach collection="apiIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			order by create_time desc
+	</select>
+	
+	<delete id="deleteTotalOnesByIds">
+		delete ad,hd,ag,ru,re,ac from 			
+			api_detail ad LEFT JOIN api_header hd ON ad.api_id = hd.api_id
+			LEFT JOIN api_arg ag ON ad.api_id = ag.api_id
+			LEFT JOIN api_query_arg qag ON ad.api_id = qag.api_id
+			LEFT JOIN api_result ru ON ad.api_id = ru.api_id 
+			LEFT JOIN api_result_example re ON ad.api_id = re.api_id
+			LEFT JOIN api_code ac ON ad.api_id = ac.api_id
+			where ad.api_id in 
+			<foreach collection="apiIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+	</delete>
+	
+	<select id="checkId" resultType="int">
+		select count(*) from api_detail where api_id = #{id}
+	</select>
+	
+	<delete id="clearAll">
+		delete ad,hd,ag,ru,re,ac from 			
+			api_detail ad LEFT JOIN api_header hd ON ad.api_id = hd.api_id
+			LEFT JOIN api_arg ag ON ad.api_id = ag.api_id
+			LEFT JOIN api_result ru ON ad.api_id = ru.api_id 
+			LEFT JOIN api_result_example re ON ad.api_id = re.api_id
+			LEFT JOIN api_code ac ON ad.api_id = ac.api_id
+	</delete>
+	
+	<select id="findApiByApplyIdsAndCheckState" resultMap="apiMap">
+		select * from api_detail where check_state = #{checkState} AND
+		open_apply_id in
+			<foreach collection="openApplyIds" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+	</select>
+
+	<select id="findByListenPathAndVersion" resultMap="apiMap">
+		select * from api_detail where listen_path=#{listenPath} and version = #{version}
+	</select>
+
+
+<!-- 	<typeAlias type="cn.ce.service.openapi.base.apis.entity.OpenApplyBound" alias="openApplyBoundAlias"/>
+	<typeAlias type="cn.ce.service.openapi.base.apis.entity.DiyApplyBound" alias="diyApplyBoundAlias"/> -->
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.OpenApplyBound" id="openApplyBound" >
+		<id column="open_apply_id" property="openApplyId"/>
+		<collection column="api_id" property="apiIds" ofType="cn.ce.service.openapi.base.apis.entity.OpenApplyBound$ApiBound">
+			<id column="api_id" property="apiId"/>
+		</collection>
+	</resultMap>
+
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.DiyApplyBound" id="diyApplyBound">
+		<id column="diy_apply_id" property="diyApplyId"/>
+		<collection column="open_apply_id" property="openApplyIds"
+			ofType="cn.ce.service.openapi.base.apis.entity.OpenApplyBound" resultMap="openApplyBound"/>
+	</resultMap>
+
+	<select id="getOpenApplyBound" resultMap="openApplyBound">
+		select distinct open_apply_id,version_id as api_id from api_detail
+	</select>
+
+	<select id="getDiyApplyBound" resultMap="diyApplyBound">
+		select distinct
+			d.client_id as diy_apply_id,
+		    b.open_apply_id,
+		    a.version_id as api_id
+		from
+			diy_apply d
+		    left join diy_bound_api b on d.apply_id = b.diy_apply_id
+		    left join api_detail a on b.api_id = a.api_id
+	</select>
+
+	<select id="findTotalSuccessApi" parameterType="int" resultType="int">
+		select count(api_id) from api_detail where check_state = 2
+	</select>
+
+	<select id="getTotalOpenApply" resultType="int">
+		select COUNT(open_apply_id) from api_detail where check_state = 2 and api_type = 'OPEN'
+	</select>
+</mapper>

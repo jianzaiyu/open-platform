@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlUApiRecordDao">
+  	<resultMap type="cn.ce.service.openapi.base.apis.entity.UApiRecordEntity" id="uploadMap">
+		<id column="upload_id" property="id"/>
+		<result column="opera_time" property = "operaTime"/>
+  		<result column="total_num" property="totalNum"/>
+  		<result column="success_num" property="successNum"/>
+  		<result column="opera_user_name" property="operaUserName"/>
+  		<result column="opera_user_id" property="operaUserId"/>
+  		<collection property="uApiRecordList" resultMap="" 
+  			javaType="ArrayList" ofType="cn.ce.service.openapi.base.apis.entity.UApiRecordList"
+  			columnPrefix="list_"/>
+  	</resultMap>
+  	
+  	<resultMap type="cn.ce.service.openapi.base.apis.entity.UApiRecordList" id="recordList">
+  		<id column="uuid" property="id" />
+  		<result column="upload_id" property="uploadId" />
+  		<result column="api_ch_name" property="apiChName" />
+  		<result column="listen_path" property="listenPath"/>
+  		<result column="api_type" property="apiType" />
+  		<result column="open_apply_id" property="openApplyId" />
+  		<result column="app_code" property="appCode" />
+  		<result column="app_name" property="appName" />
+  		<result column="version_id" property="versionId" />
+  		<result column="version" property="version" />
+  		<result column="is_success" property="isDownLoadSuccess" />
+  		<result column="error_desc" property="errorDesc"/>
+  	</resultMap>
+  	
+  	
+  	
+  	<insert id="save" parameterType="cn.ce.service.openapi.base.apis.entity.UApiRecordEntity">
+  		insert into record_upload_desc
+  			(upload_id,opera_time,total_num,success_num,opera_user_name,opera_user_id)
+  		values
+  			(#{id},#{operaTime},#{totalNum},#{successNum},#{operaUserName},#{operaUserId})
+  	</insert>
+  	
+  	<insert id="saveBoundApi">
+  		insert into record_upload_bound_api
+  			(upload_id,api_ch_name,listen_path,api_type,open_apply_id,app_code,app_name
+  				,version_id,version,is_success,error_desc)
+  		values 
+	  		<foreach collection="records" item="item" index="index" separator=",">
+	  				(#{uploadId},#{item.apiChName},#{item.listenPath},#{item.apiType},#{item.openApplyId},#{item.appCode},#{item.appName}
+	  					,#{item.versionId},#{item.version},#{item.isDownLoadSuccess},#{item.errorDesc})
+	  		</foreach>
+  	</insert>
+  </mapper>

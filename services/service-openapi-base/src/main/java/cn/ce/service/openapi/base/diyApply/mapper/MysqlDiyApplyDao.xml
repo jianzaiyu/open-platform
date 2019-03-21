@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.diyApply.dao.IMysqlDiyApplyDao">
+	<resultMap type="cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity"
+		id="diyApplyMap">
+		<id column="apply_id" property="id" />
+		<result column="app_id" property="appId" /> <!-- 对应接口返回应用id -->
+		<result column="apply_name" property="applyName" />
+		<result column="product_auth_code" property="productAuthCode" /> <!-- 产品授权码 -->
+		<result column="product_instance_id" property="productInstanceId" /> <!-- 产品实例ID -->
+		<result column="boss_product_instance" property="bossProductInstance" /> <!-- bossProductInstance -->
+		<result column="product_name" property="productName" /> <!-- 产品名称 -->
+		<result column="domain_url" property="domainUrl" /> <!-- 访问域名 -->
+		<result column="frequency_type" property="frequencyType" /> <!-- 访问频次类型 1:标准，2:定制，3:高定制 -->
+		<result column="quota_max" property="quotaMax" />
+		<result column="quota_renew_rate" property="quotaRenewRate" />
+		<result column="rate" property="rate" />
+		<result column="per" property="per" />
+		<result column="policy_id" property="policyId" />
+		<result column="client_id" property="clientId" />
+		<result column="secret" property="secret" />
+		<!-- <result column="" property="logoImage" /> -->
+		<result column="apply_desc" property="applyDesc" />
+		<result column="create_time" property="createDate" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<!-- <result column="" property="enterpriseId" /> -->
+		<result column="enterprise_name" property="enterpriseName" />
+		<result column="check_state" property="checkState" />
+		<result column="check_mem" property="checkMem" />
+		<result column="resource_type" property="resourceType" />
+		<result column="project_id"  property="projectId"/>
+	</resultMap>
+	<!-- AND ad.api_ch_name like concat(concat("%",#{apiChName}),"%") -->
+	
+	<resultMap type="cn.ce.service.openapi.base.diyApply.entity.DiyBoundApi" id="boundApiMap">
+		<id column="bound_id" property="id" />
+		<result column="diy_apply_id" property="diyApplyId" />
+		<result column="open_apply_id" property="openApplyId" />
+		<result column="api_id" property="apiId" />
+		<result column="bound_open_id" property = "boundOpenId"/>
+	</resultMap>
+	
+	<sql id="diyCondition">
+		<where>
+			<if test="applyId!= null and applyId != ''">
+				AND apply_id = #{applyId}
+			</if>
+			<if test="appId!= null and appId != ''">
+				AND app_id = #{appId}
+			</if>
+			<if test="applyName!= null and applyName != ''">
+				AND apply_name like concat(concat("%",#{applyName}),"%")
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND project_id = #{projectId}
+			</if>
+			<!--<if test="projectId == null or projectId == ''">-->
+				<!--AND (isnull(project_id) or project_id = '')-->
+			<!--</if>-->
+			<if test="productName!= null and productName != ''">
+				AND product_name = #{productName}
+			</if>
+			<if test="userId!= null and userId != ''">
+				AND user_id = #{userId}
+			</if>
+			<if test="userName!= null and userName != ''">
+				AND user_name=#{userName}
+			</if>
+			<if test="checkState!= null">
+				AND check_state = #{checkState}
+			</if>
+		</where>
+	</sql>
+	
+	<insert id="save" parameterType="cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity">
+		INSERT INTO diy_apply 
+			(apply_id,app_id,apply_name,product_auth_code,product_instance_id,boss_product_instance,product_name
+			,domain_url,frequency_type,quota_max,quota_renew_rate,rate,per,policy_id,client_id,secret
+			,apply_desc,create_time,user_id,user_name,enterprise_name,check_state,check_mem,resource_type,project_id)
+		VALUES
+			(#{id},#{appId},#{applyName},#{productAuthCode},#{productInstanceId},#{bossProductInstance}
+			,#{productName},#{domainUrl},#{frequencyType},#{quotaMax},#{quotaRenewRate},#{rate},#{per}
+			,#{policyId},#{clientId},#{secret},#{applyDesc},#{createDate},#{userId},#{userName}
+			,#{enterpriseName},#{checkState},#{checkMem},#{resourceType},#{projectId})
+	</insert>
+	
+	<insert id="saveBoundOpenApply">
+		INSERT INTO diy_bound_open
+			(bound_id,diy_apply_id,open_apply_id)
+		VALUES
+			(#{boundId},#{diyApplyId},#{openApplyId})
+	</insert>
+	
+	<insert id="saveBoundApi">
+		INSERT INTO diy_bound_api
+			(bound_id,diy_apply_id,open_apply_id,api_id,bound_open_id)
+		VALUES
+			(#{boundId},#{diyApplyId},#{openApplyId},#{apiId},#{boundOpenId})
+	</insert>
+	
+	<select id="findListSize" parameterType="cn.ce.service.openapi.base.diyApply.entity.QueryDiyApplyEntity"
+		resultType="int">
+		select count(apply_id) from diy_apply
+		<include refid="diyCondition" />
+	</select>
+	
+	<select id="getPagedList"  parameterType="cn.ce.service.openapi.base.diyApply.entity.QueryDiyApplyEntity"
+		resultMap="diyApplyMap">
+		select * from diy_apply
+		<include refid="diyCondition" />
+		order by create_time desc
+		limit #{startNum},#{pageSize}
+	</select>
+	
+	<select id="findById" parameterType="string" resultMap="diyApplyMap">
+		select * from diy_apply where apply_id=#{applyId}
+	</select>
+	
+	<delete id="deleteById" parameterType="string">
+		delete from diy_apply where apply_id=#{applyId}
+	</delete>
+	
+	<select id="checkApplyName" resultType="int">
+		select count(apply_id) from diy_apply where user_id = #{userId} AND apply_name=#{applyName}
+	</select>
+	
+	<update id="update" parameterType="cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity">
+		update diy_apply
+		<set>
+			<if test="applyName != null and applyName != ''">apply_name=#{applyName}, </if>
+			<if test="domainUrl != null and domainUrl != ''">domain_url=#{domainUrl}, </if>
+			<if test="frequencyType != null">frequency_type=#{frequencyType}, </if>
+			<if test="applyDesc != null and applyDesc != ''">apply_desc=#{applyDesc}, </if>
+			<if test="checkMem != null and checkMem != ''">check_mem=#{checkMem},</if>
+			project_id=#{projectId}
+		</set>
+		where apply_id=#{id}
+	</update>
+	
+	<update id="bathUpdateCheckState">
+		update diy_apply
+			<set>
+				<if test="checkMem != null and checkMem != ''">check_mem=#{checkMem},</if>
+				<if test="checkState != null">check_state=#{checkState}</if>
+			</set>
+		where apply_id in
+		<foreach collection="diyIds" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	
+	<select id="findBoundApi" resultMap="boundApiMap">
+		select * from diy_bound_api where diy_apply_id=#{diyApplyId} and open_apply_id = #{openApplyId}
+	</select>
+	
+	<select id="findByIds" resultMap="diyApplyMap">
+		select * from diy_apply where apply_id in
+		<foreach collection="diyIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<delete id="deleteAll">
+		delete diy_apply.*,diy_bound_open.*,diy_bound_api.*
+		from 
+			diy_apply 
+			LEFT JOIN diy_bound_open ON diy_apply.apply_id = diy_bound_open.diy_apply_id
+			LEFT JOIN diy_bound_api ON diy_bound_open.bound_id = diy_bound_api.bound_open_id
+	</delete>
+	
+	<update id="auditSuccess">
+		update diy_apply set
+		<if test="null != checkMem and checkMem != ''">
+			check_mem=#{checkMem},
+		</if>
+		check_state=#{checkState},app_id=#{appId}
+		where apply_id=#{applyId}
+	</update>
+	
+	<resultMap type="cn.ce.service.openapi.base.open.entity.BiDiyApply" id="biDiyApply">
+		<id column="apply_id" property="id"/>
+		<result column="app_id" property="appId"/>
+		<result column="apply_name" property="applyName"/>
+		<result column="client_id" property="clientId"/>
+		<result column="apply_desc" property="applyDesc"/>
+		<result column="user_id" property="userId"/>
+		<result column="check_state" property="checkState"/>
+	</resultMap>
+	<select id="findBiDiyByClientIds" parameterType="java.util.List" resultMap="biDiyApply">
+		select apply_id,app_id,apply_name,client_id,apply_desc,
+			user_id,check_state from diy_apply where client_id in
+				<foreach collection="diyClientIds" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item}				
+				</foreach>
+	</select>
+
+	<select id="getTotalDiyApply" resultType="int">
+		select count(apply_id) from diy_apply
+	</select>
+</mapper>

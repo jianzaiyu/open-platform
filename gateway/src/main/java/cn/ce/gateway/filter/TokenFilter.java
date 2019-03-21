@@ -40,7 +40,7 @@ public class TokenFilter extends ZuulFilter {
 //
 //        String token = request.getParameter("token");// 获取请求的参数
 //
-//        if (StringUtils.isNotBlank(token)) {
+//        if (!StringUtils.isEmpty(token)) {
 //            ctx.setSendZuulResponse(true); //对请求进行路由
 //            ctx.setResponseStatusCode(200);
 //            ctx.set("isSuccess", true);

@@ -1,5 +1,6 @@
 package cn.ce.services.account.entity;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

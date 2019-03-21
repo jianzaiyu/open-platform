@@ -50,4 +50,14 @@ public class UserServiceImpl implements UserService {
     public User selectByUserName(String name) {
         return userDao.selectByUserName(name);
     }
+
+    @Override
+    public User selectByEmail(String email) {
+        return userDao.selectByEmail(email);
+    }
+
+    @Override
+    public User selectByTelNumber(String telNumber) {
+        return userDao.selectByTelNumber(telNumber);
+    }
 }

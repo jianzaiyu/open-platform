@@ -7,6 +7,10 @@ import java.util.UUID;
  * @date: 2019-01-23 17:44
  **/
 public class IdentifierGenerateSupport {
+    public static String genRandomUUID8() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0,8);
+    }
+
     public static String genRandomUUID32() {
         return UUID.randomUUID().toString().replace("-", "");
     }

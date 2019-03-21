@@ -1,5 +1,6 @@
 package cn.ce.framework.base.pojo;
 
+import cn.ce.framework.base.common.CloudResult;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
@@ -8,7 +9,7 @@ import org.springframework.http.HttpStatus;
  * @date 2018/8/5 11:07
  */
 @Data
-public class Result<T> {
+public class Result<T> implements CloudResult {
     private int status;
     private String code;
     private String msg;

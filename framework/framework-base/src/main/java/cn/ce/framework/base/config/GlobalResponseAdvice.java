@@ -1,6 +1,7 @@
 package cn.ce.framework.base.config;
 
 
+import cn.ce.framework.base.common.CloudResult;
 import cn.ce.framework.base.pojo.Result;
 import cn.ce.framework.base.pojo.ResultCode;
 import com.alibaba.fastjson.JSONArray;
@@ -31,7 +32,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> aClass,
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
 
-        if (!(o instanceof Result)) {//HttpMessageConverter引起的BUG 用FastJsonHttpMessageConverter
+        if (!(o instanceof CloudResult)) {//HttpMessageConverter引起的BUG 用FastJsonHttpMessageConverter
             return new Result<>(HttpStatus.OK, ResultCode.SYS0000, o == null ? new JSONArray() : o);
         }
         return o;//支持直接返回Result

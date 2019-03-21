@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlApiHeaderDao">
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiHeaderEntity"
+		id="apiHeaderMap">
+		<id column="header_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="header_name" property="headerName" />
+		<result column="header_type" property="headerType" />
+		<result column="required" property="required" />
+		<result column="example" property="example" />
+		<result column="header_desc" property="headerDesc" />
+	</resultMap>
+
+	<insert id="save" parameterType="cn.ce.service.openapi.base.apis.entity.ApiHeaderEntity">
+		INSERT INTO api_header
+		(header_id,api_id,header_name,header_type,required,example,header_desc)
+		VALUES
+		(#{id},#{apiId},#{headerName},#{headerType},#{required},#{example},#{headerDesc})
+	</insert>
+
+	<select id="findByApiId" resultMap="apiHeaderMap">
+		select * from api_header where api_id=#{apiId}
+	</select>
+	
+	<delete id="deleteByApiId">
+		delete from api_header where api_id=#{apiId}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.apis.dao.IMysqlApiRexampleDao">
+	<resultMap type="cn.ce.service.openapi.base.apis.entity.ApiResultExampleEntity"
+		id="apiRexampleMap">
+		<id column="rex_id" property="id" />
+		<result column="api_id" property="apiId" />
+		<result column="rex_name" property="rexName" />
+		<result column="rex_type" property="rexType" />
+		<result column="state_code" property="stateCode" />
+		<result column="rex_value" property="rexValue" />
+	</resultMap>
+
+	<insert id="save"
+		parameterType="cn.ce.service.openapi.base.apis.entity.ApiResultExampleEntity">
+		INSERT INTO api_result_example
+		(rex_id,api_id,rex_name,rex_type,state_code,rex_value)
+		VALUES
+		(#{id},#{apiId},#{rexName},#{rexType},#{stateCode},#{rexValue})
+	</insert>
+
+	<select id="findOneByApiId" resultMap="apiRexampleMap">
+		select * from api_result_example where api_id=#{apiId}
+	</select>
+	
+	<delete id="deleteByApiId">
+		delete from api_result_example where api_id=#{apiId}
+	</delete>
+
+</mapper>

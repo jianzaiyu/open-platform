@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="cn.ce.service.openapi.base.guide.dao.IMysqlGuideDao">
+  	<resultMap type="cn.ce.service.openapi.base.guide.entity.GuideEntity" id="guideMap">
+  		<id column="guide_id" property="id"/>
+ 		<result column="guide_name" property="guideName" />
+ 		<result column="guide_desc" property="guideDesc" />
+ 		<result column="open_apply_id" property="applyId" /> <!-- 定制应用id -->
+ 		<!-- <result column="user_id" property="userId"/> -->
+ 		<result column="user_name" property="creatUserName" />
+ 		<result column="create_time" property="creatTime" />
+ 		<result column="check_state" property="checkState" />
+ 		<result column="check_mem" property="checkMem" />
+  	</resultMap>
+
+	<sql id="listCondition">
+		<where>
+			<if test="guideName != null and guideName != ''">
+				guide_name like concat(concat("%",#{guideName}),"%")
+			</if>
+			<if test="userName != null and userName != ''">
+				AND user_name = #{userName}
+			</if>
+			<if test="openApplyId != null and openApplyId != ''">
+				AND open_apply_id = #{openApplyId}
+			</if>
+			<if test="checkState != null">
+				AND check_state = #{checkState}
+			</if>
+		</where>
+	</sql>
+  	
+  	<insert id="save" parameterType="cn.ce.service.openapi.base.guide.entity.GuideEntity">
+  		INSERT INTO api_guide
+  			(guide_id,guide_name,guide_desc,open_apply_id,user_name,create_time,check_state,check_mem) 
+  		VALUES
+  			(#{id},#{guideName},#{guideDesc},#{applyId},#{creatUserName},#{creatTime},#{checkState},#{checkMem})
+  	
+  	</insert>
+  	
+  	<select id="checkGuideName" resultType="int">
+  		select count(guide_id) from api_guide where guide_name=#{guideName} and open_apply_id=#{openApplyId}
+  	</select>
+  	
+  	<select id="findById" resultMap="guideMap">
+  		select * from api_guide where guide_id=#{guideId}
+  	</select>
+  	
+  	<update id="updateGuide">
+  		update api_guide
+  		<set>
+  			<if test="guideName != null and guideName != ''">guide_name=#{guideName},</if>
+  			<if test="guideDesc != null and guideDesc != ''">guide_desc=#{guideDesc},</if>
+  			<if test="checkState != null">check_state=#{checkState}</if>
+  		</set>
+  		where guide_id=#{id}
+  	</update>
+  	
+  	<select id="findTotalNum" resultType="int">
+  		select count(guide_id) from api_guide 
+		<include refid="listCondition" />
+  	</select>
+
+	<select id="getList" resultMap="guideMap">
+		select * from api_guide 
+		<include refid="listCondition" /> order by create_time desc
+		limit #{startIndex},#{pageSize}
+
+	</select>
+	
+	<delete id="deleteById">
+		delete from api_guide where guide_id =#{guideId}
+	</delete>
+	
+<!-- 	<update id="batchSubmit">
+		update api_guide 
+		set check_state=#{checkState}
+		where guide_id in 
+		<foreach collection="guideIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update> -->
+	
+	<update id="bathUpdateCheckState">
+		update api_guide 
+		<set>
+			<if test="checkState !=null">
+				check_state=#{checkState},
+			</if>
+			<if test="checkMem !=null and checkMem != ''">
+				check_mem=#{checkMem}
+			</if>
+		</set>
+		where guide_id in 
+		<foreach collection="guideIds" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+	
+	<delete id="deleteAll">
+		delete from api_guide
+	</delete>
+  </mapper>

@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * @author: ggs
@@ -27,6 +28,12 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RedisUtil redisUtil;
+
+    @GetMapping("current")
+    @ApiOperation("当前登陆用户")
+    public Principal current(Principal principal) {
+        return principal;
+    }
 
     @PostMapping
     @ApiOperation("增加一个用户")

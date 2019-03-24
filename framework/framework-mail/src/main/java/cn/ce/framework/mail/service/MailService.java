@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +32,7 @@ public class MailService {
      *
      * @param mail
      */
+    @Async
     public void sendSimpleMail(Mail mail) throws MailException {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         //邮件发送人

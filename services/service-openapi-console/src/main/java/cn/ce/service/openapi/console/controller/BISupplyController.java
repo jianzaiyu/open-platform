@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * @Title: cn.ce.platform_console.operating.controller
+ * @Title: cn.ce.platform_console.operating.endpoint
  * @Description: 提供给BI的调用接口用于获取开放应用，定制应用，api的对应关系
  * @create 2018\5\24 0024/makangwei
  * @Copyright:中企动力科技股份有限公司 1999-2018 300.cn

@@ -22,7 +22,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException exception) throws IOException {
         response.setHeader("Content-Type", "application/json;charset=utf-8");
-        response.getWriter().print(JSON.toJSONString(new Result(HttpStatus.OK, ResultCode.SYS0002, new JSONArray(), "权限校验未通过")));
+        response.getWriter().print(JSON.toJSONString(new Result<>(HttpStatus.OK, ResultCode.SYS0002, new JSONArray(), "权限校验未通过")));
         response.getWriter().flush();
     }
 }

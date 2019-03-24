@@ -23,7 +23,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException exception) throws IOException {
         response.setHeader("Content-Type", "application/json;charset=utf-8");
-        response.getWriter().print(JSON.toJSONString(new Result(HttpStatus.OK, ResultCode.SYS0003, new JSONArray(), "身份校验未通过")));
+        response.getWriter().print(JSON.toJSONString(new Result<>(HttpStatus.OK, ResultCode.SYS0003, new JSONArray(), "身份校验未通过")));
         response.getWriter().flush();
     }
 }

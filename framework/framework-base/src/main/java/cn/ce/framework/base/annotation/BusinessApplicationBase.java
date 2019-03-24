@@ -13,15 +13,17 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@EnableAsync
 @EnableFeignClients
-@EnableDiscoveryClient
 @EnableCircuitBreaker
+@EnableDiscoveryClient
 @SpringBootConfiguration
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @ComponentScan(excludeFilters = {

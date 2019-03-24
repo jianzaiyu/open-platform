@@ -35,6 +35,8 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/user/duplicate/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/username/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/hello").permitAll()
+                .antMatchers(HttpMethod.GET, "/code").permitAll()
+                .antMatchers(HttpMethod.POST, "/code").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().disable()
@@ -44,7 +46,7 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
     }
 
     @Override
-    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+    public void configure(ResourceServerSecurityConfigurer resources) {
         resources.accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
     }

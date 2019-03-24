@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and().authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers(HttpMethod.DELETE,"/oauth/revoke/*").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().disable()
                 .csrf().disable()

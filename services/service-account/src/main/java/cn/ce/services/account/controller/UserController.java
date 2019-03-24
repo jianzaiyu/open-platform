@@ -42,7 +42,6 @@ public class UserController {
         if (token == null || !Authorization.contains(token)) {
             throw new BusinessException("链接失效,请重新发送!");
         }
-
         if (userService.selectByUserName(user.getUsername()) != null) {
             throw new BusinessException("用户名重复!");
         }
@@ -52,6 +51,22 @@ public class UserController {
         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.insertSelective(user);
+    }
+
+    @PutMapping
+    @ApiOperation("忘记密码")
+    public void forgetPassword(@RequestBody @Valid User user, @RequestHeader String Authorization) {
+        String token = redisUtil.get("email_forget_" + user.getEmail());
+        if (token == null || !Authorization.contains(token)) {
+            throw new BusinessException("链接失效,请重新发送!");
+        }
+        if (userService.selectByUserNameAndEmail(user.getUsername(),user.getEmail()) == null) {
+            throw new BusinessException("用户名,邮箱地址不匹配!");
+        }
+        if (!StringUtils.isEmpty(user.getPassword())) {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
+        userService.updateByUserNameSelective(user);
     }
 
     @PutMapping
@@ -71,10 +86,16 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("duplicate/{userName}")
+    @GetMapping("duplicate/username/{userName}")
     @ApiOperation("用户名验重")
     public boolean selectByUserName(@PathVariable String userName) {
         return userService.selectByUserName(userName) != null;
+    }
+
+    @GetMapping("duplicate/email/{email}")
+    @ApiOperation("邮箱验重")
+    public boolean selectByEmail(@PathVariable String email) {
+        return userService.selectByEmail(email) != null;
     }
 
     @GetMapping("username/{userName}")

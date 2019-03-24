@@ -32,7 +32,7 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
                 // swagger end
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.POST, "/mail").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/duplicate/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/duplicate/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/username/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/hello").permitAll()
                 .antMatchers(HttpMethod.GET, "/code").permitAll()
@@ -42,7 +42,6 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
                 .and().formLogin().disable()
                 .csrf().disable()
                 .cors().disable();
-
     }
 
     @Override

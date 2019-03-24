@@ -20,6 +20,13 @@
     id, userName, password, telNumber, email, orgId, orgName,
     userType, avatar, state, lastLoginIp, lastLoginTime, regTime
   </sql>
+  <select id="selectByUserNameAndEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where userName = #{userName,jdbcType=VARCHAR}
+    and email = #{email,jdbcType=VARCHAR}
+  </select>
   <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -191,5 +198,47 @@
       lastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
       regTime = #{regtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByUserNameSelective" parameterType="cn.ce.services.account.entity.User">
+    update user
+    <set>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="telnumber != null">
+        telNumber = #{telnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="orgid != null">
+        orgId = #{orgid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgname != null">
+        orgName = #{orgname,jdbcType=VARCHAR},
+      </if>
+      <if test="usertype != null">
+        userType = #{usertype,jdbcType=TINYINT},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="lastloginip != null">
+        lastLoginIp = #{lastloginip,jdbcType=VARCHAR},
+      </if>
+      <if test="lastlogintime != null">
+        lastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regtime != null">
+        regTime = #{regtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where userName = #{username,jdbcType=VARCHAR}
   </update>
 </mapper>

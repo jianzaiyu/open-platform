@@ -16,6 +16,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+
     @Override
     public int deleteByPrimaryKey(Integer id) {
         return userDao.deleteByPrimaryKey(id);
@@ -59,5 +60,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectByTelNumber(String telNumber) {
         return userDao.selectByTelNumber(telNumber);
+    }
+
+    @Override
+    public User selectByUserNameAndEmail(String userName, String email) {
+        return userDao.selectByUserNameAndEmail(userName, email);
+    }
+
+    @Override
+    public int updateByUserNameSelective(User record) {
+        return userDao.updateByUserNameSelective(record);
     }
 }

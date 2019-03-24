@@ -28,8 +28,8 @@ public class MailController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @PostMapping
-    public void postMail(@RequestBody @Valid Mail mail) {
+    @PostMapping("register")
+    public void postRegisterMail(@RequestBody @Valid Mail mail) {
         String token = IdentifierGenerateSupport.genRandomUUID8();
         redisUtil.setForTimeMIN("email_register_" + mail.getReceiver()
                 , token, 2);
@@ -37,4 +37,12 @@ public class MailController {
         mailService.sendSimpleMail(mail);
     }
 
+    @PostMapping("forget")
+    public void postForgetMail(@RequestBody @Valid Mail mail) {
+        String token = IdentifierGenerateSupport.genRandomUUID8();
+        redisUtil.setForTimeMIN("email_forget_" + mail.getReceiver()
+                , token, 2);
+        mail.setContent(mail.getContent() + "&token=" + token);
+        mailService.sendSimpleMail(mail);
+    }
 }

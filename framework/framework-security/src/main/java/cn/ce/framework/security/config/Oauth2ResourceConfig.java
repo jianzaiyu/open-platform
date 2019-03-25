@@ -1,9 +1,14 @@
-package cn.ce.services.account.config;
+package cn.ce.framework.security.config;
 
+import cn.ce.framework.security.common.SecurityWhiteListProperty;
+import cn.ce.framework.security.exception.CustomAccessDeniedHandler;
+import cn.ce.framework.security.exception.CustomAuthenticationEntryPoint;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -16,6 +21,7 @@ import org.springframework.web.cors.CorsUtils;
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableConfigurationProperties(SecurityWhiteListProperty.class)
 public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
 
 
@@ -48,5 +54,9 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+    }
+
+    public ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry whiteList(){
+        return null;
     }
 }

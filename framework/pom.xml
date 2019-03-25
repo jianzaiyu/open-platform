@@ -21,6 +21,7 @@
         <module>framework-base</module>
         <module>framework-swagger</module>
         <module>framework-mail</module>
+        <module>framework-security</module>
     </modules>
 
     <build>

@@ -18,7 +18,7 @@ import javax.validation.Valid;
  * @author: ggs
  * @date: 2019-03-14 15:47
  **/
-@Api(description = "邮件服务")
+@Api(description = "邮件服务_无保护")
 @Validated
 @RestController
 @RequestMapping("mail")

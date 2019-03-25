@@ -8,8 +8,9 @@ spring:
 swagger2:
   gateway: true
   serviceSources:
-    marketing: 营销服务
-    datacentre: 会员服务
+    account: 账户服务
+#    console: 开放平台前台
+#    manage: 开放平台后台
 
 zuul:
   SendErrorFilter:
@@ -21,10 +22,14 @@ zuul:
     connect-timeout-millis: 20000
     socket-timeout-millis: 20000
   routes:
-    service-datacentre:
-      path: /datacentre/**
-    service-marketing:
-      path: /marketing/**
+    service-auth:
+      path: /auth/**
+    service-account:
+      path: /account/**
+    service-console:
+      path: /console/**
+    service-manage:
+      path: /manage/**
 #    b-services:
 #      path: /b/**
 #      sensitiveHeaders:

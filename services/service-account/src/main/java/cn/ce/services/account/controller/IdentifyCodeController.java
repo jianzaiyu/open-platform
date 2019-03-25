@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author: ggs
  * @date: 2019-03-22 10:41
  **/
-@Api(description = "验证码相关")
+@Api(description = "验证码相关_无保护")
 @Validated
 @RestController
 @RequestMapping("code")
@@ -33,7 +33,7 @@ public class IdentifyCodeController {
         return new Result<>(HttpStatus.OK, ResultCode.SYS0000, code);
     }
 
-    @ApiOperation("验证ID与CODE")
+    @ApiOperation(value = "验证ID与CODE")
     @GetMapping
     public boolean validCode(@RequestParam @Length(min = 36, max = 36) String componentId,
                              @RequestParam @Length(min = 32, max = 32) String code) {

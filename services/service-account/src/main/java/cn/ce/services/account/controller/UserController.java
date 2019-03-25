@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class UserController {
 
     @GetMapping("current")
     @ApiOperation("当前登陆用户")
-    public Principal current(Principal principal) {
-        return principal;
+    public Object current(Principal principal) {
+        return ((OAuth2Authentication) principal).getPrincipal();
     }
 
     @PostMapping
-    @ApiOperation("增加一个用户")
+    @ApiOperation("增加一个用户_无保护")
     public void insertSelective(@RequestBody @Valid User user, @RequestHeader String Authorization) {
         String token = redisUtil.get("email_register_" + user.getEmail());
         if (token == null || !Authorization.contains(token)) {
@@ -53,8 +54,8 @@ public class UserController {
         userService.insertSelective(user);
     }
 
-    @PutMapping
-    @ApiOperation("忘记密码")
+    @PutMapping("forget")
+    @ApiOperation("忘记密码_无保护")
     public void forgetPassword(@RequestBody @Valid User user, @RequestHeader String Authorization) {
         String token = redisUtil.get("email_forget_" + user.getEmail());
         if (token == null || !Authorization.contains(token)) {
@@ -82,27 +83,31 @@ public class UserController {
     @ApiOperation("查询用户信息")
     public User selectByPrimaryKey(@PathVariable Integer id) {
         User user = userService.selectByPrimaryKey(id);
-        user.setPassword("N/A");
+        if(user != null){
+            user.setPassword("N/A");
+        }
         return user;
     }
 
     @GetMapping("duplicate/username/{userName}")
-    @ApiOperation("用户名验重")
+    @ApiOperation("用户名验重_无保护")
     public boolean selectByUserName(@PathVariable String userName) {
         return userService.selectByUserName(userName) != null;
     }
 
     @GetMapping("duplicate/email/{email}")
-    @ApiOperation("邮箱验重")
+    @ApiOperation("邮箱验重_无保护")
     public boolean selectByEmail(@PathVariable String email) {
         return userService.selectByEmail(email) != null;
     }
 
     @GetMapping("username/{userName}")
-    @ApiOperation("查询用户By_userName")
+    @ApiOperation("按用户名称查询用户_无保护")
     public User selectUserByUserName(@PathVariable String userName) {
         User user = userService.selectByUserName(userName);
-        user.setPassword("N/A");
+        if(user != null){
+            user.setPassword("N/A");
+        }
         return user;
     }
 }

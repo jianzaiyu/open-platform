@@ -1,7 +1,6 @@
 package cn.ce.service.openapi.base.gateway.entity;
 
 
-import org.springframework.data.annotation.Id;
 
 /**
  *
@@ -10,7 +9,6 @@ import org.springframework.data.annotation.Id;
  */
 public class GatewayNodeEntity {
 
-	@Id
 	private String nodeId;
 	private String nodeName;
 	private String nodeUrl;

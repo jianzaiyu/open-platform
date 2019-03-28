@@ -17,26 +17,15 @@
     <modules>
         <module>service-account</module>
         <module>service-auth</module>
+        <module>service-openapi-base</module>
         <module>service-openapi-console</module>
         <module>service-openapi-manage</module>
-        <module>service-openapi-base</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.ce</groupId>
-            <artifactId>framework-base</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-security</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 </project>

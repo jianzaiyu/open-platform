@@ -3,8 +3,6 @@ package cn.ce.service.openapi.base.users.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-
 /**
  * @author 作者 E -mail: dingjia@300.cn 创建时间：2017年7月17日 下午3:53:13
  * @version V1.0 类说明
@@ -16,7 +14,6 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	/** 唯一标识 */
-	@Id
 	private String id;
 	/** 用户名称 */
 	private String userName;

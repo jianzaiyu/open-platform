@@ -21,9 +21,10 @@ zuul:
   host:
     connect-timeout-millis: 20000
     socket-timeout-millis: 20000
+  sensitiveHeaders: Cookie,Set-Cookie
   routes:
     service-auth:
-      path: /auth/**
+      path: /uaa/**
     service-account:
       path: /account/**
     service-console:

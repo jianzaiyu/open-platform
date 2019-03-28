@@ -1,8 +1,10 @@
 package cn.ce.framework.security.config;
 
 import cn.ce.framework.security.common.SecurityWhiteListProperty;
+import cn.ce.framework.security.common.Swagger2Constants;
 import cn.ce.framework.security.exception.CustomAccessDeniedHandler;
 import cn.ce.framework.security.exception.CustomAuthenticationEntryPoint;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,26 +26,15 @@ import org.springframework.web.cors.CorsUtils;
 @EnableConfigurationProperties(SecurityWhiteListProperty.class)
 public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
 
+    @Autowired
+    private SecurityWhiteListProperty securityWhiteListProperty;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable().authorizeRequests()// swagger start
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/configuration/ui").permitAll()
-                .antMatchers("/configuration/security").permitAll()
-                // swagger end
-                .antMatchers(HttpMethod.POST, "/user").permitAll()
-                .antMatchers(HttpMethod.PUT, "/user/forget").permitAll()
-                .antMatchers(HttpMethod.POST, "/mail/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/duplicate/username/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/duplicate/email/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/username/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/code").permitAll()
-                .antMatchers(HttpMethod.POST, "/code").permitAll()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry
+                = http.httpBasic().disable().authorizeRequests();
+        initWhiteList(expressionInterceptUrlRegistry);
+        expressionInterceptUrlRegistry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().disable()
                 .csrf().disable()
@@ -56,7 +47,32 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
     }
 
-    public ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry whiteList(){
-        return null;
+    public void initWhiteList(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+        if (securityWhiteListProperty.getSwaggerUrl() != null) {
+            if (securityWhiteListProperty.getSwaggerUrl().length == 1 &&
+                    securityWhiteListProperty.getSwaggerUrl()[0].equals("default")) {
+                expressionInterceptUrlRegistry
+                        .antMatchers(HttpMethod.GET, Swagger2Constants.swaggerPattern).permitAll();
+            } else {
+                expressionInterceptUrlRegistry
+                        .antMatchers(HttpMethod.GET, securityWhiteListProperty.getSwaggerUrl()).permitAll();
+            }
+        }
+        if (securityWhiteListProperty.getHttpGet() != null) {
+            expressionInterceptUrlRegistry
+                    .antMatchers(HttpMethod.GET, securityWhiteListProperty.getHttpGet()).permitAll();
+        }
+        if (securityWhiteListProperty.getHttpPost() != null) {
+            expressionInterceptUrlRegistry
+                    .antMatchers(HttpMethod.POST, securityWhiteListProperty.getHttpPost()).permitAll();
+        }
+        if (securityWhiteListProperty.getHttpPut() != null) {
+            expressionInterceptUrlRegistry
+                    .antMatchers(HttpMethod.PUT, securityWhiteListProperty.getHttpPut()).permitAll();
+        }
+        if (securityWhiteListProperty.getHttpDelete() != null) {
+            expressionInterceptUrlRegistry
+                    .antMatchers(HttpMethod.DELETE, securityWhiteListProperty.getHttpDelete()).permitAll();
+        }
     }
 }

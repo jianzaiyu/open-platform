@@ -1,10 +1,5 @@
 package cn.ce.framework.security.exception;
 
-//import cn.ce.framework.base.pojo.Result;
-//import cn.ce.framework.base.pojo.ResultCode;
-//import com.alibaba.fastjson.JSON;
-//import com.alibaba.fastjson.JSONArray;
-//import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -21,8 +16,13 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException exception) throws IOException {
-//        response.setHeader("Content-Type", "application/json;charset=utf-8");
-//        response.getWriter().print(JSON.toJSONString(new Result<>(HttpStatus.OK, ResultCode.SYS0003, new JSONArray(), "身份校验未通过")));
-//        response.getWriter().flush();
+        response.setHeader("Content-Type", "application/json;charset=utf-8");
+        response.getWriter().print("{\n" +
+                "    \"code\": \"SYS0003\",\n" +
+                "    \"data\": [],\n" +
+                "    \"msg\": \"身份校验未通过\",\n" +
+                "    \"status\": 200\n" +
+                "}");
+        response.getWriter().flush();
     }
 }

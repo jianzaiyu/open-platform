@@ -33,7 +33,11 @@ public class UserController {
     @GetMapping("current")
     @ApiOperation("当前登陆用户")
     public Object current(Principal principal) {
-        return ((OAuth2Authentication) principal).getPrincipal();
+        User user = userService.selectByUserName(principal.getName());
+        if(user != null){
+            user.setPassword("N/A");
+        }
+        return user;
     }
 
     @PostMapping
@@ -61,7 +65,7 @@ public class UserController {
         if (token == null || !Authorization.contains(token)) {
             throw new BusinessException("链接失效,请重新发送!");
         }
-        if (userService.selectByUserNameAndEmail(user.getUsername(),user.getEmail()) == null) {
+        if (userService.selectByUserNameAndEmail(user.getUsername(), user.getEmail()) == null) {
             throw new BusinessException("用户名,邮箱地址不匹配!");
         }
         if (!StringUtils.isEmpty(user.getPassword())) {
@@ -83,7 +87,7 @@ public class UserController {
     @ApiOperation("查询用户信息")
     public User selectByPrimaryKey(@PathVariable Integer id) {
         User user = userService.selectByPrimaryKey(id);
-        if(user != null){
+        if (user != null) {
             user.setPassword("N/A");
         }
         return user;
@@ -101,13 +105,33 @@ public class UserController {
         return userService.selectByEmail(email) != null;
     }
 
+
     @GetMapping("username/{userName}")
-    @ApiOperation("按用户名称查询用户_无保护")
+    @ApiOperation("按用户名称查询用户")
     public User selectUserByUserName(@PathVariable String userName) {
         User user = userService.selectByUserName(userName);
-        if(user != null){
+        if (user != null) {
             user.setPassword("N/A");
         }
         return user;
+    }
+
+    @GetMapping("contact/{userName}")
+    @ApiOperation("按用户名称查询用户联系方式_无保护")
+    public User selectUserContactByUserName(@PathVariable String userName) {
+        User user = userService.selectByUserName(userName);
+        User revUser = new User();
+        if (user != null) {
+            String email = user.getEmail();
+            String telNumber = user.getTelnumber();
+            if (!StringUtils.isEmpty(email)) {
+                revUser.setEmail(email.substring(0, 4) + "*****" + email.substring(email.indexOf("@")));
+            }
+            if (!StringUtils.isEmpty(telNumber)) {
+                revUser.setTelnumber(telNumber.substring(0, 3) + "*****" + telNumber.substring(telNumber.length() - 4));
+            }
+            revUser.setPassword("N/A");
+        }
+        return revUser;
     }
 }

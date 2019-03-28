@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Transient;
 import cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity;
 
 /**
@@ -131,7 +130,6 @@ public class ApiEntity implements Serializable {
     private String responseBodyType; //返回参数类型:json/form
     
     /** 服务分类信息 */
-    @Transient
     private OpenApplyEntity openApplyEntity;
 
     

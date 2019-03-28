@@ -3,11 +3,6 @@ package cn.ce.service.openapi.base.openApply.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-
-import cn.ce.service.openapi.base.common.MongoFiledConstants;
-
 /**
  * 
  * @ClassName: AppEntity
@@ -22,7 +17,6 @@ public class OpenApplyEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	/** 唯一标识 */
-	@Id
 	private String id; // 对应接口应用code 2， 开发者在开放平台发布应用审核
 
 	private String appId; // 对应接口返回应用id 2， 开发者在开放平台发布应用审核
@@ -54,7 +48,6 @@ public class OpenApplyEntity implements Serializable {
 	private String checkMem;
 
 	/** dao判断刨除当前修改id的数据进行判断时赋值 */
-	@Transient
 	private String neqId;
 
 	public OpenApplyEntity(){}

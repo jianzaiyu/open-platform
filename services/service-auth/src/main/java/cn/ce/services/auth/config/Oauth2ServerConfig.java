@@ -2,6 +2,7 @@ package cn.ce.services.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.*;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
 
@@ -32,6 +34,9 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
+
+//    @Autowired
+//    private RedisConnectionFactory redisConnectionFactory;
 
 //    @Bean
 //    @Primary
@@ -65,8 +70,9 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         DefaultAccessTokenConverter defaultAccessTokenConverter = new DefaultAccessTokenConverter();
         defaultAccessTokenConverter.setUserTokenConverter(customUserAuthenticationConverter);
+//        new RedisTokenStore(redisConnectionFactory)
         endpoints.tokenStore(new JdbcTokenStore(dataSource))
-                .accessTokenConverter(defaultAccessTokenConverter)
+//                .accessTokenConverter(defaultAccessTokenConverter)
                 .exceptionTranslator(new CustomWebResponseExceptionTranslator())
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
                 .authenticationManager(authenticationManager);

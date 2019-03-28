@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -100,6 +101,14 @@ public class GlobalExceptionAdvice {
                                           NoHandlerFoundException ex) {
         RequestLogSupport.handleLog(request, ex);
         return new Result<>(HttpStatus.NOT_FOUND, ResultCode.SYS0000, new JSONArray(), ex.getMessage());
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Result handleHttpRequestMethodNotSupportedException(HttpServletRequest request,
+                                                               HttpRequestMethodNotSupportedException ex) {
+        RequestLogSupport.handleLog(request, ex);
+        return new Result<>(HttpStatus.OK, ResultCode.SYS0002, new JSONArray(), ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

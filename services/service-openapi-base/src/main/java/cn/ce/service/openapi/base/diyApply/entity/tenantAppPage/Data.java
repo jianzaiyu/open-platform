@@ -3,8 +3,6 @@
   */
 package cn.ce.service.openapi.base.diyApply.entity.tenantAppPage;
 
-import java.util.List;
-
 /**
  * Auto-generated: 2017-10-20 11:35:58
  *

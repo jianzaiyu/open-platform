@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.ce.service.openapi.base.guide.dao.IMysqlGuideDao;
+import cn.ce.service.openapi.base.guide.entity.GuideEntity;
+import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
 import cn.ce.service.openapi.base.common.page.Page;
-import cn.ce.service.openapi.base.guide.dao.IMysqlGuideDao;
-import cn.ce.service.openapi.base.guide.entity.GuideEntity;
-import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 import cn.ce.service.openapi.base.guide.service.IManageGuideService;
 
 /**

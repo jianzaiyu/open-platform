@@ -27,7 +27,7 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 @MapperScanner(basePackages = "${mybatis.scanPackages}", sqlSessionFactoryRef = "sqlSessionFactory")
 public class PrimaryDSConfig {
 
-    private static final String AOP_POINTCUT_EXPRESSION = "execution(* cn.ce..services..*.*(..))";
+    private static final String AOP_POINTCUT_EXPRESSION = "execution(* cn.ce..service..*.*(..))";
 
     @Bean
     public TransactionInterceptor txAdvice(PlatformTransactionManager platformTransactionManager) {

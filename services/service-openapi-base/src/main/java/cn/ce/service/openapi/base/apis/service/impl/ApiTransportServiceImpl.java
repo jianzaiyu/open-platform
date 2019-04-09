@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.ce.service.openapi.base.apis.dao.*;
+import cn.ce.service.openapi.base.apis.util.ApiTransform;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ import cn.ce.service.openapi.base.apis.entity.NewApiEntity;
 import cn.ce.service.openapi.base.apis.entity.UApiRecordEntity;
 import cn.ce.service.openapi.base.apis.entity.UApiRecordList;
 import cn.ce.service.openapi.base.apis.service.IApiTransportService;
-import cn.ce.service.openapi.base.apis.util.ApiTransform;
 import cn.ce.service.openapi.base.common.AuditConstants;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
@@ -102,8 +102,8 @@ public class ApiTransportServiceImpl implements IApiTransportService{
 //				apiIds.add(apiEntity.getId());
 //			}
 
-			DApiRecordEntity recordEntity = new DApiRecordEntity(new Date(), exApiIds.size(), user.getUserName(),
-					user.getId());
+			DApiRecordEntity recordEntity = new DApiRecordEntity(new Date(), exApiIds.size(), user.getUsername(),
+					user.getId().toString());
 			
 			recordEntity.setId(RandomUtil.random32UUID());
 			mysqlDapiRecord.save(recordEntity);
@@ -232,8 +232,8 @@ public class ApiTransportServiceImpl implements IApiTransportService{
 					entity.setCreateTime(new Date());
 					entity.setAppCode(appList.getAppCode());
 					entity.setOpenApplyId(appList.getAppId());
-					entity.setUserName(user.getUserName());
-					entity.setUserId(user.getId());
+					entity.setUserName(user.getUsername());
+					entity.setUserId(user.getId().toString());
 					entity.setApiSource(1);
 					entity.setEnterpriseName(user.getEnterpriseName());
 					entity.setId(RandomUtil.random32UUID());
@@ -259,7 +259,7 @@ public class ApiTransportServiceImpl implements IApiTransportService{
 
 		// 全部导出成功 后记录到日志中
 		UApiRecordEntity recordEntity = new UApiRecordEntity(records, new Date(), apiEntityList.size(), successNum,
-				user.getUserName(), user.getId());
+				user.getUsername(), user.getId().toString());
 		
 //		uApiRecordDao.save(recordEntity);
 		recordEntity.setId(RandomUtil.random32UUID());

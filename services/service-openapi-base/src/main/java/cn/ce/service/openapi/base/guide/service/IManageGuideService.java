@@ -2,12 +2,12 @@ package cn.ce.service.openapi.base.guide.service;
 
 import java.util.List;
 
+import cn.ce.service.openapi.base.guide.entity.GuideEntity;
+import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 import org.apache.ibatis.annotations.Param;
 
 import cn.ce.service.openapi.base.common.Result;
 import cn.ce.service.openapi.base.common.page.Page;
-import cn.ce.service.openapi.base.guide.entity.GuideEntity;
-import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 
 /**
  *

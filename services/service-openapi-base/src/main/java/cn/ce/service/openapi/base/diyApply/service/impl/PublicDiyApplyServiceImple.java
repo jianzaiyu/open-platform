@@ -8,6 +8,11 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.*;
+import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
+import cn.ce.service.openapi.base.diyApply.entity.DiyBoundApi;
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.*;
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.TenantApps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +31,7 @@ import cn.ce.service.openapi.base.common.HttpClientUtil;
 import cn.ce.service.openapi.base.common.Result;
 import cn.ce.service.openapi.base.common.page.Page;
 import cn.ce.service.openapi.base.diyApply.dao.IMysqlDiyApplyDao;
-import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
-import cn.ce.service.openapi.base.diyApply.entity.DiyBoundApi;
 import cn.ce.service.openapi.base.diyApply.entity.appsEntity.Apps;
-import cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.TenantAppPage;
-import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.TenantApps;
 import cn.ce.service.openapi.base.diyApply.service.IPlublicDiyApplyService;
 import cn.ce.service.openapi.base.util.PropertiesUtil;
 
@@ -104,7 +105,7 @@ public class PublicDiyApplyServiceImple implements IPlublicDiyApplyService {
 	}
 
 	@Override
-	public Result<TenantApps> findTenantAppsByTenantKey(String sourceConfig,String key) {
+	public Result<TenantApps> findTenantAppsByTenantKey(String sourceConfig, String key) {
 
 		// TODO 需要把key查询出来的定制应用和多个开放应用的绑定关系存入数据库
 
@@ -149,12 +150,12 @@ public class PublicDiyApplyServiceImple implements IPlublicDiyApplyService {
 		}
 		Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
 
-		classMap.put("tenant", cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.Tenant.class);
-		classMap.put("pages", cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.Pages.class);
+		classMap.put("tenant", Tenant.class);
+		classMap.put("pages", Pages.class);
 		classMap.put("list", cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.List.class);
-		classMap.put("attr", cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.Attr.class);
-		classMap.put("params", cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.Params.class);
-		classMap.put("instanceList", cn.ce.service.openapi.base.diyApply.entity.tenantAppPage.InstanceList.class);
+		classMap.put("attr", Attr.class);
+		classMap.put("params", Params.class);
+		classMap.put("instanceList", InstanceList.class);
 
 		String replacedurl = url.replaceAll(key$, key).replaceAll(n$, appName).replaceAll(z$, String.valueOf(pageSize))
 				.replaceAll(p$, String.valueOf(pageNum));

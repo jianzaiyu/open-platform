@@ -16,17 +16,14 @@ mybatis:
 
 security:
   oauth2:
-    resource:
-#      id: inner_service
-#      userInfoUri: http://localhost:8011/oauth/current
-#      prefer-token-info: false
-      tokenInfoUri: http://localhost:8011/oauth/check_token
-#      filter-order: 3
     client:
       clientId: inner_service
       clientSecret: 123456
-#      accessTokenUri: http://localhost:8011/oauth/token
-#      userAuthorizationUri: http://localhost:8011/oauth/authorize
+    resource:
+      tokenInfoUri: ${uaa.uri}/oauth/check_token
+      white-list:
+        swaggerUrl: default
+        httpGet: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**
 
 spring:
   zipkin:

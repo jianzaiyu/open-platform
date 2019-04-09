@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
 import cn.ce.service.openapi.base.common.Constants;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
@@ -18,8 +15,11 @@ import cn.ce.service.openapi.base.common.page.Page;
 import cn.ce.service.openapi.base.gateway.dao.IMysqlSaasDao;
 import cn.ce.service.openapi.base.gateway.entity.QuerySaasEntity;
 import cn.ce.service.openapi.base.gateway.entity.SaasEntity;
-import cn.ce.service.openapi.base.gateway.service.ISaasService1;
 import cn.ce.service.openapi.base.util.RandomUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import cn.ce.service.openapi.base.gateway.service.ISaasService1;
 
 /**
 * @Description : 开放平台内部使用的saas service

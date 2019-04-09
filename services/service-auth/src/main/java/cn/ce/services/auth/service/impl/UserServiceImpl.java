@@ -6,8 +6,6 @@ import cn.ce.services.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author: ggs
  * @date: 2019-03-01 14:58

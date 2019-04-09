@@ -8,13 +8,6 @@ import javax.annotation.Resource;
 import cn.ce.service.openapi.base.diyApply.entity.appsEntity.AppList;
 import cn.ce.service.openapi.base.diyApply.entity.appsEntity.Apps;
 import cn.ce.service.openapi.base.diyApply.entity.appsEntity.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import com.alibaba.fastjson.JSON;
 import cn.ce.service.openapi.base.common.AuditConstants;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
@@ -27,16 +20,20 @@ import cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity;
 import cn.ce.service.openapi.base.openApply.service.IConsoleOpenApplyService;
 import cn.ce.service.openapi.base.users.entity.User;
 import cn.ce.service.openapi.base.util.RandomUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import com.alibaba.fastjson.JSON;
 
 /***
- * 
- * 
  * @ClassName: ConsoleOpenApplyServiceImpl
  * @Description:开放应用控制service实现类
  * @author: lida
  * @date: 2017年10月14日 下午2:48:59
  * @Copyright: 2017 中企动力科技股份有限公司 © 1999-2017 300.cn All Rights Reserved
- *
  */
 @Service(value = "colsoleOpenApplyService")
 @Transactional(propagation=Propagation.REQUIRED)
@@ -45,7 +42,7 @@ public class ConsoleOpenApplyServiceImpl implements IConsoleOpenApplyService {
 	private static Logger _LOGGER = LoggerFactory.getLogger(ConsoleOpenApplyServiceImpl.class);
 
 	@Resource
-	private IMysqlOpenApplyDao mysqlOpenApplyDao;	
+	private IMysqlOpenApplyDao mysqlOpenApplyDao;
 	
 	@Resource
 	private IPlublicDiyApplyService plublicDiyApplyService;
@@ -86,8 +83,8 @@ public class ConsoleOpenApplyServiceImpl implements IConsoleOpenApplyService {
 		}
 
 		apply.setCreateDate(new Date());
-		apply.setUserId(user.getId());
-		apply.setUserName(user.getUserName());
+		apply.setUserId(user.getId().toString());
+		apply.setUserName(user.getUsername());
 		apply.setEnterpriseName(user.getEnterpriseName());
 
 		// appKey不能以/开头和结尾

@@ -1,17 +1,22 @@
 package cn.ce.service.openapi.console.controller;
 
+import cn.ce.service.openapi.console.service.AccountService;
 import cn.ce.service.openapi.base.common.*;
 import cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity;
 import cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity;
 import cn.ce.service.openapi.base.openApply.service.IConsoleOpenApplyService;
 import cn.ce.service.openapi.base.users.entity.User;
 import cn.ce.service.openapi.base.util.CoverBeanUtils;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 /***
@@ -30,7 +35,8 @@ public class OpenApplyController {
 
 	/** 日志对象 */
 //	private static Logger logger = Logger.getLogger(OpenApplyController.class);
-
+	@Autowired
+	private AccountService accountService;
 	@Resource
 	private IConsoleOpenApplyService consoleOpenApplyService;
 
@@ -73,7 +79,6 @@ public class OpenApplyController {
 	@RequestMapping(value = "/getApplyByid", method = RequestMethod.GET)
 	@ApiOperation("根据id查询应用_TODO")
 	public Result<?> getApplyByid(@RequestParam(value = "id", required = true) String id) {
-		
 		return consoleOpenApplyService.getApplyById(id);
 	}
 	
@@ -89,7 +94,7 @@ public class OpenApplyController {
 	 */
 	@RequestMapping(value = "/addApply", method = RequestMethod.POST)
 	@ApiOperation("添加开放应用")
-	public Result<?> addApply(HttpSession session, @RequestBody OpenApplyEntity apply) {
+	public Result<?> addApply(Principal principal,@RequestHeader String Authorization, @RequestBody OpenApplyEntity apply) {
 		
 		if(StringUtils.isBlank(apply.getApplyName())){
 			return new Result<String>("服务名称不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
@@ -97,7 +102,8 @@ public class OpenApplyController {
 		if(StringUtils.isBlank(apply.getApplyKey())){
 			return new Result<String>("服务key不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
 		}
-		User user = (User) session.getAttribute(Constants.SES_LOGIN_USER);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		User user = (User)result.getData();
 		return	consoleOpenApplyService.addApply(user, apply);
 		
 	}

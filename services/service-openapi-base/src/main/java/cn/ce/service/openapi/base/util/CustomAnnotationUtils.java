@@ -4,11 +4,10 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import cn.ce.service.openapi.base.annotation.InterfaceDescription;
 import cn.ce.service.openapi.base.annotation.InterfaceDescriptionFullEnty;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 返回自定义标签接口描述的公共方法

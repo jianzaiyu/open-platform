@@ -12,6 +12,11 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
+import cn.ce.service.openapi.base.diyApply.entity.QueryDiyApplyEntity;
+import cn.ce.service.openapi.base.diyApply.entity.interfaceMessageInfo.InterfaMessageInfoString;
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.AppList;
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.TenantApps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
@@ -40,13 +45,8 @@ import cn.ce.service.openapi.base.common.gateway.ApiCallUtils;
 import cn.ce.service.openapi.base.common.gateway.GatewayRouteUtils;
 import cn.ce.service.openapi.base.common.page.Page;
 import cn.ce.service.openapi.base.diyApply.dao.IMysqlDiyApplyDao;
-import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
 import cn.ce.service.openapi.base.diyApply.entity.Menu;
-import cn.ce.service.openapi.base.diyApply.entity.QueryDiyApplyEntity;
 import cn.ce.service.openapi.base.diyApply.entity.RetMenu;
-import cn.ce.service.openapi.base.diyApply.entity.interfaceMessageInfo.InterfaMessageInfoString;
-import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.AppList;
-import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.TenantApps;
 import cn.ce.service.openapi.base.diyApply.service.IConsoleDiyApplyService;
 import cn.ce.service.openapi.base.diyApply.service.IPlublicDiyApplyService;
 import cn.ce.service.openapi.base.util.PropertiesUtil;
@@ -87,7 +87,7 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
 	public Result<?> saveApply(String sourceConfig, DiyApplyEntity entity) {
 		Result<String> result = new Result<>();
 
-		int applyNum = mysqlDiyApplyDao.checkApplyName(entity.getUser().getId(),entity.getApplyName());
+		int applyNum = mysqlDiyApplyDao.checkApplyName(entity.getUser().getId().toString(),entity.getApplyName());
 		
 //		if (null != findPageByList && findPageByList.size() > 0) {
 		if(applyNum > 0){
@@ -97,8 +97,8 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
 
 		// 新增
 		if (StringUtils.isBlank(entity.getId())) {
-			entity.setUserId(entity.getUser().getId());
-			entity.setUserName(entity.getUser().getUserName());
+			entity.setUserId(entity.getUser().getId().toString());
+			entity.setUserName(entity.getUser().getUsername());
 			entity.setEnterpriseName(entity.getUser().getEnterpriseName());
 			entity.setCreateDate(new Date());
 			entity.setCheckState(AuditConstants.DIY_APPLY_UNCHECKED);

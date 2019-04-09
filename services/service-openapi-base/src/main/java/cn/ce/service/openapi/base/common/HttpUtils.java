@@ -25,8 +25,6 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.ce.service.openapi.base.common.IOUtils;
-
 /**
 * @Description : 说明
 * @Author : makangwei

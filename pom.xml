@@ -214,7 +214,7 @@
                 <user.username>user</user.username>
                 <user.password>password</user.password>
                 <uaa.uri>http://localhost:8011</uaa.uri>
-                <config.uri>http://172.22.146.11:8000</config.uri>
+                <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
                 <registry.uri1>http://${user.username}:${user.password}@10.12.40.82:8001/eureka/</registry.uri1>
                 <registry.uri>${registry.uri1}</registry.uri>
@@ -227,7 +227,7 @@
                 <user.username>user</user.username>
                 <user.password>password</user.password>
                 <uaa.uri>http://10.12.51.210/uaa</uaa.uri>
-                <config.uri>http://172.22.146.11:8000</config.uri>
+                <config.uri>http://172.22.146.20:8000</config.uri>
                 <config.search>config-hub</config.search>
                 <registry.uri1>http://${user.username}:${user.password}@10.12.51.210:8001/eureka/</registry.uri1>
                 <registry.uri2>http://${user.username}:${user.password}@10.12.51.211:8001/eureka/</registry.uri2>

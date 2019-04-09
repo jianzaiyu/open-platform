@@ -1,5 +1,6 @@
 package cn.ce.service.openapi.console.controller;
 
+import cn.ce.service.openapi.console.service.AccountService;
 import cn.ce.service.openapi.base.common.*;
 import cn.ce.service.openapi.base.common.gateway.ApiCallUtils;
 import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
@@ -8,16 +9,19 @@ import cn.ce.service.openapi.base.diyApply.service.IConsoleDiyApplyService;
 import cn.ce.service.openapi.base.users.entity.User;
 import cn.ce.service.openapi.base.util.CoverBeanUtils;
 import cn.ce.service.openapi.base.util.PropertiesUtil;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +41,8 @@ import java.util.Map;
 @RequestMapping("/diyApply")
 @Api("定制应用控制类")
 public class DiyApplyController {
-
+	@Autowired
+	private AccountService accountService;
 	@Autowired
 	private PropertiesUtil propertiesUtil;
 	@Resource
@@ -45,7 +50,7 @@ public class DiyApplyController {
 
 	@RequestMapping(value = "/findApplyList", method = RequestMethod.POST)
 	@ApiOperation(value = "根据条件查询应用列表_TODO", httpMethod = "POST", response = Result.class, notes = "根据条件查询应用列表")
-	public Result<?> findApplyList(HttpSession session, @RequestBody DiyApplyEntity apply,
+	public Result<?> findApplyList(HttpSession session, @RequestBody DiyApplyEntity apply,Principal principal,@RequestHeader String Authorization,
 			@RequestParam(required = false, defaultValue = "10") int pageSize,
 			@RequestParam(required = false, defaultValue = "1") int currentPage) {
 		
@@ -58,8 +63,9 @@ public class DiyApplyController {
 		queryApply.setPageSize(pageSize);
 		
 		//只获取当前登录的用户数据,如果获取数据失败就会报异常
-		User user = (User)session.getAttribute(Constants.SES_LOGIN_USER);
-		queryApply.setUserId(user.getId());
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		User user = (User)result.getData();
+		queryApply.setUserId(user.getId().toString());
 
 		if(StringUtils.isBlank(apply.getProjectId())){
 			// 项目id允许为空？
@@ -93,8 +99,7 @@ public class DiyApplyController {
 	 */
 	@RequestMapping(value = "/saveApply", method = RequestMethod.POST)
 	@ApiOperation("新增或修改应用")
-	public Result<?> saveApply(HttpServletRequest request,
-							   HttpSession session, @RequestBody DiyApplyEntity apply) {
+	public Result<?> saveApply(HttpServletRequest request,Principal principal,@RequestHeader String Authorization, @RequestBody DiyApplyEntity apply) {
 
 		//如果id不为空就update
 		if(StringUtils.isNotBlank(apply.getId())){
@@ -105,7 +110,8 @@ public class DiyApplyController {
 			return new Result<String>("应用名称不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
 		}
 
-		User user = (User) session.getAttribute(Constants.SES_LOGIN_USER);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		User user = (User)result.getData();
 
 		apply.setUser(user);
 

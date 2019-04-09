@@ -22,6 +22,12 @@
         from identify
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from identify
+        where uid = #{uid,jdbcType=INTEGER}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from identify
     where id = #{id,jdbcType=INTEGER}
@@ -117,7 +123,7 @@
                 check_note = #{checkNote,jdbcType=VARCHAR},
             </if>
             <if test="enterpriseName != null">
-                #{enterpriseName,jdbcType=VARCHAR},
+                enterprise_name = #{enterpriseName,jdbcType=VARCHAR},
             </if>
             <if test="authTime != null">
                 auth_time = #{authTime,jdbcType=TIMESTAMP},

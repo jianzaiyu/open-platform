@@ -5,6 +5,8 @@ import java.io.InputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import cn.ce.service.openapi.base.common.Constants;
+import cn.ce.service.openapi.base.common.IOUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,8 +25,6 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import cn.ce.service.openapi.base.common.Constants;
-import cn.ce.service.openapi.base.common.IOUtils;
 import cn.ce.service.openapi.base.common.Result;
 import cn.ce.service.openapi.base.gateway.dao.IMysqlGwColonyDao;
 import cn.ce.service.openapi.base.gateway.entity.GatewayColonyEntity;

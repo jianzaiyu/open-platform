@@ -9,8 +9,8 @@ swagger2:
   gateway: true
   serviceSources:
     account: 账户服务
-#    console: 开放平台前台
-#    manage: 开放平台后台
+    console: 开放平台前台
+    manage: 开放平台后台
 
 zuul:
   SendErrorFilter:
@@ -27,9 +27,9 @@ zuul:
       path: /uaa/**
     service-account:
       path: /account/**
-    service-console:
+    service-openapi-console:
       path: /console/**
-    service-manage:
+    service-openapi-manage:
       path: /manage/**
 #    b-services:
 #      path: /b/**

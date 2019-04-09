@@ -1,5 +1,6 @@
 package cn.ce.service.openapi.console.controller;
 
+import cn.ce.service.openapi.console.service.AccountService;
 import cn.ce.service.openapi.base.common.Constants;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
@@ -9,13 +10,17 @@ import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 import cn.ce.service.openapi.base.guide.service.IConsoleGuideService;
 import cn.ce.service.openapi.base.users.entity.User;
 import cn.ce.service.openapi.base.util.CoverBeanUtils;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -32,18 +37,20 @@ import java.util.List;
 @RequestMapping("/guideConsole")
 @Api("应用指南")
 public class GuideConsoleController {
-
+	@Autowired
+	private AccountService accountService;
 	@Resource
 	private IConsoleGuideService consoleGuideService;
 
 	@RequestMapping(value = "/guide", method = RequestMethod.POST)
 	@ApiOperation("添加指南")
-	public Result<?> guideAdd(HttpSession session, @RequestBody GuideEntity g) {
+	public Result<?> guideAdd(Principal principal,@RequestHeader String Authorization, @RequestBody GuideEntity g) {
 		
 		if (StringUtils.isBlank(g.getGuideName())) {
 			return new Result<String>("指南名称不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
 		}
-		User user = (User) session.getAttribute(Constants.SES_LOGIN_USER);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		User user = (User)result.getData();
 		return consoleGuideService.add(user, g);
 	}
 
@@ -79,9 +86,10 @@ public class GuideConsoleController {
 
 	@RequestMapping(value = "/guide/{gid}", method = RequestMethod.DELETE)
 	@ApiOperation("##删除指南")
-	public Result<?> guideDelete(HttpSession session,
+	public Result<?> guideDelete(Principal principal,@RequestHeader String Authorization,
 			@PathVariable("gid") String id) {
-		User user = (User) session.getAttribute(Constants.SES_LOGIN_USER);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		User user = (User)result.getData();
 		if(null == user){
 			return new Result<String>("用户未登录",ErrorCodeNo.SYS003,null,Status.FAILED);
 		}

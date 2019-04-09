@@ -16,9 +16,42 @@
     <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
     <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
   </resultMap>
+  <resultMap id="DetailResultMap" type="cn.ce.services.account.entity.UserDetail" extends="BaseResultMap">
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+    <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+    <result column="card_front" jdbcType="VARCHAR" property="cardFront"/>
+    <result column="card_back" jdbcType="VARCHAR" property="cardBack"/>
+    <result column="check_state" jdbcType="TINYINT" property="checkState"/>
+    <result column="check_note" jdbcType="VARCHAR" property="checkNote"/>
+    <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName"/>
+    <result column="auth_time" jdbcType="TIMESTAMP" property="authTime"/>
+  </resultMap>
   <sql id="Base_Column_List">
     id, userName, password, telNumber, email, orgId, orgName,
     userType, avatar, state, lastLoginIp, lastLoginTime, regTime
+  </sql>
+  <sql id="UserDetail_Column_List">
+    uid as id,
+    userName,
+  PASSWORD,
+  telNumber,
+  email,
+  orgId,
+  orgName,
+  userType,
+  avatar,
+  state,
+  lastLoginIp,
+  lastLoginTime,
+  regTime,
+  real_name,
+  card_number,
+  card_front,
+  card_back,
+  check_state,
+  check_note,
+  enterprise_name,
+  auth_time
   </sql>
   <select id="selectByUserNameAndEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -51,7 +84,15 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectUserDetailByUserName" resultMap="DetailResultMap">
+      select
+      <include refid="UserDetail_Column_List" />
+      from user u
+      left join identify i
+      on u.id = i.uid
+      where userName = #{userName,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>

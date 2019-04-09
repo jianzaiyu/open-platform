@@ -2,11 +2,10 @@ package cn.ce.services.account.service.impl;
 
 import cn.ce.services.account.dao.UserDao;
 import cn.ce.services.account.entity.User;
+import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author: ggs
@@ -70,5 +69,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateByUserNameSelective(User record) {
         return userDao.updateByUserNameSelective(record);
+    }
+
+    @Override
+    public UserDetail selectUserDetailByUserName(String userName) {
+        return userDao.selectUserDetailByUserName(userName);
     }
 }

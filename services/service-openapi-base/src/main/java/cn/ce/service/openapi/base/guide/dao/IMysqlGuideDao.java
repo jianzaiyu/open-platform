@@ -2,11 +2,11 @@ package cn.ce.service.openapi.base.guide.dao;
 
 import java.util.List;
 
+import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.ce.service.openapi.base.guide.entity.GuideEntity;
-import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
 
 /**
 * @Description : 说明

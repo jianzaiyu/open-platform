@@ -1,8 +1,8 @@
 package cn.ce.services.account.service.impl;
 
+import cn.ce.services.account.service.IdentifyService;
 import cn.ce.services.account.dao.IdentifyDao;
 import cn.ce.services.account.entity.Identify;
-import cn.ce.services.account.service.IdentifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +43,10 @@ public class IdentifyServiceImpl implements IdentifyService {
     @Override
     public int updateByPrimaryKey(Identify record) {
         return identifyDao.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Identify selectByUserId(Integer uid) {
+        return identifyDao.selectByUserId(uid);
     }
 }

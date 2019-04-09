@@ -5,6 +5,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.ce.service.openapi.base.guide.dao.IMysqlGuideDao;
+import cn.ce.service.openapi.base.guide.entity.GuideEntity;
+import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
+import cn.ce.service.openapi.base.guide.service.IConsoleGuideService;
+import cn.ce.service.openapi.base.users.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,11 +19,6 @@ import cn.ce.service.openapi.base.common.AuditConstants;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
 import cn.ce.service.openapi.base.common.page.Page;
-import cn.ce.service.openapi.base.guide.dao.IMysqlGuideDao;
-import cn.ce.service.openapi.base.guide.entity.GuideEntity;
-import cn.ce.service.openapi.base.guide.entity.QueryGuideEntity;
-import cn.ce.service.openapi.base.guide.service.IConsoleGuideService;
-import cn.ce.service.openapi.base.users.entity.User;
 import cn.ce.service.openapi.base.util.RandomUtil;
 
 /**
@@ -59,7 +59,7 @@ public class ConsoleGuideServiceImpl implements IConsoleGuideService {
 			return result;
 		}
 		log.info("add guide message");
-		g.setCreatUserName(user.getUserName());
+		g.setCreatUserName(user.getUsername());
 		g.setCreatTime(new Date());
 		if (g.getCheckState() == null) {
 			g.setCheckState(AuditConstants.GUIDE_UNCHECKED);

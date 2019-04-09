@@ -41,6 +41,22 @@ hystrix:
           thread:
             timeoutInMilliseconds: 65000
 
+#隔离策略，有THREAD和SEMAPHORE
+#THREAD - 它在单独的线程上执行，并发请求受线程池中的线程数量的限制
+#SEMAPHORE - 它在调用线程上执行，并发请求受到信号量计数的限制
+#默认使用THREAD模式，以下几种场景可以使用SEMAPHORE模式：
+#只想控制并发度
+#外部的方法已经做了线程隔离
+#调用的是本地方法或者可靠度非常高、耗时特别小的方法（如redis）
+
+
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          strategy: Semaphore #一个线程内能拿到 auth token
+
 ribbon:
   ConnectTimeout: 10000
   ReadTimeout: 20000

@@ -11,10 +11,12 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import cn.ce.service.openapi.base.apis.dao.*;
+import cn.ce.service.openapi.base.apis.entity.*;
+import cn.ce.service.openapi.base.apis.util.ApiTransform;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +46,6 @@ import cn.ce.service.openapi.base.apis.entity.RetEntity;
 import cn.ce.service.openapi.base.apis.entity.RetExamEntity;
 import cn.ce.service.openapi.base.apis.entity.SubArgEntity;
 import cn.ce.service.openapi.base.apis.service.IConsoleApiService;
-import cn.ce.service.openapi.base.apis.util.ApiTransform;
 import cn.ce.service.openapi.base.common.AuditConstants;
 import cn.ce.service.openapi.base.common.DBFieldsConstants;
 import cn.ce.service.openapi.base.common.EnvironmentConstants;
@@ -149,14 +150,14 @@ public class ConsoleApiServiceImpl implements IConsoleApiService{
 		}
 
 			// 开启版本控制
-			if(StringUtils.isBlank(user.getId())
-					|| StringUtils.isBlank(user.getUserName())
+			if(StringUtils.isBlank(user.getId().toString())
+					|| StringUtils.isBlank(user.getUsername())
 					|| StringUtils.isBlank(user.getEnterpriseName())){
 				log.info("用户信息不完整："+user.toString());
 				return Result.errorResult("用户信息错误", ErrorCodeNo.SYS028, null, Status.FAILED);
 			}
-			apiEntity.setUserId(user.getId());
-			apiEntity.setUserName(user.getUserName());
+			apiEntity.setUserId(user.getId().toString());
+			apiEntity.setUserName(user.getUsername());
 			apiEntity.setEnterpriseName(user.getEnterpriseName());
 			apiEntity.setApiSource(AuditConstants.API_SOURCE_TYPEIN);
 			apiEntity.setCreateTime(new Date());

@@ -3,12 +3,12 @@ package cn.ce.services.account.controller;
 import cn.ce.framework.base.exception.BusinessException;
 import cn.ce.framework.redis.support.RedisUtil;
 import cn.ce.services.account.entity.User;
+import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -114,6 +114,16 @@ public class UserController {
             user.setPassword("N/A");
         }
         return user;
+    }
+
+    @GetMapping("userDetail/username/{userName}")
+    @ApiOperation("按用户名称查询用户")
+    public UserDetail selectUserDetailByUserName(@PathVariable String userName) {
+        UserDetail userDetail = userService.selectUserDetailByUserName(userName);
+        if (userDetail != null) {
+            userDetail.setPassword("N/A");
+        }
+        return userDetail;
     }
 
     @GetMapping("contact/{userName}")

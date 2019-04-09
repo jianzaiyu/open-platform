@@ -39,4 +39,10 @@ public class IdentifyController {
     public Identify selectByPrimaryKey(@PathVariable Integer id) {
         return identifyService.selectByPrimaryKey(id);
     }
+
+    @GetMapping("user/{uid}")
+    @ApiOperation("查询一条认证")
+    public Identify selectByUserId(@PathVariable Integer uid) {
+        return identifyService.selectByUserId(uid);
+    }
 }

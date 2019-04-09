@@ -1,5 +1,6 @@
 package cn.ce.service.openapi.console.controller;
 
+import cn.ce.service.openapi.console.service.AccountService;
 import cn.ce.service.openapi.base.apis.entity.ApiEntity;
 import cn.ce.service.openapi.base.apis.entity.ApiMock;
 import cn.ce.service.openapi.base.apis.entity.NewApiEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -33,14 +35,14 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApiController {
  
-
+	@Autowired
+	private AccountService accountService;
 	@Resource
 	private IConsoleApiService consoleApiService;
 	@Autowired
 	private IMockService mockService;
 
 	/**
-	 * 
 	 * @Description: 提供者发布一个api，这时候还未审核
 	 * @author: makangwei
 	 * @date:   2017年10月10日 下午8:17:41  
@@ -48,14 +50,14 @@ public class ApiController {
 	@RequestMapping(value = "/publishApi", method = RequestMethod.POST)
 	@ApiOperation("发布api_TODO")
 	public Result<?> publishApi(
-            HttpServletRequest request,
-	        HttpSession session, @RequestBody ApiEntity entity) {
+			HttpServletRequest request,
+			@RequestBody ApiEntity entity,Principal principal,@RequestHeader String Authorization) {
 
 		/**
 		 * TODO 下一期改动api定义和api参数
 		 */
-		User user = (User) session.getAttribute(Constants.SES_LOGIN_USER);
-		
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		User user = (User)result.getData();
 		NewApiEntity newApiEntity = ApiTransform.transToTotalNewApi(entity);
 		
 		log.info("publish api Entity:"+newApiEntity.toString());
@@ -76,7 +78,7 @@ public class ApiController {
 		if(StringUtils.isBlank(newApiEntity.getResourceTypeName())){
 			return Result.errorResult("api资源类型名称必须指定", ErrorCodeNo.SYS005, null, Status.FAILED);
 		}
-		if(null != newApiEntity.getVersion() && "mock" == newApiEntity.getVersion()){
+		if(null != newApiEntity.getVersion() && "mock".equals(newApiEntity.getVersion())){
             return Result.errorResult("api版本号不能为mock", ErrorCodeNo.SYS008, null, Status.FAILED);
         }
 		

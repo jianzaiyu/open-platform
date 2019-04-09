@@ -1,9 +1,9 @@
 package cn.ce.services.account.service.impl;
 
+import cn.ce.services.account.service.RUserroleService;
 import cn.ce.services.account.dao.RUserroleDao;
 import cn.ce.services.account.entity.RUserrole;
 import cn.ce.services.account.entity.UserRoleDetail;
-import cn.ce.services.account.service.RUserroleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

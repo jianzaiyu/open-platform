@@ -1,10 +1,7 @@
 package cn.ce.services.account.service;
 
+import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.entity.User;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 
 /**
@@ -33,4 +30,6 @@ public interface UserService {
     User selectByUserNameAndEmail(String userName, String email);
 
     int updateByUserNameSelective(User record);
+
+    UserDetail selectUserDetailByUserName(String userName);
 }

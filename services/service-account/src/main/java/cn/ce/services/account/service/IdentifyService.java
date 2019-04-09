@@ -18,4 +18,6 @@ public interface IdentifyService {
     int updateByPrimaryKeySelective(Identify record);
 
     int updateByPrimaryKey(Identify record);
+
+    Identify selectByUserId(Integer uid);
 }

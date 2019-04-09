@@ -4,11 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import cn.ce.service.openapi.base.common.Constants;
 import cn.ce.service.openapi.base.common.ErrorCodeNo;
 import cn.ce.service.openapi.base.common.Result;
@@ -20,8 +15,13 @@ import cn.ce.service.openapi.base.gateway.entity.GatewayColonyEntity;
 import cn.ce.service.openapi.base.gateway.entity.GatewayNodeEntity;
 import cn.ce.service.openapi.base.gateway.entity.QueryGwColonyEntity;
 import cn.ce.service.openapi.base.gateway.entity.QueryGwNodeEntity;
-import cn.ce.service.openapi.base.gateway.service.IGatewayManageService;
 import cn.ce.service.openapi.base.util.RandomUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.ce.service.openapi.base.gateway.service.IGatewayManageService;
 
 /**
  *

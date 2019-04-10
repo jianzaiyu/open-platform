@@ -11,6 +11,7 @@ import cn.ce.service.openapi.base.apis.util.ApiTransform;
 import cn.ce.service.openapi.base.common.*;
 import cn.ce.service.openapi.base.users.entity.User;
 import cn.ce.service.openapi.base.util.SplitUtil;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -51,13 +52,16 @@ public class ApiController {
 	@ApiOperation("发布api_TODO")
 	public Result<?> publishApi(
 			HttpServletRequest request,
-			@RequestBody ApiEntity entity,Principal principal,@RequestHeader String Authorization) {
+			@RequestBody ApiEntity entity,Principal principal,@RequestHeader(required = false) String Authorization) {
 
 		/**
 		 * TODO 下一期改动api定义和api参数
 		 */
+		if(principal == null){
+			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
+		}
 		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
-		User user = (User)result.getData();
+		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		NewApiEntity newApiEntity = ApiTransform.transToTotalNewApi(entity);
 		
 		log.info("publish api Entity:"+newApiEntity.toString());

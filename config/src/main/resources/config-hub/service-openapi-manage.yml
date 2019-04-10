@@ -23,7 +23,7 @@ security:
       tokenInfoUri: ${uaa.uri}/oauth/check_token
       white-list:
         swaggerUrl: default
-        httpGet: /admin/**,/test/**,/route/**,/apiBulk/exportApis
+        httpAllMethod: /admin/**,/test/**,/route/**,/apiBulk/exportApis
 
 spring:
   zipkin:

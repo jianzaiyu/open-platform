@@ -50,7 +50,7 @@ public class DiyApplyController {
 
 	@RequestMapping(value = "/findApplyList", method = RequestMethod.POST)
 	@ApiOperation(value = "根据条件查询应用列表_TODO", httpMethod = "POST", response = Result.class, notes = "根据条件查询应用列表")
-	public Result<?> findApplyList(HttpSession session, @RequestBody DiyApplyEntity apply,Principal principal,@RequestHeader String Authorization,
+	public Result<?> findApplyList(HttpSession session, @RequestBody DiyApplyEntity apply,Principal principal,@RequestHeader(required = false) String Authorization,
 			@RequestParam(required = false, defaultValue = "10") int pageSize,
 			@RequestParam(required = false, defaultValue = "1") int currentPage) {
 		
@@ -63,8 +63,11 @@ public class DiyApplyController {
 		queryApply.setPageSize(pageSize);
 		
 		//只获取当前登录的用户数据,如果获取数据失败就会报异常
+		if(principal == null){
+			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
+		}
 		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
-		User user = (User)result.getData();
+		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		queryApply.setUserId(user.getId().toString());
 
 		if(StringUtils.isBlank(apply.getProjectId())){
@@ -99,7 +102,7 @@ public class DiyApplyController {
 	 */
 	@RequestMapping(value = "/saveApply", method = RequestMethod.POST)
 	@ApiOperation("新增或修改应用")
-	public Result<?> saveApply(HttpServletRequest request,Principal principal,@RequestHeader String Authorization, @RequestBody DiyApplyEntity apply) {
+	public Result<?> saveApply(HttpServletRequest request,Principal principal,@RequestHeader(required = false) String Authorization, @RequestBody DiyApplyEntity apply) {
 
 		//如果id不为空就update
 		if(StringUtils.isNotBlank(apply.getId())){
@@ -111,7 +114,7 @@ public class DiyApplyController {
 		}
 
 		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
-		User user = (User)result.getData();
+		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 
 		apply.setUser(user);
 

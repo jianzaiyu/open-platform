@@ -23,7 +23,7 @@ security:
       tokenInfoUri: ${uaa.uri}/oauth/check_token
       white-list:
         swaggerUrl: default
-        httpGet: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**
+        httpAllMethod: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**
 
 spring:
   zipkin:

@@ -76,5 +76,9 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
             expressionInterceptUrlRegistry
                     .antMatchers(HttpMethod.DELETE, securityWhiteListProperty.getHttpDelete()).permitAll();
         }
+        if (securityWhiteListProperty.getHttpAllMethod() != null) {
+            expressionInterceptUrlRegistry
+                    .antMatchers(securityWhiteListProperty.getHttpAllMethod()).permitAll();
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "security.oauth2.resource.white-list")
 public class SecurityWhiteListProperty {
     private String[] swaggerUrl;
+    private String[] httpAllMethod;
     private String[] httpGet;
     private String[] httpPost;
     private String[] httpPut;

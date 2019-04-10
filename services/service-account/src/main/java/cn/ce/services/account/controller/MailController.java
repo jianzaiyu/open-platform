@@ -1,16 +1,17 @@
 package cn.ce.services.account.controller;
 
+import cn.ce.framework.base.exception.BusinessException;
 import cn.ce.framework.base.support.IdentifierGenerateSupport;
 import cn.ce.framework.mail.entity.Mail;
 import cn.ce.framework.mail.service.MailService;
 import cn.ce.framework.redis.support.RedisUtil;
+import cn.ce.services.account.entity.User;
+import cn.ce.services.account.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,6 +28,8 @@ public class MailController {
     private MailService mailService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("register")
     public void postRegisterMail(@RequestBody @Valid Mail mail) {
@@ -37,8 +40,14 @@ public class MailController {
         mailService.sendSimpleMail(mail);
     }
 
-    @PostMapping("forget")
-    public void postForgetMail(@RequestBody @Valid Mail mail) {
+    @PostMapping("forget/{userName}")
+    public void postForgetMail(@PathVariable String userName, @RequestBody @Valid Mail mail) {
+        User user = userService.selectByUserName(userName);
+        if(user != null && !StringUtils.isEmpty(user.getEmail())){
+            mail.setReceiver(user.getEmail());
+        }else {
+            throw new BusinessException("用户还未注册,或邮箱为空");
+        }
         String token = IdentifierGenerateSupport.genRandomUUID8();
         redisUtil.setForTimeMIN("email_forget_" + mail.getReceiver()
                 , token, 2);

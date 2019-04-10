@@ -32,9 +32,9 @@ public class UserController {
 
     @GetMapping("current")
     @ApiOperation("当前登陆用户")
-    public Object current(Principal principal) {
+    public User current(Principal principal) {
         User user = userService.selectByUserName(principal.getName());
-        if(user != null){
+        if (user != null) {
             user.setPassword("N/A");
         }
         return user;
@@ -62,7 +62,7 @@ public class UserController {
     @ApiOperation("忘记密码_无保护")
     public void forgetPassword(@RequestBody @Valid User user, @RequestHeader String Authorization) {
         String token = redisUtil.get("email_forget_" + user.getEmail());
-        if (token == null || !Authorization.contains(token)) {
+        if (token == null || StringUtils.isEmpty(Authorization) || !Authorization.contains(token)) {
             throw new BusinessException("链接失效,请重新发送!");
         }
         if (userService.selectByUserNameAndEmail(user.getUsername(), user.getEmail()) == null) {

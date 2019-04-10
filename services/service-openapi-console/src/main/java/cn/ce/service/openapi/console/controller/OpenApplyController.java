@@ -94,7 +94,7 @@ public class OpenApplyController {
 	 */
 	@RequestMapping(value = "/addApply", method = RequestMethod.POST)
 	@ApiOperation("添加开放应用")
-	public Result<?> addApply(Principal principal,@RequestHeader String Authorization, @RequestBody OpenApplyEntity apply) {
+	public Result<?> addApply(Principal principal,@RequestHeader(required = false) String Authorization, @RequestBody OpenApplyEntity apply) {
 		
 		if(StringUtils.isBlank(apply.getApplyName())){
 			return new Result<String>("服务名称不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
@@ -102,8 +102,11 @@ public class OpenApplyController {
 		if(StringUtils.isBlank(apply.getApplyKey())){
 			return new Result<String>("服务key不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
 		}
+		if(principal == null){
+			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
+		}
 		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
-		User user = (User)result.getData();
+		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		return	consoleOpenApplyService.addApply(user, apply);
 		
 	}

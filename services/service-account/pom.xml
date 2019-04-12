@@ -16,11 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>cn.ce</groupId>
-            <artifactId>framework-base</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.ce</groupId>
             <artifactId>framework-mybatis</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

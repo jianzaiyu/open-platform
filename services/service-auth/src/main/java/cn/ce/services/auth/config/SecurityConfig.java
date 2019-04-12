@@ -23,14 +23,18 @@ import org.springframework.web.cors.CorsUtils;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.exceptionHandling()
+                http.
+                exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
-                .and().authorizeRequests()
+                .and().
+                authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.DELETE,"/oauth/revoke/*").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().disable()
+                .and()
+                .formLogin().disable()
+//                .formLogin().and().httpBasic().and()
                 .csrf().disable()
                 .cors().disable();
 

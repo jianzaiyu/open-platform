@@ -37,7 +37,7 @@ import java.util.List;
 @Profile("!pro")
 @ConditionalOnProperty(name = "swagger2.enabled", havingValue = "true")
 @EnableConfigurationProperties({Swagger2Properties.class})
-public class Swagger2AutoConfiguration implements WebMvcConfigurer {
+public class Swagger2Config implements WebMvcConfigurer {
 
     @Autowired
     private Swagger2Properties swagger2Properties;

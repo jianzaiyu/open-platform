@@ -1,15 +1,20 @@
 package cn.ce.framework.base.config;
 
+import cn.ce.framework.base.support.UploadPathProperty;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.ArrayList;
@@ -21,7 +26,19 @@ import java.util.List;
  */
 
 @Configuration
+@EnableConfigurationProperties(UploadPathProperty.class)
 public class DefaultWebMvcConfig implements WebMvcConfigurer {
+    @Autowired
+    private UploadPathProperty uploadPathProperty;
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //映射文件访问路径
+        if (!StringUtils.isEmpty(uploadPathProperty.getStaticAccessPath())) {
+            registry.addResourceHandler(uploadPathProperty.getStaticAccessPath() + "**")
+                    .addResourceLocations("file:" + uploadPathProperty.getUploadFolder());
+        }
+
+    }
 
     /**
      * 处理1000个样本：
@@ -40,14 +57,16 @@ public class DefaultWebMvcConfig implements WebMvcConfigurer {
         //2、添加fastJson 的配置信息，比如：是否要格式化返回的json数据;
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
 
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteNullListAsEmpty,
+        fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullListAsEmpty,
                 SerializerFeature.WriteNullBooleanAsFalse,
                 SerializerFeature.WriteNullNumberAsZero,
                 SerializerFeature.WriteSlashAsSpecial,
                 SerializerFeature.WriteNullStringAsEmpty,
                 SerializerFeature.PrettyFormat);
         // 不忽略对象属性中的null值
-       // SerializerFeature.DisableCheckSpecialChar
+        // SerializerFeature.DisableCheckSpecialChar
         // WriteNullListAsEmpty,
         // WriteNullStringAsEmpty);
         //处理中文乱码问题
@@ -69,6 +88,11 @@ public class DefaultWebMvcConfig implements WebMvcConfigurer {
         registrationBean.addUrlMappings("/hystrix.stream");
         registrationBean.setName("HystrixMetricsStreamServlet");
         return registrationBean;
+    }
+
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
     }
 
     /**

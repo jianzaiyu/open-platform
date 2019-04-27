@@ -41,6 +41,16 @@ public class UserController {
         return user;
     }
 
+    @GetMapping("current/detail")
+    @ApiOperation("当前登陆用户信息及认证信息")
+    public UserDetail selectUserDetailByUserName(Principal principal) {
+        UserDetail userDetail = userService.selectUserDetailByUserName(principal.getName());
+        if (userDetail != null) {
+            userDetail.setPassword("N/A");
+        }
+        return userDetail;
+    }
+
     @PostMapping
     @ApiOperation("增加一个用户_无保护")
     public void insertSelective(@RequestBody @Valid User user, @RequestHeader String Authorization) {
@@ -62,6 +72,11 @@ public class UserController {
     @PutMapping("forget")
     @ApiOperation("忘记密码_无保护")
     public void forgetPassword(@RequestBody @Valid User user, @RequestHeader String Authorization) {
+        User user1 = userService.selectByUserName(user.getUsername());
+        if(user1 == null){
+            throw new BusinessException("用户名不存在!");
+        }
+        user.setEmail(user1.getEmail());
         String token = redisUtil.get("email_forget_" + user.getEmail());
         if (token == null || StringUtils.isEmpty(Authorization) || !Authorization.contains(token)) {
             throw new BusinessException("链接失效,请重新发送!");
@@ -103,7 +118,7 @@ public class UserController {
     @GetMapping("duplicate/email/{email}")
     @ApiOperation("邮箱验重_无保护")
     public boolean selectByEmail(@PathVariable String email) {
-        return userService.selectByEmail(email) != null;
+        return userService.selectByEmail(email).size() != 0;
     }
 
 
@@ -117,15 +132,6 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("userDetail/username/{userName}")
-    @ApiOperation("按用户名称查询用户")
-    public UserDetail selectUserDetailByUserName(@PathVariable String userName) {
-        UserDetail userDetail = userService.selectUserDetailByUserName(userName);
-        if (userDetail != null) {
-            userDetail.setPassword("N/A");
-        }
-        return userDetail;
-    }
 
     @GetMapping("contact/{userName}")
     @ApiOperation("按用户名称查询用户联系方式_无保护")

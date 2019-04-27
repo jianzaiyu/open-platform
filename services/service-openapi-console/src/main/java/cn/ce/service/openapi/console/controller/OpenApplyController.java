@@ -1,6 +1,6 @@
 package cn.ce.service.openapi.console.controller;
 
-import cn.ce.service.openapi.console.service.AccountService;
+import cn.ce.service.openapi.base.account.service.AccountService;
 import cn.ce.service.openapi.base.common.*;
 import cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity;
 import cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity;
@@ -105,7 +105,7 @@ public class OpenApplyController {
 		if(principal == null){
 			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
 		}
-		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(Authorization);
 		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		return	consoleOpenApplyService.addApply(user, apply);
 		

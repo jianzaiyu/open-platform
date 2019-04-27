@@ -1,5 +1,6 @@
 package cn.ce.services.account.controller;
 
+import cn.ce.framework.base.exception.BusinessException;
 import cn.ce.services.account.entity.Identify;
 import cn.ce.services.account.service.IdentifyService;
 import io.swagger.annotations.Api;
@@ -25,6 +26,9 @@ public class IdentifyController {
     @PostMapping
     @ApiOperation("增加一条认证")
     public void insertSelective(@RequestBody @Valid Identify identify) {
+        if(identifyService.selectByUserId(identify.getUid()) != null){
+            throw new BusinessException("该用户的认证信息已经存在!");
+        }
         identifyService.insertSelective(identify);
     }
 

@@ -24,6 +24,7 @@
 		<result column="secret" property="secret" />
 		<!-- <result column="" property="logoImage" /> -->
 		<result column="apply_desc" property="applyDesc" />
+		<result column="apply_icon" property="applyIcon" />
 		<result column="create_time" property="createDate" />
 		<result column="user_id" property="userId" />
 		<result column="user_name" property="userName" />
@@ -33,6 +34,7 @@
 		<result column="check_mem" property="checkMem" />
 		<result column="resource_type" property="resourceType" />
 		<result column="project_id"  property="projectId"/>
+		<result column="web_domain"  property="webDomain"/>
 	</resultMap>
 	<!-- AND ad.api_ch_name like concat(concat("%",#{apiChName}),"%") -->
 	
@@ -80,12 +82,12 @@
 		INSERT INTO diy_apply 
 			(apply_id,app_id,apply_name,product_auth_code,product_instance_id,boss_product_instance,product_name
 			,domain_url,frequency_type,quota_max,quota_renew_rate,rate,per,policy_id,client_id,secret
-			,apply_desc,create_time,user_id,user_name,enterprise_name,check_state,check_mem,resource_type,project_id)
+			,apply_desc,apply_icon,create_time,user_id,user_name,enterprise_name,check_state,check_mem,resource_type,project_id,web_domain)
 		VALUES
 			(#{id},#{appId},#{applyName},#{productAuthCode},#{productInstanceId},#{bossProductInstance}
 			,#{productName},#{domainUrl},#{frequencyType},#{quotaMax},#{quotaRenewRate},#{rate},#{per}
-			,#{policyId},#{clientId},#{secret},#{applyDesc},#{createDate},#{userId},#{userName}
-			,#{enterpriseName},#{checkState},#{checkMem},#{resourceType},#{projectId})
+			,#{policyId},#{clientId},#{secret},#{applyDesc},#{applyIcon},#{createDate},#{userId},#{userName}
+			,#{enterpriseName},#{checkState},#{checkMem},#{resourceType},#{projectId},#{webDomain})
 	</insert>
 	
 	<insert id="saveBoundOpenApply">
@@ -135,6 +137,8 @@
 			<if test="domainUrl != null and domainUrl != ''">domain_url=#{domainUrl}, </if>
 			<if test="frequencyType != null">frequency_type=#{frequencyType}, </if>
 			<if test="applyDesc != null and applyDesc != ''">apply_desc=#{applyDesc}, </if>
+			<if test="applyIcon != null and applyIcon != ''">apply_icon=#{applyIcon}, </if>
+			<if test="webDomain != null and webDomain != ''">web_domain=#{webDomain}, </if>
 			<if test="checkMem != null and checkMem != ''">check_mem=#{checkMem},</if>
 			project_id=#{projectId}
 		</set>
@@ -187,11 +191,12 @@
 		<result column="apply_name" property="applyName"/>
 		<result column="client_id" property="clientId"/>
 		<result column="apply_desc" property="applyDesc"/>
+		<result column="apply_icon" property="applyIcon"/>
 		<result column="user_id" property="userId"/>
 		<result column="check_state" property="checkState"/>
 	</resultMap>
 	<select id="findBiDiyByClientIds" parameterType="java.util.List" resultMap="biDiyApply">
-		select apply_id,app_id,apply_name,client_id,apply_desc,
+		select apply_id,app_id,apply_name,client_id,apply_desc,apply_icon,
 			user_id,check_state from diy_apply where client_id in
 				<foreach collection="diyClientIds" item="item" index="index"
 					open="(" separator="," close=")">

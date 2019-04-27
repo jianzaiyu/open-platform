@@ -34,7 +34,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> aClass,
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if (!(o instanceof CloudResult)) {//HttpMessageConverter引起的BUG 用FastJsonHttpMessageConverter
-            return new Result<>(HttpStatus.OK, ResultCode.SYS0000, o == null ? new JSONArray() : o);
+            return new Result<>(HttpStatus.OK, ResultCode.SYS0000, o);
         }
         return o;//支持直接返回Result
     }

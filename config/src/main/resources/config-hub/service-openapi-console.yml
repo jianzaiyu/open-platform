@@ -1,6 +1,7 @@
 server:
   port: 8013
-
+  staticAccessPath: /static/file/
+  uploadFolder: /uploadFiles/
 #pagehelper:
 #  supportMethodsArguments: true
 #  pageSizeZero: true
@@ -23,7 +24,7 @@ security:
       tokenInfoUri: ${uaa.uri}/oauth/check_token
       white-list:
         swaggerUrl: default
-        httpAllMethod: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**
+        httpAllMethod: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**,/static/file/*
 
 spring:
   zipkin:
@@ -122,3 +123,6 @@ box_add: http://10.12.40.83:8080/webportal-webapp-1.0-SNAPSHOT/gce/addSandbox
 box_state: http://10.12.40.83:8080/webportal-webapp-1.0-SNAPSHOT/gce/checkStatus?sandboxname=#{sandboxname}&resourcePool=#{resourcePool}
 ois_diyApply: http://10.12.40.170:5554/ois/v1/customApplication
 generatorTenantKey: http://10.12.40.94:9000/generatorTenantKey?id=#{TenantKeyid}
+findMemberInfoByMemberCode: http://test-api-console.300.cn/api-portal/rmi/member/get?param=
+findWebListByCustId: http://10.12.40.94:9000/findTenantByCusIdAndGroupId?cusId=
+findTenatById: http://10.12.40.94:9000/getTenantById?id=

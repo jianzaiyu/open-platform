@@ -3,6 +3,8 @@ package cn.ce.services.account.dao;
 import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.entity.User;
 
+import java.util.List;
+
 /**
  * @auther ggs
  * @date 2019-03-05 11:20:48.439
@@ -18,7 +20,7 @@ public interface UserDao {
 
     User selectByUserName(String userName);
 
-    User selectByEmail(String email);
+    List<User> selectByEmail(String email);
 
     User selectByTelNumber(String email);
 

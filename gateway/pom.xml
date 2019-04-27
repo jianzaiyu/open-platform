@@ -37,6 +37,11 @@
             <artifactId>framework-swagger</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>cn.ce</groupId>
+            <artifactId>framework-security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>nl.bitwalker</groupId>-->
             <!--<artifactId>UserAgentUtils</artifactId>-->

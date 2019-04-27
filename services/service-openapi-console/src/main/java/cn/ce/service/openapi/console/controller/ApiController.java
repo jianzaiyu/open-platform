@@ -1,6 +1,6 @@
 package cn.ce.service.openapi.console.controller;
 
-import cn.ce.service.openapi.console.service.AccountService;
+import cn.ce.service.openapi.base.account.service.AccountService;
 import cn.ce.service.openapi.base.apis.entity.ApiEntity;
 import cn.ce.service.openapi.base.apis.entity.ApiMock;
 import cn.ce.service.openapi.base.apis.entity.NewApiEntity;
@@ -24,13 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 
-/**
- * @ClassName:  ApisController   
- * @Description:前台api 控制类
- * @author: makangwei
- * @date:   2017年10月10日 下午8:15:17   
- * @Copyright: 2017 中企动力科技股份有限公司 © 1999-2017 300.cn All Rights Reserved
- */
+
 @Slf4j
 @RestController
 @RequestMapping("/api")
@@ -60,7 +54,7 @@ public class ApiController {
 		if(principal == null){
 			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
 		}
-		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(Authorization);
 		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		NewApiEntity newApiEntity = ApiTransform.transToTotalNewApi(entity);
 		
@@ -169,7 +163,6 @@ public class ApiController {
 	@ApiOperation("api列表_TODO")
 //	public CloudResult<?> showApiList(@RequestBody QueryApiEntity apiEntity){
 	public Result<?> showApiList(
-			HttpSession session,
 			@RequestBody QueryApiEntity apiEntity,
 			@RequestParam(required=false,defaultValue= "1") int currentPage, 
 			@RequestParam(required=false,defaultValue= "10")int pageSize){
@@ -203,7 +196,6 @@ public class ApiController {
 	@ApiOperation("api文档中心列表_TODO")
 //	public CloudResult<?> showDocApiList(@RequestBody QueryApiEntity apiEntity){
 	public Result<?> showDocApiList(
-			HttpSession session,
 			@RequestBody QueryApiEntity apiEntity,
 			@RequestParam(required=false,defaultValue= "1") int currentPage, 
 			@RequestParam(required=false,defaultValue= "10")int pageSize){		

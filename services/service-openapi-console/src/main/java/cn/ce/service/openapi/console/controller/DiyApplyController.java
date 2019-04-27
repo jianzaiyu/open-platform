@@ -1,6 +1,7 @@
 package cn.ce.service.openapi.console.controller;
 
-import cn.ce.service.openapi.console.service.AccountService;
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.Tenant;
+import cn.ce.service.openapi.base.account.service.AccountService;
 import cn.ce.service.openapi.base.common.*;
 import cn.ce.service.openapi.base.common.gateway.ApiCallUtils;
 import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
@@ -50,7 +51,7 @@ public class DiyApplyController {
 
 	@RequestMapping(value = "/findApplyList", method = RequestMethod.POST)
 	@ApiOperation(value = "根据条件查询应用列表_TODO", httpMethod = "POST", response = Result.class, notes = "根据条件查询应用列表")
-	public Result<?> findApplyList(HttpSession session, @RequestBody DiyApplyEntity apply,Principal principal,@RequestHeader(required = false) String Authorization,
+	public Result<?> findApplyList(@RequestBody DiyApplyEntity apply,Principal principal,@RequestHeader(required = false) String Authorization,
 			@RequestParam(required = false, defaultValue = "10") int pageSize,
 			@RequestParam(required = false, defaultValue = "1") int currentPage) {
 		
@@ -66,7 +67,7 @@ public class DiyApplyController {
 		if(principal == null){
 			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
 		}
-		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(Authorization);
 		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		queryApply.setUserId(user.getId().toString());
 
@@ -113,7 +114,7 @@ public class DiyApplyController {
 			return new Result<String>("应用名称不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
 		}
 
-		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(principal.getName(),Authorization);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(Authorization);
 		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 
 		apply.setUser(user);
@@ -125,8 +126,7 @@ public class DiyApplyController {
 
 	@RequestMapping(value = "/updateApply", method = RequestMethod.POST)
 	@ApiOperation("修改应用，不能修改产品密钥")
-	public Result<?> updateApply(HttpSession session, @RequestBody DiyApplyEntity apply) {
-
+	public Result<?> updateApply(@RequestBody DiyApplyEntity apply) {
 		return consoleDiyApplyService.updateApply(apply);
 	}
 

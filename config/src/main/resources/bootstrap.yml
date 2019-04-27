@@ -6,8 +6,8 @@ spring:
     name: config
   security:
     user:
-      name: ${user.username}
-      password: ${user.password}
+      name: ${security.username}
+      password: ${security.password}
   profiles:
     active: native
   cloud:

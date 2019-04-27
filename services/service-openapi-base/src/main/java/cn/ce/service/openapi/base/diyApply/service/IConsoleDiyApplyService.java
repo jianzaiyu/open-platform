@@ -9,6 +9,7 @@ import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
 import cn.ce.service.openapi.base.diyApply.entity.Menu;
 import cn.ce.service.openapi.base.diyApply.entity.QueryDiyApplyEntity;
 import cn.ce.service.openapi.base.diyApply.entity.interfaceMessageInfo.InterfaMessageInfoString;
+import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.Tenant;
 
 /***
  * 

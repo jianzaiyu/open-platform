@@ -211,12 +211,12 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <user.username>user</user.username>
-                <user.password>password</user.password>
+                <security.username>user</security.username>
+                <security.password>password</security.password>
                 <uaa.uri>http://localhost:8011</uaa.uri>
                 <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
-                <registry.uri1>http://${user.username}:${user.password}@10.12.40.82:8001/eureka/</registry.uri1>
+                <registry.uri1>http://${security.username}:${security.password}@10.12.40.82:8001/eureka/</registry.uri1>
                 <registry.uri>${registry.uri1}</registry.uri>
                 <hbase.zookeeper.quorum>10.12.40.168:2181,10.12.40.170:2181,10.12.40.171:2181</hbase.zookeeper.quorum>
             </properties>
@@ -224,13 +224,13 @@
         <profile>
             <id>dev</id>
             <properties>
-                <user.username>user</user.username>
-                <user.password>password</user.password>
+                <security.username>user</security.username>
+                <security.password>password</security.password>
                 <uaa.uri>http://10.12.51.210/uaa</uaa.uri>
                 <config.uri>http://172.22.146.20:8000</config.uri>
                 <config.search>config-hub</config.search>
-                <registry.uri1>http://${user.username}:${user.password}@10.12.51.210:8001/eureka/</registry.uri1>
-                <registry.uri2>http://${user.username}:${user.password}@10.12.51.211:8001/eureka/</registry.uri2>
+                <registry.uri1>http://${security.username}:${security.password}@10.12.51.210:8001/eureka/</registry.uri1>
+                <registry.uri2>http://${security.username}:${security.password}@10.12.51.211:8001/eureka/</registry.uri2>
                 <registry.uri>${registry.uri1},${registry.uri2}</registry.uri>
                 <hbase.zookeeper.quorum>10.12.40.168:2181,10.12.40.170:2181,10.12.40.171:2181</hbase.zookeeper.quorum>
             </properties>
@@ -238,12 +238,12 @@
         <profile>
             <id>pro</id>
             <properties>
-                <user.username>disAdmin</user.username>
-                <user.password>disAdmin</user.password>
+                <security.username>disAdmin</security.username>
+                <security.password>disAdmin</security.password>
                 <config.uri>http://10.20.1.53:8000</config.uri>
                 <config.search>config-hub-pro</config.search>
-                <registry.uri1>http://${user.username}:${user.password}@10.20.1.53:8001/eureka/</registry.uri1>
-                <registry.uri2>http://${user.username}:${user.password}@10.20.1.54:8001/eureka/</registry.uri2>
+                <registry.uri1>http://${security.username}:${security.password}@10.20.1.53:8001/eureka/</registry.uri1>
+                <registry.uri2>http://${security.username}:${security.password}@10.20.1.54:8001/eureka/</registry.uri2>
                 <registry.uri>${registry.uri1},${registry.uri2}</registry.uri>
                 <hbase.zookeeper.quorum>10.30.3.244:2181,10.30.3.245:2181,10.30.3.236:2181</hbase.zookeeper.quorum>
             </properties>

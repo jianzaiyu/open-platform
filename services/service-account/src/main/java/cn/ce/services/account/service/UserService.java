@@ -3,6 +3,8 @@ package cn.ce.services.account.service;
 import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.entity.User;
 
+import java.util.List;
+
 
 /**
  * @author: ggs
@@ -23,7 +25,7 @@ public interface UserService {
 
     User selectByUserName(String name);
 
-    User selectByEmail(String email);
+    List<User> selectByEmail(String email);
 
     User selectByTelNumber(String telNumber);
 

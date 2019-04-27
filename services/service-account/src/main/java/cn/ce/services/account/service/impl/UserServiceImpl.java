@@ -7,6 +7,8 @@ import cn.ce.services.account.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: ggs
  * @date: 2019-03-01 14:58
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectByEmail(String email) {
+    public List<User> selectByEmail(String email) {
         return userDao.selectByEmail(email);
     }
 

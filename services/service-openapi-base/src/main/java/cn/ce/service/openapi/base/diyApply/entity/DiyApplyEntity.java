@@ -57,6 +57,8 @@ public class DiyApplyEntity {
 
 	private String applyDesc;// 应用描述
 
+	private String applyIcon;
+
 	private Date createDate;// 创建时间
 
 	private String userId;// 创建用户id
@@ -83,6 +85,19 @@ public class DiyApplyEntity {
 
 	//项目id
 	private String projectId;
+
+	public String getWebDomain() {
+		return webDomain;
+	}
+
+	public void setWebDomain(String webDomain) {
+		this.webDomain = webDomain;
+	}
+
+	/***
+	 * 网站域名
+	 */
+	private String webDomain;
 
 //	@Transient
 //	private List<ApiAuditEntity> auditList;// api集合
@@ -329,6 +344,13 @@ public class DiyApplyEntity {
 		this.projectId = projectId;
 	}
 
+	public String getApplyIcon() {
+		return applyIcon;
+	}
+
+	public void setApplyIcon(String applyIcon) {
+		this.applyIcon = applyIcon;
+	}
 	@Override
 	public String toString() {
 		return "DiyApplyEntity{" +
@@ -350,6 +372,7 @@ public class DiyApplyEntity {
 				", secret='" + secret + '\'' +
 				", logoImage=" + Arrays.toString(logoImage) +
 				", applyDesc='" + applyDesc + '\'' +
+				", applyIcon='" + applyIcon + '\'' +
 				", createDate=" + createDate +
 				", userId='" + userId + '\'' +
 				", userName='" + userName + '\'' +

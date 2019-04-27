@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="cn.ce.service.openapi.base.openApply.dao.IMysqlOpenApplyDao">
- 	
- 	<resultMap type="cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity" id="openApplyMap">
- 		<id column="apply_id" property="id"/>
- 		<result column="app_id" property="appId" />
- 		<result column="user_id" property="userId" />
- 		<result column="user_name" property="userName" />
- 		<!-- <result column="" property="enterpriseId" /> -->
- 		<result column="enterprise_name" property="enterpriseName" />
- 		<result column="apply_key" property="applyKey" />
- 		<result column="apply_name" property="applyName" />
- 		<result column="apply_desc" property="applyDesc" />
-		<result column="apply_icon" property="applyIcon" />
- 		<result column="create_time" property="createDate" />
- 		<result column="check_state" property="checkState" />
- 		<result column="check_mem" property="checkMem" />
- 	</resultMap> 
- 
- 	<sql id="openCondition">
- 		<where>
- 			<if test="applyName != null and applyName != ''">apply_name like concat(concat("%",#{applyName}),"%")</if>
- 			<if test="userName != null and userName != ''"> AND user_name like concat(concat("%",#{userName}),"%")</if>
- 			<if test="enterpriseName != null and enterpriseName != ''"> AND enterprise_name = #{enterpriseName}</if>
- 			<if test="checkState != null"> AND check_state = #{checkState}</if>
- 		</where>
- 	</sql>
-  	<insert id="save" parameterType="cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ce.service.openapi.base.openApply.dao.IMysqlOpenApplyDao">
+
+    <resultMap type="cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity" id="openApplyMap">
+        <id column="apply_id" property="id"/>
+        <result column="app_id" property="appId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <!-- <result column="" property="enterpriseId" /> -->
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="apply_key" property="applyKey"/>
+        <result column="apply_name" property="applyName"/>
+        <result column="apply_desc" property="applyDesc"/>
+        <result column="apply_icon" property="applyIcon"/>
+        <result column="create_time" property="createDate"/>
+        <result column="check_state" property="checkState"/>
+        <result column="check_mem" property="checkMem"/>
+    </resultMap>
+
+    <sql id="openCondition">
+        <where>
+            <if test="applyName != null and applyName != ''">apply_name like concat(concat("%",#{applyName}),"%")</if>
+            <if test="userName != null and userName != ''">AND user_name like concat(concat("%",#{userName}),"%")</if>
+            <if test="enterpriseName != null and enterpriseName != ''">AND enterprise_name = #{enterpriseName}</if>
+            <if test="checkState != null">AND check_state = #{checkState}</if>
+        </where>
+    </sql>
+    <insert id="save" parameterType="cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity">
 		INSERT INTO open_apply 
 			(apply_id,app_id,user_id,user_name,enterprise_name,apply_key,apply_name,
 			apply_desc,apply_icon,create_time,check_state,check_mem)
@@ -37,136 +37,140 @@
   			(#{id},#{appId},#{userId},#{userName},#{enterpriseName}
   			,#{applyKey},#{applyName},#{applyDesc},#{applyIcon},#{createDate},#{checkState},#{checkMem})
   	</insert>
-  
-  	<update id="batchUpdateCheckState">
-  		update open_apply
-  		<set>
-  			check_state=#{checkState},
-  			<if test="checkMem != null">
-  				check_mem=#{checkMem}
-  			</if>
-  		</set>
-  		where apply_id in
-  		<foreach collection="ids" index="index" item="item"
-  			open="(" close=")" separator=",">
-  			#{item}	
-  		</foreach>
-  	</update>
-  	
-  	<select id="getListByids" resultMap="openApplyMap">
-  		select * from open_apply where apply_id in
-  		<foreach collection="ids" index="index" item="item"
-  			open="(" close=")" separator=",">
-  			#{item}
-  		</foreach>
-  	</select>
-  	
-  	<select id="findById" resultMap = "openApplyMap">
+
+    <update id="batchUpdateCheckState">
+        update open_apply
+        <set>
+            check_state=#{checkState},
+            <if test="checkMem != null">
+                check_mem=#{checkMem}
+            </if>
+        </set>
+        where apply_id in
+        <foreach collection="ids" index="index" item="item"
+                 open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getListByids" resultMap="openApplyMap">
+        select * from open_apply where apply_id in
+        <foreach collection="ids" index="index" item="item"
+                 open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findById" resultMap="openApplyMap">
   		select * from open_apply where apply_id = #{id}
   	</select>
-	<select id="findByAppId" resultMap = "openApplyMap">
+    <select id="findByAppId" resultMap="openApplyMap">
   		select * from open_apply where app_id = #{id}
   	</select>
-  	
-  	<select id="findListSize" parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity"
-  		resultType="int">
-  		select count(apply_id) from open_apply
-  		<include refid="openCondition" />
-  	</select>
-  	
-  	<select id="getPagedList" parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity"
-  		resultMap="openApplyMap">
-  		select * from open_apply
-  		<include refid="openCondition" />
-  		order by create_time desc
-  		limit #{startIndex}, #{pageSize}
-  	</select>
-  	
-  	<select id="checkApplyName" resultType="int">
+
+    <select id="findListSize" parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity"
+            resultType="int">
+        select count(apply_id) from open_apply
+        <include refid="openCondition"/>
+    </select>
+
+    <select id="getPagedList" parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity"
+            resultMap="openApplyMap">
+        select * from open_apply
+        <include refid="openCondition"/>
+        order by create_time desc
+        limit #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="checkApplyName" resultType="int">
   		select count(*) from open_apply where apply_name=#{applyName}
   	</select>
-  	
-  	<select id="checkApplyKey" resultType="int">
+
+    <select id="checkApplyKey" resultType="int">
   		select count(*) from open_apply where apply_key=#{applyKey}
   	</select>
-  	
-  	<select id="checkApplyNameById" resultType="int">
+
+    <select id="checkApplyNameById" resultType="int">
   		select count(*) from open_apply where apply_name=#{applyName} 
   		AND apply_id != #{applyId}
   	</select>
-  	
-  	<select id="checkApplyKeyById" resultType="int">
+
+    <select id="checkApplyKeyById" resultType="int">
   		select count(*) from open_apply where apply_key=#{applyKey}
   		AND apply_id != #{applyId}
   	</select>
-  		
-  	<update id="update" parameterType="cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity">
-  		update open_apply 
-  		<set>
-  			<if test="applyName != null and applyName != ''">apply_name = #{applyName},</if>
-  			<if test="applyKey != null and applyKey != ''">apply_key = #{applyKey},</if>
-  			<if test="applyDesc != null and applyDesc != ''">apply_desc = #{applyDesc},</if>
-  			<if test="checkState != null"> check_state = #{checkState}</if>
-  		</set>
-  		where apply_id=#{id}
-  	</update>
-  	
-  	<delete id="deleteAll">
+
+    <update id="update" parameterType="cn.ce.service.openapi.base.openApply.entity.OpenApplyEntity">
+        update open_apply
+        <set>
+            <if test="applyName != null and applyName != ''">apply_name = #{applyName},</if>
+            <if test="applyKey != null and applyKey != ''">apply_key = #{applyKey},</if>
+            <if test="applyDesc != null and applyDesc != ''">apply_desc = #{applyDesc},</if>
+            <if test="checkState != null and checkState != ''">check_state = #{checkState},</if>
+            <if test="applyIcon != null and applyIcon != ''">apply_icon = #{applyIcon},</if>
+        </set>
+        where apply_id=#{id}
+    </update>
+
+    <delete id="deleteAll">
   		delete from open_apply
   	</delete>
 
-	<delete id="deleteAllSuccess">
+    <delete id="deleteAllSuccess">
   		delete from open_apply where check_state = 2
   	</delete>
 
-	<insert id="batchInsert" parameterType="java.util.List">
-		insert into open_apply (apply_id,app_id, apply_name, apply_icon,create_time,apply_desc,apply_key,check_state) values
-		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.id},
-			#{item.appId},
-			#{item.applyName},
-			#{item.applyIcon},
-			#{item.createDate},
-			#{item.applyDesc},
-			#{item.applyKey},
-			#{item.checkState})
-		</foreach>
-	</insert>
-	
-	<select id="findSuccessSize" resultType="int" parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity">
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into open_apply (apply_id,app_id, apply_name, apply_icon,create_time,apply_desc,apply_key,check_state)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},
+            #{item.appId},
+            #{item.applyName},
+            #{item.applyIcon},
+            #{item.createDate},
+            #{item.applyDesc},
+            #{item.applyKey},
+            #{item.checkState})
+        </foreach>
+    </insert>
+
+    <select id="findSuccessSize" resultType="int"
+            parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity">
         select count(open_apply.apply_id)
         from open_apply
         where open_apply.check_state = #{checkState}
         and open_apply.app_id in (select DISTINCT(open_apply_id) from api_detail)
-		<if test="applyName!= null and applyName != ''">
-			AND open_apply.apply_name like concat(concat("%",#{applyName}),"%")
-		</if>
-	</select>
+        <if test="applyName!= null and applyName != ''">
+            AND open_apply.apply_name like concat(concat("%",#{applyName}),"%")
+        </if>
+    </select>
 
-	<select id="getSuccessedList" resultMap="openApplyMap" parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity">
+    <select id="getSuccessedList" resultMap="openApplyMap"
+            parameterType="cn.ce.service.openapi.base.openApply.entity.QueryOpenApplyEntity">
         select open_apply.*
         from open_apply
         where open_apply.check_state = #{checkState}
         and open_apply.app_id in (select DISTINCT(open_apply_id) from api_detail)
-		<if test="applyName!= null and applyName != ''">
-			AND open_apply.apply_name like concat(concat("%",#{applyName}),"%")
-		</if>
-		limit
-		<choose>
-			<when test="startIndex == null or startIndex == '0'">
-				0,
-			</when>
-			<otherwise>
-				#{startIndex},
-			</otherwise>
-		</choose>
-		<choose>
-			<when test="pageSize == null or pageSize == '0' ">
-				10
-			</when>
-			<otherwise>
-				#{pageSize}
-			</otherwise>
-		</choose>
-	</select>
-  </mapper>
+        <if test="applyName!= null and applyName != ''">
+            AND open_apply.apply_name like concat(concat("%",#{applyName}),"%")
+        </if>
+        limit
+        <choose>
+            <when test="startIndex == null or startIndex == '0'">
+                0,
+            </when>
+            <otherwise>
+                #{startIndex},
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="pageSize == null or pageSize == '0' ">
+                10
+            </when>
+            <otherwise>
+                #{pageSize}
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

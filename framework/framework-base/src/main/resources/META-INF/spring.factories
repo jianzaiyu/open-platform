@@ -1,3 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.ce.framework.base.config.DefaultWebMvcConfig,cn.ce.framework.base.config.GlobalExceptionAdvice,cn.ce.framework.base.config.GlobalResponseAdvice
+cn.ce.framework.base.config.DefaultWebMvcConfig,\
+  cn.ce.framework.base.config.GlobalExceptionAdvice,\
+    cn.ce.framework.base.config.GlobalResponseAdvice,\
+        cn.ce.framework.base.support.FileUploadService

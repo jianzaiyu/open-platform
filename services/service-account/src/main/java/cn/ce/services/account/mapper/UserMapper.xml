@@ -31,9 +31,9 @@
     userType, avatar, state, lastLoginIp, lastLoginTime, regTime
   </sql>
   <sql id="UserDetail_Column_List">
-    uid as id,
+    u.id as id,
     userName,
-  PASSWORD,
+  password,
   telNumber,
   email,
   orgId,

@@ -17,6 +17,8 @@ public class BiDiyApply {
 
 	private String applyDesc;
 
+	private String applyIcon;
+
 	private String userId;
 
 	private Integer checkState;
@@ -94,6 +96,13 @@ public class BiDiyApply {
 		this.count = count;
 	}
 
+	public String getApplyIcon() {
+		return applyIcon;
+	}
+
+	public void setApplyIcon(String applyIcon) {
+		this.applyIcon = applyIcon;
+	}
 	@Override
 	public String toString() {
 		return "BiDiyApply [id=" + id + ", appId=" + appId + ", applyName=" + applyName + ", clientId=" + clientId

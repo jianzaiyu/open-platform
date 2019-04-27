@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -14,30 +16,12 @@ import java.util.UUID;
 /**
  * @author: ggs
  * @date: 2018-08-14 14:36
- * singleton chain
  **/
 @Slf4j
-public class FileSupport {
-
-
-    private static FileSupport fileSupport = null;
-
-    private FileSupport() {
-    }
-
-
-    public static FileSupport build() {
-        if (fileSupport == null) {
-            synchronized (FileSupport.class) {
-                if (fileSupport == null) {
-                    fileSupport = new FileSupport();
-                }
-            }
-        }
-        return fileSupport;
-    }
-
-
+@Service
+public class FileUploadService {
+    @Autowired
+    private UploadPathProperty uploadPathProperty;
     /**
      * 上传文件
      *
@@ -46,7 +30,7 @@ public class FileSupport {
      * @throws IOException
      */
     public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String imagePath = PropertySupport.getUploadFolder();
+        String imagePath = uploadPathProperty.getUploadFolder();
         File file = new File(imagePath);
         if (!file.exists()) {
             file.mkdirs();
@@ -64,28 +48,28 @@ public class FileSupport {
         bos.flush();
         bos.close();
         log.info("已上传 文件{} 路径={}", fileName, imagePath);
-        return PropertySupport.getStaticAccessPath() + fileName;
+        return uploadPathProperty.getStaticAccessPath() + fileName;
     }
 
     /**
      * 验证图片
      */
-    public FileSupport validateIMG(MultipartFile multipartFile) {
+    public FileUploadService validateIMG(MultipartFile multipartFile) {
         String contentType = multipartFile.getContentType();
         if (multipartFile.isEmpty() || !contentType.contains("image")) {
             throw new BusinessException("请上传图片格式文件");
         }
-        return fileSupport;
+        return this;
     }
 
     /**
      * 验证SQL文件
      */
-    public FileSupport validateSQL(MultipartFile multipartFile) {
+    public FileUploadService validateSQL(MultipartFile multipartFile) {
         if (multipartFile.isEmpty() || !multipartFile.getOriginalFilename().endsWith(".sql")) {
             throw new BusinessException("请上传SQL脚本文件");
         }
-        return fileSupport;
+        return this;
     }
 
     public JSONArray parseArray(String path) throws IOException {

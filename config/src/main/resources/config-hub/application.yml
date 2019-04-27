@@ -1,8 +1,11 @@
 spring:
+  serlet:
+    multipart:
+      location: ${user.dir}
   security:
     user:
-      name: ${user.username}
-      password: ${user.password}
+      name: ${security.username}
+      password: ${security.password}
   zipkin:
     baseUrl: http://zipkin/ #所有的数据提交到此服务之中
   sleuth:

@@ -37,7 +37,7 @@ public class RoleController {
     }
 
     @GetMapping("{id}")
-    public Role selectByPrimaryKey(@RequestParam Integer id) {
+    public Role selectByPrimaryKey(@PathVariable Integer id) {
         return roleService.selectByPrimaryKey(id);
     }
 }

@@ -3,7 +3,17 @@ server:
 
 spring:
   zipkin:
-      enabled: true
+    enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/openplatform?useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 swagger2:
   gateway: true

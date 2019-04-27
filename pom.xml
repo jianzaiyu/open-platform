@@ -216,7 +216,7 @@
                 <uaa.uri>http://localhost:8011</uaa.uri>
                 <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
-                <registry.uri1>http://${security.username}:${security.password}@10.12.40.82:8001/eureka/</registry.uri1>
+                <registry.uri1>http://${security.username}:${security.password}@localhost:8001/eureka/</registry.uri1>
                 <registry.uri>${registry.uri1}</registry.uri>
                 <hbase.zookeeper.quorum>10.12.40.168:2181,10.12.40.170:2181,10.12.40.171:2181</hbase.zookeeper.quorum>
             </properties>

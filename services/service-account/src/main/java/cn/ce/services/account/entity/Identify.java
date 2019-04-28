@@ -2,6 +2,7 @@ package cn.ce.services.account.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,11 +13,11 @@ import java.util.Date;
 @Data
 public class Identify implements Serializable {
     private Integer id;
-
+    @NotBlank
     private Integer uid;
-
+    @NotBlank
     private String realName;
-
+    @NotBlank
     private String cardNumber;
 
     private String cardFront;

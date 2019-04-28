@@ -32,5 +32,9 @@ import java.lang.annotation.*;
 public @interface BusinessApplicationBase {
 
     @AliasFor(annotation = ComponentScan.class, attribute = "basePackages")
-    String[] scanBasePackages() default {};
+    String[] componentPackages() default {};
+
+    @AliasFor(annotation = EnableFeignClients.class, attribute = "basePackages")
+    String[] feignBasePackages() default {};
+
 }

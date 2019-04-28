@@ -5,15 +5,33 @@ spring:
   zipkin:
     enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3306/openplatform?useSSL=false&useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 123456
+    url: jdbc:mysql://10.12.40.224:3306/openplatform?useSSL=false&useUnicode=true&characterEncoding=utf8
+    username: onlineDB
+    password: bo28jsl29a
+#    url: jdbc:mysql://localhost:3306/openplatform?useSSL=false&useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: 123456
     driverClassName: com.mysql.jdbc.Driver
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+#  kafka:
+#    bootstrap-server: 10.12.51.187:6667
+  cloud:
+    stream:
+      default:
+        producer:
+          headerMode: embeddedHeaders
+        consumer:
+          headerMode: embeddedHeaders
+      bindings:
+        springCloudBusInput:
+          destination: GATEWAY_NODE_SETTING
+#          group:
+        springCloudBusOutput:
+          destination: GATEWAY_NODE_SETTING
+      kafka:
+        binder:
+          autoCreateTopics: false
+          brokers: 10.12.51.187:6667
+          zkNodes: ${kafka.zookeeper.quorum}
 
 swagger2:
   gateway: true

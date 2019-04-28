@@ -216,9 +216,9 @@
                 <uaa.uri>http://localhost:8011</uaa.uri>
                 <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
-                <registry.uri1>http://${security.username}:${security.password}@localhost:8001/eureka/</registry.uri1>
+                <registry.uri1>http://${security.username}:${security.password}@10.12.40.82:8001/eureka/</registry.uri1>
                 <registry.uri>${registry.uri1}</registry.uri>
-                <hbase.zookeeper.quorum>10.12.40.168:2181,10.12.40.170:2181,10.12.40.171:2181</hbase.zookeeper.quorum>
+                <kafka.zookeeper.quorum>10.12.51.187:2181,10.12.51.188:2181,10.12.51.189:2181</kafka.zookeeper.quorum>
             </properties>
         </profile>
         <profile>
@@ -232,7 +232,7 @@
                 <registry.uri1>http://${security.username}:${security.password}@10.12.51.210:8001/eureka/</registry.uri1>
                 <registry.uri2>http://${security.username}:${security.password}@10.12.51.211:8001/eureka/</registry.uri2>
                 <registry.uri>${registry.uri1},${registry.uri2}</registry.uri>
-                <hbase.zookeeper.quorum>10.12.40.168:2181,10.12.40.170:2181,10.12.40.171:2181</hbase.zookeeper.quorum>
+                <kafka.zookeeper.quorum>10.12.51.187:2181,10.12.51.188:2181,10.12.51.189:2181</kafka.zookeeper.quorum>
             </properties>
         </profile>
         <profile>
@@ -245,7 +245,7 @@
                 <registry.uri1>http://${security.username}:${security.password}@10.20.1.53:8001/eureka/</registry.uri1>
                 <registry.uri2>http://${security.username}:${security.password}@10.20.1.54:8001/eureka/</registry.uri2>
                 <registry.uri>${registry.uri1},${registry.uri2}</registry.uri>
-                <hbase.zookeeper.quorum>10.30.3.244:2181,10.30.3.245:2181,10.30.3.236:2181</hbase.zookeeper.quorum>
+                <kafka.zookeeper.quorum>10.30.3.244:2181,10.30.3.245:2181,10.30.3.236:2181</kafka.zookeeper.quorum>
             </properties>
         </profile>
     </profiles>

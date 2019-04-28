@@ -29,6 +29,9 @@ public class IdentifyController {
         if(identifyService.selectByUserId(identify.getUid()) != null){
             throw new BusinessException("该用户的认证信息已经存在!");
         }
+        if(identifyService.selectByCardNumber(identify.getCardNumber()) != null){
+            throw new BusinessException("该身份证号已经存在!");
+        }
         identifyService.insertSelective(identify);
     }
 

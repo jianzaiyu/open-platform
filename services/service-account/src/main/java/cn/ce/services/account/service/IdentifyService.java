@@ -20,4 +20,6 @@ public interface IdentifyService {
     int updateByPrimaryKey(Identify record);
 
     Identify selectByUserId(Integer uid);
+
+    Identify selectByCardNumber(String cardNumber);
 }

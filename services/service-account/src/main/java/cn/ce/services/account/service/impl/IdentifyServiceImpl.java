@@ -49,4 +49,9 @@ public class IdentifyServiceImpl implements IdentifyService {
     public Identify selectByUserId(Integer uid) {
         return identifyDao.selectByUserId(uid);
     }
+
+    @Override
+    public Identify selectByCardNumber(String cardNumber) {
+        return identifyDao.selectByCardNumber(cardNumber);
+    }
 }

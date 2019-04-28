@@ -28,6 +28,12 @@
         from identify
         where uid = #{uid,jdbcType=INTEGER}
     </select>
+    <select id="selectByCardNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from identify
+        where card_number = #{cardNumber,jdbcType=VARCHAR}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from identify
     where id = #{id,jdbcType=INTEGER}
@@ -59,9 +65,7 @@
             <if test="cardBack != null">
                 card_back,
             </if>
-            <if test="checkState != null">
                 check_state,
-            </if>
             <if test="checkNote != null">
                 check_note,
             </if>
@@ -86,9 +90,7 @@
             <if test="cardBack != null">
                 #{cardBack,jdbcType=VARCHAR},
             </if>
-            <if test="checkState != null">
-                #{checkState,jdbcType=TINYINT},
-            </if>
+                1,
             <if test="checkNote != null">
                 #{checkNote,jdbcType=VARCHAR},
             </if>

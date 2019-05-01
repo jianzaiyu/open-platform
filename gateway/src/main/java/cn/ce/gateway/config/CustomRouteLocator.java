@@ -1,10 +1,8 @@
 package cn.ce.gateway.config;
 
-import cn.ce.gateway.entity.GatewayPathUrlRelation;
-import cn.ce.gateway.entity.TargetUrlAndTenantIdEntity;
+import cn.ce.gateway.common.SqlConstants;
+import cn.ce.gateway.entity.ClientResourceToFinalUrl;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.zuul.filters.RefreshableRouteLocator;
 import org.springframework.cloud.netflix.zuul.filters.SimpleRouteLocator;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
@@ -30,11 +28,11 @@ public class CustomRouteLocator extends SimpleRouteLocator implements Refreshabl
 
     private ZuulProperties properties;
 
-    public AtomicReference<Map<String, TargetUrlAndTenantIdEntity>> getPathUrlRelation() {
-        return pathUrlRelation;
+    public AtomicReference<Map<String, String>> getFinalUrlRelation() {
+        return finalUrlRelation;
     }
 
-    private AtomicReference<Map<String, TargetUrlAndTenantIdEntity>> pathUrlRelation = new AtomicReference<>();
+    private AtomicReference<Map<String, String>> finalUrlRelation = new AtomicReference<>();
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -86,15 +84,13 @@ public class CustomRouteLocator extends SimpleRouteLocator implements Refreshabl
 
     private Map<String, ZuulRoute> locateRoutesFromDB() {
         Map<String, ZuulRoute> routes = new LinkedHashMap<>();
-        Map<String, TargetUrlAndTenantIdEntity> relations = new LinkedHashMap<>();
-        List<ZuulRouteVO> results = jdbcTemplate.query("select * from gateway_api_define where enabled = true ", new BeanPropertyRowMapper<>(ZuulRouteVO.class));
-        List<GatewayPathUrlRelation> gatewayPathUrlRelations = jdbcTemplate.query("select * from gateway_path_url_relation", new BeanPropertyRowMapper<>(GatewayPathUrlRelation.class));
-        for (GatewayPathUrlRelation gatewayPathUrlRelation : gatewayPathUrlRelations) {
-            relations.put(gatewayPathUrlRelation.getKeyUrl(),
-                    new TargetUrlAndTenantIdEntity(gatewayPathUrlRelation.getTargetUrl(),
-                            gatewayPathUrlRelation.getTenantId()));
+        Map<String, String> relations = new LinkedHashMap<>();
+        List<ZuulRouteVO> results = jdbcTemplate.query(SqlConstants.extractAllRouteSql, new BeanPropertyRowMapper<>(ZuulRouteVO.class));
+        List<ClientResourceToFinalUrl> clientResourceToFinalUrls = jdbcTemplate.query(SqlConstants.clientTargetUrlSql, new BeanPropertyRowMapper<>(ClientResourceToFinalUrl.class));
+        for (ClientResourceToFinalUrl clientResourceToFinalUrl : clientResourceToFinalUrls) {
+            relations.put(clientResourceToFinalUrl.getCrKey(),clientResourceToFinalUrl.getFinalUrl());
         }
-        pathUrlRelation.set(relations);
+        finalUrlRelation.set(relations);
         for (ZuulRouteVO result : results) {
             if (StringUtils.isEmpty(result.getPath()) || StringUtils.isEmpty(result.getUrl())) {
                 continue;
@@ -108,6 +104,11 @@ public class CustomRouteLocator extends SimpleRouteLocator implements Refreshabl
             routes.put(zuulRoute.getPath(), zuulRoute);
         }
         return routes;
+    }
+
+    public void modifyRouteMap(Map<String, ZuulRoute> params){
+        Map<String, ZuulRoute> routeMap = getRoutesMap();
+        routeMap.putAll(params);
     }
 
     public static class ZuulRouteVO {

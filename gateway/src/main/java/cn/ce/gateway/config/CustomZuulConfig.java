@@ -1,12 +1,12 @@
 package cn.ce.gateway.config;
 
+import cn.ce.gateway.filter.ThirdClientAccessFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author: ggs
@@ -29,19 +29,10 @@ public class CustomZuulConfig {
         return routeLocator;
     }
 
-    //    @Bean
-//    public CustomPatternServiceRouteMapper customPatternServiceRouteMapper(){
-//        return new CustomPatternServiceRouteMapper("","");
-//    }
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public ThirdClientAccessFilter thirdClientFilter(CustomRouteLocator customRouteLocator) {
+        return new ThirdClientAccessFilter(customRouteLocator);
     }
-
-//    @Bean
-//    public ThirdClientFilter thirdClientFilter(CustomRouteLocator customRouteLocator, RestTemplate restTemplate) {
-//        return new ThirdClientFilter(customRouteLocator.getPathUrlRelation(), restTemplate);
-//    }
 
 
 }

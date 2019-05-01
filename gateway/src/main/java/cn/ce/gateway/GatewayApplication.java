@@ -15,8 +15,8 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 public class GatewayApplication {
 
 //    @Bean
-//    public ThirdClientFilter thirdClientFilter() {
-//        return new ThirdClientFilter();
+//    public ThirdClientAccessFilter thirdClientFilter() {
+//        return new ThirdClientAccessFilter();
 //    }
 
     public static void main(String[] args) {

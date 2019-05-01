@@ -26,10 +26,10 @@ public class IdentifyController {
     @PostMapping
     @ApiOperation("增加一条认证")
     public void insertSelective(@RequestBody @Valid Identify identify) {
-        if(identifyService.selectByUserId(identify.getUid()) != null){
+        if (identifyService.selectByUserId(identify.getUid()) != null) {
             throw new BusinessException("该用户的认证信息已经存在!");
         }
-        if(identifyService.selectByCardNumber(identify.getCardNumber()) != null){
+        if (identifyService.selectByCardNumber(identify.getCardNumber()) != null) {
             throw new BusinessException("该身份证号已经存在!");
         }
         identifyService.insertSelective(identify);
@@ -51,5 +51,11 @@ public class IdentifyController {
     @ApiOperation("查询一条认证")
     public Identify selectByUserId(@PathVariable Integer uid) {
         return identifyService.selectByUserId(uid);
+    }
+
+    @GetMapping("cardNumber/{cardNumber}")
+    @ApiOperation("按照身份证查询是否重复")
+    public boolean selectByCardNumber(@PathVariable String cardNumber) {
+        return identifyService.selectByCardNumber(cardNumber) != null;
     }
 }

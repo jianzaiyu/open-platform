@@ -20,6 +20,8 @@ import cn.ce.service.openapi.base.diyApply.entity.interfaceMessageInfo.InterfaMe
 import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.AppList;
 import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.Tenant;
 import cn.ce.service.openapi.base.diyApply.entity.tenantAppsEntity.TenantApps;
+import cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine;
+import cn.ce.service.openapi.base.newgateway.service.GatewayApiDefineService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
@@ -87,6 +89,8 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
     private IPlublicDiyApplyService plublicDiyApplyService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private GatewayApiDefineService gatewayApiDefineService;
 
     @Override
     public Result<?> saveApply(String sourceConfig, DiyApplyEntity entity) {
@@ -280,12 +284,25 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
             /*
               new gateway start.
              */
-            cn.ce.framework.base.pojo.Result result1 = accountService.insertClientInfo(clientId,secret);
-            if (result1.getStatus() == 200) {
+            cn.ce.framework.base.pojo.Result result1 = accountService.insertClientInfo(clientId, secret);
+            if (result1 != null && result1.getStatus() == 200) {
                 log.info("save oauthClientDetails success!  " + clientId);
             } else {
                 log.info("save oauthClientDetails fail!  " + clientId);
             }
+            List<GatewayApiDefine> RouteMap = gatewayApiDefineService.selectRouteMapByClientId(clientId);
+            for (GatewayApiDefine gatewayApiDefine : RouteMap) {
+                if (gatewayApiDefineService.updateByPathSelective(gatewayApiDefine) == 0) {
+                    gatewayApiDefine.setEnabled(true);
+                    gatewayApiDefine.setRetryable(true);
+                    gatewayApiDefine.setStripPrefix((byte) 1);
+                    gatewayApiDefineService.insert(gatewayApiDefine);
+                }
+            }
+
+            /*
+              new gateway end.
+             */
         } else {
             // 修改
 //			DiyApplyEntity applyById = diyApplyDao.findById(entity.getId());

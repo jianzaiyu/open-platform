@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ce.service.openapi.base.newgateway.dao.GatewayApiDefineDao">
+    <resultMap id="BaseResultMap" type="cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="service_id" jdbcType="VARCHAR" property="serviceId"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="retryable" jdbcType="BIT" property="retryable"/>
+        <result column="enabled" jdbcType="BIT" property="enabled"/>
+        <result column="strip_prefix" jdbcType="TINYINT" property="stripPrefix"/>
+        <result column="api_name" jdbcType="VARCHAR" property="apiName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, path, service_id, url, retryable, enabled, strip_prefix, api_name
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from gateway_api_define
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectRouteMapByClientId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        CONCAT(
+            '/',
+            diy_apply.client_id,
+            '/',
+            api_detail.version,
+            api_detail.listen_path
+        ) path,
+        CONCAT(
+            IFNULL(
+                saas.target_url,
+                api_detail.default_target_url
+            ),
+            listen_path
+        ) url,
+        api_detail.api_ch_name api_name
+    FROM
+        api_detail
+    LEFT JOIN diy_bound_api ON api_detail.api_id = diy_bound_api.api_id
+    LEFT JOIN diy_apply ON diy_bound_api.diy_apply_id = diy_apply.apply_id
+    LEFT JOIN saas ON saas.saas_id = diy_apply.product_instance_id
+    AND saas.resource_type = api_detail.resource_type
+    WHERE
+        diy_apply.client_id = #{clientId,jdbcType=VARCHAR}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from gateway_api_define
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByPath">
+    delete from gateway_api_define
+    where path = #{path,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine">
+    insert into gateway_api_define (id, path, service_id, 
+      url, retryable, enabled, strip_prefix, 
+      api_name)
+    values (#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR},
+      #{url,jdbcType=VARCHAR}, #{retryable,jdbcType=BIT}, #{enabled,jdbcType=BIT}, #{stripPrefix,jdbcType=TINYINT}, 
+      #{apiName,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into gateway_api_define
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="path != null">
+                path,
+            </if>
+            <if test="serviceId != null">
+                service_id,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="retryable != null">
+                retryable,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="stripPrefix != null">
+                strip_prefix,
+            </if>
+            <if test="apiName != null">
+                api_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                #{serviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="retryable != null">
+                #{retryable,jdbcType=BIT},
+            </if>
+            <if test="enabled != null">
+                #{enabled,jdbcType=BIT},
+            </if>
+            <if test="stripPrefix != null">
+                #{stripPrefix,jdbcType=TINYINT},
+            </if>
+            <if test="apiName != null">
+                #{apiName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine">
+        update gateway_api_define
+        <set>
+            <if test="path != null">
+                path = #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                service_id = #{serviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="retryable != null">
+                retryable = #{retryable,jdbcType=BIT},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=BIT},
+            </if>
+            <if test="stripPrefix != null">
+                strip_prefix = #{stripPrefix,jdbcType=TINYINT},
+            </if>
+            <if test="apiName != null">
+                api_name = #{apiName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPathSelective" parameterType="cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine">
+        update gateway_api_define
+        <set>
+            <if test="path != null">
+                path = #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                service_id = #{serviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="retryable != null">
+                retryable = #{retryable,jdbcType=BIT},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=BIT},
+            </if>
+            <if test="stripPrefix != null">
+                strip_prefix = #{stripPrefix,jdbcType=TINYINT},
+            </if>
+            <if test="apiName != null">
+                api_name = #{apiName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where path = #{path,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.ce.service.openapi.base.newgateway.entity.GatewayApiDefine">
+    update gateway_api_define
+    set path = #{path,jdbcType=VARCHAR},
+      service_id = #{serviceId,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      retryable = #{retryable,jdbcType=BIT},
+      enabled = #{enabled,jdbcType=BIT},
+      strip_prefix = #{stripPrefix,jdbcType=TINYINT},
+      api_name = #{apiName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,6 +1,7 @@
 package cn.ce.framework.security.config;
 
 import cn.ce.framework.security.common.SecurityWhiteListProperty;
+import cn.ce.framework.security.common.ServicePath;
 import cn.ce.framework.security.common.Swagger2Constants;
 import cn.ce.framework.security.exception.CustomAccessDeniedHandler;
 import cn.ce.framework.security.exception.CustomAuthenticationEntryPoint;
@@ -16,6 +17,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.web.cors.CorsUtils;
+
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author ggs
@@ -35,7 +39,7 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry
                 = http.httpBasic().disable().authorizeRequests();
-        initWhiteList(expressionInterceptUrlRegistry);
+        initWhiteLists(expressionInterceptUrlRegistry);
         expressionInterceptUrlRegistry.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().disable()
@@ -49,36 +53,59 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
     }
 
-    public void initWhiteList(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
-        if (securityWhiteListProperty.getSwaggerUrl() != null) {
-            if (securityWhiteListProperty.getSwaggerUrl().length == 1 &&
-                    securityWhiteListProperty.getSwaggerUrl()[0].equals("default")) {
-                expressionInterceptUrlRegistry
-                        .antMatchers(HttpMethod.GET, Swagger2Constants.swaggerPattern).permitAll();
-            } else {
-                expressionInterceptUrlRegistry
-                        .antMatchers(HttpMethod.GET, securityWhiteListProperty.getSwaggerUrl()).permitAll();
+    private void initWhiteLists(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+        if (securityWhiteListProperty.getWhiteList() != null
+                && securityWhiteListProperty.getWhiteList().size() != 0) {
+            for (Map.Entry<String, ServicePath> entry : this.securityWhiteListProperty.getWhiteList().entrySet()) {
+                if (entry.getKey().equals("emptyPrefix")) {
+                    addWhiteListByHttpMethod("", entry.getValue(), expressionInterceptUrlRegistry);
+                } else {
+                    addWhiteListByHttpMethod("/"+entry.getKey(), entry.getValue(), expressionInterceptUrlRegistry);
+                }
             }
         }
-        if (securityWhiteListProperty.getHttpGet() != null) {
-            expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.GET, securityWhiteListProperty.getHttpGet()).permitAll();
+
+    }
+
+    private void addWhiteListByHttpMethod(String prefix, ServicePath servicePath, ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+
+        if (servicePath.getSwaggerUrl() != null) {
+            if (servicePath.getSwaggerUrl().length == 1 &&
+                    servicePath.getSwaggerUrl()[0].equals("default")) {
+                expressionInterceptUrlRegistry
+                        .antMatchers(HttpMethod.GET, jointPrefix(prefix, Swagger2Constants.swaggerPattern)).permitAll();
+            } else {
+                expressionInterceptUrlRegistry
+                        .antMatchers(HttpMethod.GET, jointPrefix(prefix, servicePath.getSwaggerUrl())).permitAll();
+            }
         }
-        if (securityWhiteListProperty.getHttpPost() != null) {
+        if (servicePath.getHttpGet() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.POST, securityWhiteListProperty.getHttpPost()).permitAll();
+                    .antMatchers(HttpMethod.GET, jointPrefix(prefix, servicePath.getHttpGet())).permitAll();
         }
-        if (securityWhiteListProperty.getHttpPut() != null) {
+        if (servicePath.getHttpPost() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.PUT, securityWhiteListProperty.getHttpPut()).permitAll();
+                    .antMatchers(HttpMethod.POST, jointPrefix(prefix, servicePath.getHttpPost())).permitAll();
         }
-        if (securityWhiteListProperty.getHttpDelete() != null) {
+        if (servicePath.getHttpPut() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.DELETE, securityWhiteListProperty.getHttpDelete()).permitAll();
+                    .antMatchers(HttpMethod.PUT, jointPrefix(prefix, servicePath.getHttpPut())).permitAll();
         }
-        if (securityWhiteListProperty.getHttpAllMethod() != null) {
+        if (servicePath.getHttpDelete() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(securityWhiteListProperty.getHttpAllMethod()).permitAll();
+                    .antMatchers(HttpMethod.DELETE, jointPrefix(prefix, servicePath.getHttpDelete())).permitAll();
         }
+        if (servicePath.getHttpAllMethod() != null) {
+            expressionInterceptUrlRegistry
+                    .antMatchers(jointPrefix(prefix, servicePath.getHttpAllMethod())).permitAll();
+        }
+    }
+
+    private String[] jointPrefix(String prefix, String[] methodUrl) {
+        String[] finalMethodUrl = new String[methodUrl.length];
+        for (int i = 0; i < methodUrl.length; i++) {
+            finalMethodUrl[i] = prefix + methodUrl[i];
+        }
+        return finalMethodUrl;
     }
 }

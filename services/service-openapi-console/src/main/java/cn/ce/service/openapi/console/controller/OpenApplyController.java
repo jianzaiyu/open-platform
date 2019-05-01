@@ -11,10 +11,12 @@ import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotBlank;
 import java.security.Principal;
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
  * @Copyright: 2017 中企动力科技股份有限公司 © 1999-2017 300.cn All Rights Reserved
  *
  */
+@Validated
 @RestController
 @RequestMapping("/openApply") 
 public class OpenApplyController {
@@ -93,7 +96,7 @@ public class OpenApplyController {
 	 */
 	@RequestMapping(value = "/addApply", method = RequestMethod.POST)
 	@ApiOperation("添加开放应用")
-	public Result<?> addApply(Principal principal,@RequestHeader(required = false) String Authorization, @RequestBody OpenApplyEntity apply) {
+	public Result<?> addApply(@NotBlank String userName, @RequestHeader(required = false) String Authorization, @RequestBody OpenApplyEntity apply) {
 		
 		if(StringUtils.isBlank(apply.getApplyName())){
 			return new Result<String>("服务名称不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
@@ -101,10 +104,7 @@ public class OpenApplyController {
 		if(StringUtils.isBlank(apply.getApplyKey())){
 			return new Result<String>("服务key不能为空!",ErrorCodeNo.SYS005,null,Status.FAILED);
 		}
-		if(principal == null){
-			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
-		}
-		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(Authorization);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(userName);
 		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		return	consoleOpenApplyService.addApply(user, apply);
 		

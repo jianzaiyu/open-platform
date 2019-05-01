@@ -31,20 +31,30 @@ public class UserController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @GetMapping("current")
-    @ApiOperation("当前登陆用户")
-    public User current(Principal principal) {
-        User user = userService.selectByUserName(principal.getName());
-        if (user != null) {
-            user.setPassword("N/A");
-        }
-        return user;
-    }
+//    @GetMapping("current")
+//    @ApiOperation("当前登陆用户")
+//    public User current(Principal principal) {
+//        User user = userService.selectByUserName(principal.getName());
+//        if (user != null) {
+//            user.setPassword("N/A");
+//        }
+//        return user;
+//    }
+//
+//    @GetMapping("current/detail")
+//    @ApiOperation("当前登陆用户信息及认证信息")
+//    public UserDetail selectUserDetailByUserName(Principal principal) {
+//        UserDetail userDetail = userService.selectUserDetailByUserName(principal.getName());
+//        if (userDetail != null) {
+//            userDetail.setPassword("N/A");
+//        }
+//        return userDetail;
+//    }
 
-    @GetMapping("current/detail")
+    @GetMapping("detail/{userName}")
     @ApiOperation("当前登陆用户信息及认证信息")
-    public UserDetail selectUserDetailByUserName(Principal principal) {
-        UserDetail userDetail = userService.selectUserDetailByUserName(principal.getName());
+    public UserDetail selectUserDetailByUserName(@PathVariable String userName) {
+        UserDetail userDetail = userService.selectUserDetailByUserName(userName);
         if (userDetail != null) {
             userDetail.setPassword("N/A");
         }
@@ -74,7 +84,7 @@ public class UserController {
     public void forgetPassword(@RequestBody @Valid User user, @RequestHeader String Authorization) {
         User user1 = userService.selectByUserName(user.getUsername());
         if(user1 == null){
-            throw new BusinessException("用户名不存在!");
+            throw new BusinessException("该用户不存在!");
         }
         user.setEmail(user1.getEmail());
         String token = redisUtil.get("email_forget_" + user.getEmail());

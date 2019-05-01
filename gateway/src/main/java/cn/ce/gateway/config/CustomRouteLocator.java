@@ -1,5 +1,8 @@
 package cn.ce.gateway.config;
 
+import cn.ce.gateway.entity.GatewayPathUrlRelation;
+import cn.ce.gateway.entity.TargetUrlAndTenantIdEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.zuul.filters.RefreshableRouteLocator;
@@ -13,27 +16,34 @@ import org.springframework.util.StringUtils;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author: ggs
  * @date: 2019-04-28 15:43
  **/
+@Slf4j
 public class CustomRouteLocator extends SimpleRouteLocator implements RefreshableRouteLocator {
 
-    public final static Logger logger = LoggerFactory.getLogger(CustomRouteLocator.class);
 
     private JdbcTemplate jdbcTemplate;
 
     private ZuulProperties properties;
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
+    public AtomicReference<Map<String, TargetUrlAndTenantIdEntity>> getPathUrlRelation() {
+        return pathUrlRelation;
+    }
+
+    private AtomicReference<Map<String, TargetUrlAndTenantIdEntity>> pathUrlRelation = new AtomicReference<>();
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public CustomRouteLocator(String servletPath, ZuulProperties properties) {
         super(servletPath, properties);
         this.properties = properties;
-        logger.info("servletPath:{}",servletPath);
+        log.info("servletPath:{}", servletPath);
     }
 
     //父类已经提供了这个方法，这里写出来只是为了说明这一个方法很重要！！！
@@ -74,20 +84,28 @@ public class CustomRouteLocator extends SimpleRouteLocator implements Refreshabl
         return values;
     }
 
-    private Map<String, ZuulRoute> locateRoutesFromDB(){
+    private Map<String, ZuulRoute> locateRoutesFromDB() {
         Map<String, ZuulRoute> routes = new LinkedHashMap<>();
-        List<ZuulRouteVO> results = jdbcTemplate.query("select * from gateway_api_define where enabled = true ",new BeanPropertyRowMapper<>(ZuulRouteVO.class));
+        Map<String, TargetUrlAndTenantIdEntity> relations = new LinkedHashMap<>();
+        List<ZuulRouteVO> results = jdbcTemplate.query("select * from gateway_api_define where enabled = true ", new BeanPropertyRowMapper<>(ZuulRouteVO.class));
+        List<GatewayPathUrlRelation> gatewayPathUrlRelations = jdbcTemplate.query("select * from gateway_path_url_relation", new BeanPropertyRowMapper<>(GatewayPathUrlRelation.class));
+        for (GatewayPathUrlRelation gatewayPathUrlRelation : gatewayPathUrlRelations) {
+            relations.put(gatewayPathUrlRelation.getKeyUrl(),
+                    new TargetUrlAndTenantIdEntity(gatewayPathUrlRelation.getTargetUrl(),
+                            gatewayPathUrlRelation.getTenantId()));
+        }
+        pathUrlRelation.set(relations);
         for (ZuulRouteVO result : results) {
-            if(StringUtils.isEmpty(result.getPath()) || StringUtils.isEmpty(result.getUrl()) ){
+            if (StringUtils.isEmpty(result.getPath()) || StringUtils.isEmpty(result.getUrl())) {
                 continue;
             }
             ZuulRoute zuulRoute = new ZuulRoute();
             try {
-                org.springframework.beans.BeanUtils.copyProperties(result,zuulRoute);
+                org.springframework.beans.BeanUtils.copyProperties(result, zuulRoute);
             } catch (Exception e) {
-                logger.error("=============load zuul route info from db with error==============",e);
+                log.error("=============load zuul route info from db with error==============", e);
             }
-            routes.put(zuulRoute.getPath(),zuulRoute);
+            routes.put(zuulRoute.getPath(), zuulRoute);
         }
         return routes;
     }

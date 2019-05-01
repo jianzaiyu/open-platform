@@ -46,15 +46,12 @@ public class ApiController {
 	@ApiOperation("发布api_TODO")
 	public Result<?> publishApi(
 			HttpServletRequest request,
-			@RequestBody ApiEntity entity,Principal principal,@RequestHeader(required = false) String Authorization) {
+			@RequestBody ApiEntity entity,String userName) {
 
 		/**
 		 * TODO 下一期改动api定义和api参数
 		 */
-		if(principal == null){
-			return new Result<String>("用户未登录", ErrorCodeNo.SYS003, null, Status.FAILED);
-		}
-		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(Authorization);
+		cn.ce.framework.base.pojo.Result result = accountService.selectUserDetailByUserName(userName);
 		User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 		NewApiEntity newApiEntity = ApiTransform.transToTotalNewApi(entity);
 		

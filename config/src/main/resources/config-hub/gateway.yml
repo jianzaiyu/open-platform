@@ -48,11 +48,22 @@ security:
     resource:
       tokenInfoUri: ${uaa.uri}/oauth/check_token
       white-list:
-        swaggerUrl: default
-        httpGet: /user/duplicate/username/*,/user/duplicate/email/*,/user/contact/*,/code
-        httpPost: /user,/mail/register,/mail/forget/*,/code
-        httpPut:  /user/forget
-        httpAllMethod: /client/*
+        emptyPrefix:
+          swaggerUrl: default
+        uaa:
+          httpAllMethod: /**
+        account:
+          swaggerUrl: default
+          httpGet: /user/duplicate/username/*,/user/duplicate/email/*,/user/contact/*,/code
+          httpPost: /user,/mail/register,/mail/forget/*,/code
+          httpPut:  /user/forget
+          httpAllMethod: /client/*
+        console:
+          swaggerUrl: default
+          httpAllMethod: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**,/static/file/*
+        manage:
+          swaggerUrl: default
+          httpAllMethod: /admin/**,/test/**,/route/**,/apiBulk/exportApis
 
 zuul:
   SendErrorFilter:
@@ -74,6 +85,12 @@ zuul:
       path: /console/**
     service-openapi-manage:
       path: /manage/**
+    allPath:
+      path: /aaa
+      url: http://localhost:8080/uaa/oauth/token
+    allPath1:
+      path: /1
+      url: http://10.12.51.210/account/user
 #    b-services:
 #      path: /b/**
 #      sensitiveHeaders:

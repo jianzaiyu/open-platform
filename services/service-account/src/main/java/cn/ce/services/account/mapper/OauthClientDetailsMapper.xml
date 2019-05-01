@@ -40,11 +40,11 @@
     insert into oauth_client_details (client_id, resource_ids, client_secret, 
       scope, authorized_grant_types, web_server_redirect_uri, 
       authorities, access_token_validity, refresh_token_validity, 
-      additional_information, autoapprove)
+      additional_information, autoapprove, client_type)
     values (#{clientId,jdbcType=VARCHAR}, #{resourceIds,jdbcType=VARCHAR}, #{clientSecret,jdbcType=VARCHAR}, 
       #{scope,jdbcType=VARCHAR}, #{authorizedGrantTypes,jdbcType=VARCHAR}, #{webServerRedirectUri,jdbcType=VARCHAR}, 
       #{authorities,jdbcType=VARCHAR}, #{accessTokenValidity,jdbcType=INTEGER}, #{refreshTokenValidity,jdbcType=INTEGER}, 
-      #{additionalInformation,jdbcType=VARCHAR}, #{autoapprove,jdbcType=VARCHAR})
+      #{additionalInformation,jdbcType=VARCHAR}, #{autoapprove,jdbcType=VARCHAR},#{clientType,jdbcType=TINYINT})
   </insert>
     <insert id="insertSelective" parameterType="cn.ce.services.account.entity.OauthClientDetails">
         insert into oauth_client_details
@@ -82,6 +82,9 @@
             <if test="autoapprove != null">
                 autoapprove,
             </if>
+            <if test="clientType != null">
+                client_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="clientId != null">
@@ -116,6 +119,9 @@
             </if>
             <if test="autoapprove != null">
                 #{autoapprove,jdbcType=VARCHAR},
+            </if>
+            <if test="clientType != null">
+                #{clientType,jdbcType=TINYINT},
             </if>
         </trim>
     </insert>
@@ -152,6 +158,9 @@
             <if test="autoapprove != null">
                 autoapprove = #{autoapprove,jdbcType=VARCHAR},
             </if>
+            <if test="clientType != null">
+                client_type = #{clientType,jdbcType=TINYINT},
+            </if>
         </set>
         where client_id = #{clientId,jdbcType=VARCHAR}
     </update>
@@ -166,7 +175,8 @@
       access_token_validity = #{accessTokenValidity,jdbcType=INTEGER},
       refresh_token_validity = #{refreshTokenValidity,jdbcType=INTEGER},
       additional_information = #{additionalInformation,jdbcType=VARCHAR},
-      autoapprove = #{autoapprove,jdbcType=VARCHAR}
+      autoapprove = #{autoapprove,jdbcType=VARCHAR},
+      client_type = #{clientType,jdbcType=TINYINT}
     where client_id = #{clientId,jdbcType=VARCHAR}
   </update>
 </mapper>

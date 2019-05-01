@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 public class Identify implements Serializable {
     private Integer id;
-    @NotBlank
+
     private Integer uid;
     @NotBlank
     private String realName;

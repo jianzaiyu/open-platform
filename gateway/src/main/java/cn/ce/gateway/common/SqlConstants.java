@@ -18,10 +18,9 @@ public class SqlConstants {
                     "GROUP BY path";
     public static final String clientTargetUrlSql =
             "SELECT" +
-                    "CONCAT(client_id,saas.resource_type) cr_key," +
-                    "CONCAT(target_url,'?tenantId=',product_instance_id) url" +
+                    "CONCAT(client_id,IFNULL(saas.resource_type,'')) cr_key," +
+                    "CONCAT(IFNULL(target_url,''),'?tenantId=',product_instance_id) final_url" +
                     "FROM" +
                     "diy_apply" +
-                    "LEFT JOIN saas ON product_instance_id = saas_id" +
-                    "where saas.resource_type is not null";
+                    "LEFT JOIN saas ON product_instance_id = saas_id";
 }

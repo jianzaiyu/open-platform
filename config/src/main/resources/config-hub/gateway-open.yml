@@ -69,7 +69,7 @@ security:
       clientId: inner_service
       clientSecret: 123456
     resource:
-      tokenInfoUri: ${uaa.uri}/oauth/check_token
+      tokenInfoUri: http://service-auth/oauth/check_token
 
 zuul:
   SendErrorFilter:

@@ -210,10 +210,10 @@
             <properties>
                 <security.username>user</security.username>
                 <security.password>password</security.password>
-                <uaa.uri>http://localhost:8011</uaa.uri>
                 <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
-                <registry.uri1>http://${security.username}:${security.password}@10.12.40.82:8001/eureka/</registry.uri1>
+                <!--<registry.uri1>http://${security.username}:${security.password}@10.12.40.82:8001/eureka/</registry.uri1>-->
+                <registry.uri1>http://${security.username}:${security.password}@localhost:8001/eureka/</registry.uri1>
                 <registry.uri>${registry.uri1}</registry.uri>
                 <kafka.zookeeper.quorum>10.12.51.187:2181,10.12.51.188:2181,10.12.51.189:2181</kafka.zookeeper.quorum>
             </properties>
@@ -226,7 +226,6 @@
             <properties>
                 <security.username>user</security.username>
                 <security.password>password</security.password>
-                <uaa.uri>http://10.12.51.210/uaa</uaa.uri>
                 <config.uri>http://172.22.146.20:8000</config.uri>
                 <config.search>config-hub</config.search>
                 <registry.uri1>http://${security.username}:${security.password}@10.12.51.210:8001/eureka/</registry.uri1>
@@ -240,7 +239,6 @@
             <properties>
                 <security.username>disAdmin</security.username>
                 <security.password>disAdmin</security.password>
-                <config.uri>http://10.20.1.53:8000</config.uri>
                 <config.search>config-hub-pro</config.search>
                 <registry.uri1>http://${security.username}:${security.password}@10.20.1.53:8001/eureka/</registry.uri1>
                 <registry.uri2>http://${security.username}:${security.password}@10.20.1.54:8001/eureka/</registry.uri2>

@@ -11,17 +11,15 @@ spring:
   profiles:
     active: native
   cloud:
-      config:
-        server:
-          native:
-            searchLocations: classpath:/${config.search}
+    config:
+      server:
+        native:
+          searchLocations: classpath:/${config.search}
 #          git:
 #            skipSslValidation: true
 #            uri: https://github.com/jianzaiyu/dis
 #            search-paths: config-hub
 
-#  rabbitmq:
-#    host: rabbitmq
 management:
   endpoints:
     web:

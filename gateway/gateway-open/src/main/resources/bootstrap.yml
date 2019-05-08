@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: gateway-open
+  cloud:
+      config:
+        uri: ${config.uri}
+        fail-fast: true
+        username: ${security.username}
+        password: ${security.password}
+        retry:
+          initial-interval: 2000
+          max-interval: 10000
+          multiplier: 2
+          max-attempts: 10

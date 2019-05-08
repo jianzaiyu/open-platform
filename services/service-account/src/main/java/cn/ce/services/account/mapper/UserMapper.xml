@@ -17,6 +17,7 @@
     <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
   </resultMap>
   <resultMap id="DetailResultMap" type="cn.ce.services.account.entity.UserDetail" extends="BaseResultMap">
+    <result column="id" jdbcType="INTEGER" property="identifyId"/>
     <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
     <result column="real_name" jdbcType="VARCHAR" property="realName"/>
     <result column="card_front" jdbcType="VARCHAR" property="cardFront"/>
@@ -32,6 +33,7 @@
   </sql>
   <sql id="UserDetail_Column_List">
     u.id as id,
+    i.id as identifyId,
     userName,
   password,
   telNumber,
@@ -91,6 +93,29 @@
       left join identify i
       on u.id = i.uid
       where userName = #{userName,jdbcType=VARCHAR}
+    </select>
+    <select id="selectBySelective" parameterType="cn.ce.services.account.entity.UserDetail" resultMap="DetailResultMap">
+      select
+      <include refid="UserDetail_Column_List" />
+      from user u
+      left join identify i
+      on u.id = i.uid
+      where 1=1
+      <if test="username != null">
+        AND userName LIKE CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="email != null">
+        AND email =  #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="usertype != null">
+        AND userType = #{usertype,jdbcType=TINYINT}
+      </if>
+      <if test="checkState != null">
+        AND check_state = #{checkState,jdbcType=TINYINT}
+      </if>
+      <if test="state != null">
+        AND state = #{state,jdbcType=TINYINT}
+      </if>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user

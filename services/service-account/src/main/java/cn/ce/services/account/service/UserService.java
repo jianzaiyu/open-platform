@@ -1,5 +1,6 @@
 package cn.ce.services.account.service;
 
+import cn.ce.framework.base.pojo.Page;
 import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.entity.User;
 
@@ -34,4 +35,6 @@ public interface UserService {
     int updateByUserNameSelective(User record);
 
     UserDetail selectUserDetailByUserName(String userName);
+
+    Page selectBySelective(UserDetail userDetail, Page page);
 }

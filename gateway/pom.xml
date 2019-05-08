@@ -2,10 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>cn.ce</groupId>
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>gateway</name>
 
     <parent>
@@ -14,6 +13,11 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <modules>
+        <module>gateway-cloud</module>
+        <module>gateway-open</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -38,27 +42,14 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bus-kafka</artifactId>
+            <groupId>cn.ce</groupId>
+            <artifactId>framework-security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>cn.ce</groupId>-->
-            <!--<artifactId>framework-security</artifactId>-->
-            <!--<version>0.0.1-SNAPSHOT</version>-->
-        <!--</dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>nl.bitwalker</groupId>-->
-            <!--<artifactId>UserAgentUtils</artifactId>-->
-            <!--<version>1.2.4</version>-->
+        <!--<groupId>nl.bitwalker</groupId>-->
+        <!--<artifactId>UserAgentUtils</artifactId>-->
+        <!--<version>1.2.4</version>-->
         <!--</dependency>-->
     </dependencies>
 </project>

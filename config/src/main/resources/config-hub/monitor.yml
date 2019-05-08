@@ -1,6 +1,9 @@
 server:
   port: 8002
 
+swagger2:
+  enabled: false
+
 spring:
   zipkin:
     enabled: false

@@ -1,6 +1,7 @@
 package cn.ce.services.account.controller;
 
 import cn.ce.framework.base.exception.BusinessException;
+import cn.ce.framework.base.pojo.Page;
 import cn.ce.framework.redis.support.RedisUtil;
 import cn.ce.services.account.entity.User;
 import cn.ce.services.account.entity.UserDetail;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * @author: ggs
@@ -83,7 +85,7 @@ public class UserController {
     @ApiOperation("忘记密码_无保护")
     public void forgetPassword(@RequestBody @Valid User user, @RequestHeader String Authorization) {
         User user1 = userService.selectByUserName(user.getUsername());
-        if(user1 == null){
+        if (user1 == null) {
             throw new BusinessException("该用户不存在!");
         }
         user.setEmail(user1.getEmail());
@@ -117,6 +119,12 @@ public class UserController {
             user.setPassword("N/A");
         }
         return user;
+    }
+
+    @GetMapping("list")
+    @ApiOperation("查询用户信息")
+    public Page selectByPrimaryKey(UserDetail userDetail, Page page) {
+        return userService.selectBySelective(userDetail, page);
     }
 
     @GetMapping("duplicate/username/{userName}")

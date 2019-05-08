@@ -290,15 +290,16 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
             } else {
                 log.info("save oauthClientDetails fail!  " + clientId);
             }
-            List<GatewayApiDefine> RouteMap = gatewayApiDefineService.selectRouteMapByClientId(clientId);
-            for (GatewayApiDefine gatewayApiDefine : RouteMap) {
-                if (gatewayApiDefineService.updateByPathSelective(gatewayApiDefine) == 0) {
-                    gatewayApiDefine.setEnabled(true);
-                    gatewayApiDefine.setRetryable(true);
-                    gatewayApiDefine.setStripPrefix((byte) 1);
-                    gatewayApiDefineService.insert(gatewayApiDefine);
-                }
-            }
+            //废弃
+//            List<GatewayApiDefine> RouteMap = gatewayApiDefineService.selectRouteMapByClientId(clientId);
+//            for (GatewayApiDefine gatewayApiDefine : RouteMap) {
+//                if (gatewayApiDefineService.updateByPathSelective(gatewayApiDefine) == 0) {
+//                    gatewayApiDefine.setEnabled(true);
+//                    gatewayApiDefine.setRetryable(true);
+//                    gatewayApiDefine.setStripPrefix((byte) 1);
+//                    gatewayApiDefineService.insert(gatewayApiDefine);
+//                }
+//            }
 
             /*
               new gateway end.

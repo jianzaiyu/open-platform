@@ -1,9 +1,11 @@
 package cn.ce.services.account.service.impl;
 
+import cn.ce.framework.base.pojo.Page;
 import cn.ce.services.account.dao.UserDao;
 import cn.ce.services.account.entity.User;
 import cn.ce.services.account.entity.UserDetail;
 import cn.ce.services.account.service.UserService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +78,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetail selectUserDetailByUserName(String userName) {
         return userDao.selectUserDetailByUserName(userName);
+    }
+
+    @Override
+    public Page selectBySelective(UserDetail userDetail, Page page) {
+        PageHelper.startPage(page);
+        page.fill(userDao.selectBySelective(userDetail));
+        return page;
     }
 }

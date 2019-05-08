@@ -33,4 +33,6 @@ public interface UserDao {
     int updateByUserNameSelective(User record);
 
     UserDetail selectUserDetailByUserName(String userName);
+
+    List<UserDetail> selectBySelective(User user);
 }

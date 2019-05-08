@@ -43,15 +43,26 @@ public class MailController {
     @PostMapping("forget/{userName}")
     public void postForgetMail(@PathVariable String userName, @RequestBody @Valid Mail mail) {
         User user = userService.selectByUserName(userName);
-        if(user != null && !StringUtils.isEmpty(user.getEmail())){
+        if (user != null && !StringUtils.isEmpty(user.getEmail())) {
             mail.setReceiver(user.getEmail());
-        }else {
+        } else {
             throw new BusinessException("用户还未注册,或邮箱为空");
         }
         String token = IdentifierGenerateSupport.genRandomUUID8();
         redisUtil.setForTimeMIN("email_forget_" + mail.getReceiver()
                 , token, 2);
-        mail.setContent(mail.getContent() + "&token=" + token);
+        String template = "发送人 ：中企开放平台@300.cn\n" +
+                "你好!\n" +
+                "感谢你使用中企开放平台。 \n" +
+                "要重置密码，请单击下面的链接。\n" +
+                "#link#\n" +
+                "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入中企开放平台。 （该链接在48小时内有效，48小时后需要重新注册）\n" +
+                "                致敬！\n" +
+                "中企开放平台团队\n" +
+                "----------------------------- \n" +
+                "www.open.300.cn";
+        String link = mail.getContent() + "&token=" + token;
+        mail.setContent(template.replaceAll("#link#", link));
         mailService.sendSimpleMail(mail);
     }
 }

@@ -207,9 +207,6 @@
     <profiles>
         <profile>
             <id>local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <security.username>user</security.username>
                 <security.password>password</security.password>
@@ -223,6 +220,9 @@
         </profile>
         <profile>
             <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <security.username>user</security.username>
                 <security.password>password</security.password>

@@ -13,7 +13,7 @@
     </appender>
 
     <!-- 控制台输出日志级别 -->
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
     <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->

@@ -70,12 +70,16 @@ security:
       clientSecret: 123456
     resource:
       tokenInfoUri: http://service-auth/oauth/check_token
+      white-list:
+        emptyPrefix:
+          httpAllMethod: /actuator/**
+
 
 zuul:
   SendErrorFilter:
     error:
       disable : true
-  retryable: true  #zuul.routes.<routename>.retryable=true
+  retryable: false  #zuul.routes.<routename>.retryable=true
   ignoredServices: '*'
   host:
     connect-timeout-millis: 20000

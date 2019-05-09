@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 
 import cn.ce.service.openapi.base.account.entity.OauthClientDetails;
 import cn.ce.service.openapi.base.account.service.AccountService;
+import cn.ce.service.openapi.base.account.service.GatewayOpenService;
 import cn.ce.service.openapi.base.diyApply.entity.DiyApplyEntity;
 import cn.ce.service.openapi.base.diyApply.entity.QueryDiyApplyEntity;
 import cn.ce.service.openapi.base.diyApply.entity.interfaceMessageInfo.InterfaMessageInfoString;
@@ -90,7 +91,7 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private GatewayApiDefineService gatewayApiDefineService;
+    private GatewayOpenService gatewayOpenService;
 
     @Override
     public Result<?> saveApply(String sourceConfig, DiyApplyEntity entity) {
@@ -290,6 +291,8 @@ public class ConsoleDiyApplyServiceImpl implements IConsoleDiyApplyService {
             } else {
                 log.info("save oauthClientDetails fail!  " + clientId);
             }
+            //刷新网关数据
+            gatewayOpenService.doRefresh();
             //废弃
 //            List<GatewayApiDefine> RouteMap = gatewayApiDefineService.selectRouteMapByClientId(clientId);
 //            for (GatewayApiDefine gatewayApiDefine : RouteMap) {

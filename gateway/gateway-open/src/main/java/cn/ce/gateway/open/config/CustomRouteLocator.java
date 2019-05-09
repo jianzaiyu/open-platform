@@ -1,6 +1,5 @@
 package cn.ce.gateway.open.config;
 
-import cn.ce.gateway.open.dao.GatewayDao;
 import cn.ce.gateway.open.service.GatewayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,10 @@ public class CustomRouteLocator extends SimpleRouteLocator {
         super(dispatcherServletPath.getPrefix(), zuulProperties);
         this.properties = zuulProperties;
         log.info("servletPath:{}", dispatcherServletPath.getPrefix());
+    }
+
+    public void doRefresh() {
+        super.doRefresh();
     }
 
     @Override
@@ -68,7 +71,7 @@ public class CustomRouteLocator extends SimpleRouteLocator {
             String path = map.get("listen_path");
             if (!StringUtils.isEmpty(path)) {
                 ZuulRoute zuulRoute = new ZuulRoute();
-                zuulRoute.setRetryable(true);
+                zuulRoute.setRetryable(false);
                 zuulRoute.setStripPrefix(false);
                 zuulRoute.setPath(path);
                 zuulRoute.setId(path);

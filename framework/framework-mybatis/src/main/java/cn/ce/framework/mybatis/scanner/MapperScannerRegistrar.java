@@ -102,7 +102,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     }
 
     /**
-     * load properties
+     * load common
      *
      * @param properties
      * @return

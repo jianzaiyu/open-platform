@@ -41,8 +41,47 @@ spring:
         max-wait: 10s
         max-idle: 20
   datasource:
-    url: jdbc:mysql://10.12.40.224:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
-    username: onlineDB
-    password: bo28jsl29a
-    driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://10.12.40.224:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
+      username: onlineDB
+      password: bo28jsl29a
+  #    url: jdbc:mysql://localhost:3306/auth_centre?useSSL=false&useUnicode=true&characterEncoding=utf8
+  #    username: root
+  #    password: 123456
+      driverClassName: com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+        minIdle: 5
+        useGlobalDataSourceStat: true
+        validationQuery: SELECT 1 FROM DUAL
+        initialSize: 5
+        maxWait: 60000
+        filters: stat,wall,slf4j
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        testWhileIdle: true
+        testOnBorrow: false
+        minEvictableIdleTimeMillis: 300000
+        timeBetweenEvictionRunsMillis: 60000
+        testOnReturn: false
+        maxActive: 20
+        webStatFilter:
+          enabled: true
+        statViewServlet:
+          enabled: true
+          loginUsername: ${spring.security.user.name}
+          loginPassword: ${spring.security.user.password}
+          resetEnable: true
+  data:
+    mongodb:
+      custom:
+        hosts: 10.12.40.62
+        ports: 27017
+#        replica-set: mgset-3590061
+#        username: jancee
+#        password: abc123
+        database: CC_DB
+#        authentication-database: CC_DB
+        connections-per-host: 20
+        min-connections-per-host: 20
 

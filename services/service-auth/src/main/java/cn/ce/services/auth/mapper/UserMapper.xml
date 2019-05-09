@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ce.services.auth.dao.UserDao">
+  <resultMap id="BaseResultMap" type="cn.ce.services.auth.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="telNumber" jdbcType="VARCHAR" property="telnumber" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="orgId" jdbcType="VARCHAR" property="orgid" />
+    <result column="orgName" jdbcType="VARCHAR" property="orgname" />
+    <result column="userType" jdbcType="TINYINT" property="usertype" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="lastLoginIp" jdbcType="VARCHAR" property="lastloginip" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
+    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userName, password, telNumber, email, orgId, orgName,
+    userType, avatar, state, lastLoginIp, lastLoginTime, regTime
+  </sql>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where userName = #{userName,jdbcType=VARCHAR}
+  </select>
+  <insert id="insertSelective" parameterType="cn.ce.services.auth.entity.User"
+          keyProperty="id" useGeneratedKeys="true">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="telnumber != null">
+        telNumber,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="orgid != null">
+        orgId,
+      </if>
+      <if test="orgname != null">
+        orgName,
+      </if>
+      <if test="usertype != null">
+        userType,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+        state,
+      <if test="lastloginip != null">
+        lastLoginIp,
+      </if>
+      <if test="lastlogintime != null">
+        lastLoginTime,
+      </if>
+        regTime
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="telnumber != null">
+        #{telnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="orgid != null">
+        #{orgid,jdbcType=VARCHAR},
+      </if>
+      <if test="orgname != null">
+        #{orgname,jdbcType=VARCHAR},
+      </if>
+      <if test="usertype != null">
+        #{usertype,jdbcType=TINYINT},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+        1,
+      <if test="lastloginip != null">
+        #{lastloginip,jdbcType=VARCHAR},
+      </if>
+      <if test="lastlogintime != null">
+        #{lastlogintime,jdbcType=TIMESTAMP},
+      </if>
+        CURRENT_TIMESTAMP
+    </trim>
+  </insert>
+</mapper>

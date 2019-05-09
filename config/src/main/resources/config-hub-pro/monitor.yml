@@ -15,7 +15,7 @@ spring:
 #    host: smtp.qq.com   # qq邮箱服务器主机host，需要在QQ邮箱设置中开启smtp协议 163邮箱为smtp.163.com
 #    username: XXXXX@qq.com  # qq邮箱账号
 #    password: XXXXXXXXXX  # 第三方登录的授权码
-#    properties:
+#    common:
 #      mail.debug: false
 #      mail.smtp.auth: true
 #      mail.smtp.starttls.enable: true

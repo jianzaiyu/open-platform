@@ -22,6 +22,7 @@
         <module>framework-swagger</module>
         <module>framework-mail</module>
         <module>framework-security</module>
+        <module>framework-mongodb</module>
     </modules>
 
     <build>

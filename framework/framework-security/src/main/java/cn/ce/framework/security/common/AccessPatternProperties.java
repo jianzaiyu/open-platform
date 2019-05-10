@@ -7,7 +7,7 @@ import lombok.Data;
  * @date: 2019-04-28 18:33
  **/
 @Data
-public class ServicePath {
+public class AccessPatternProperties {
     private String[] swaggerUrl;
     private String[] httpAllMethod;
     private String[] httpGet;

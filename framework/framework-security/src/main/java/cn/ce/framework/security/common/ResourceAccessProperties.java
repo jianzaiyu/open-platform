@@ -12,6 +12,6 @@ import java.util.Map;
  **/
 @Data
 @ConfigurationProperties(prefix = "security.oauth2.resource")
-public class SecurityWhiteListProperty {
-    private Map<String, ServicePath> whiteList = new LinkedHashMap<>();
+public class ResourceAccessProperties {
+    private Map<String, AccessPatternProperties> whiteList = new LinkedHashMap<>();
 }

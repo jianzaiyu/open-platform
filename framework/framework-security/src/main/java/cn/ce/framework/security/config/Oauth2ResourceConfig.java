@@ -1,12 +1,14 @@
 package cn.ce.framework.security.config;
 
-import cn.ce.framework.security.common.SecurityWhiteListProperty;
-import cn.ce.framework.security.common.ServicePath;
+import cn.ce.framework.security.common.ResourceAccessProperties;
+import cn.ce.framework.security.common.AccessPatternProperties;
 import cn.ce.framework.security.common.Swagger2Constants;
 import cn.ce.framework.security.exception.CustomAccessDeniedHandler;
 import cn.ce.framework.security.exception.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -18,7 +20,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.web.cors.CorsUtils;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -29,11 +30,17 @@ import java.util.Map;
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties(SecurityWhiteListProperty.class)
+@EnableConfigurationProperties(ResourceAccessProperties.class)
 public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
-    private SecurityWhiteListProperty securityWhiteListProperty;
+    private ResourceAccessProperties resourceAccessProperties;
+
+    @Autowired
+    private ResourceServerProperties resourceServerProperties;
+
+    @Autowired(required = false)
+    private LoadBalancerClient loadBalancerClient;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -49,55 +56,60 @@ public class Oauth2ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
+        BalancedRemoteTokenServices balancedRemoteTokenServices = new BalancedRemoteTokenServices(loadBalancerClient);
+        balancedRemoteTokenServices.setCheckTokenEndpointUrl(resourceServerProperties.getTokenInfoUri());
+        balancedRemoteTokenServices.setClientId(resourceServerProperties.getClientId());
+        balancedRemoteTokenServices.setClientSecret(resourceServerProperties.getClientSecret());
+        resources.tokenServices(balancedRemoteTokenServices);
         resources.accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
     }
 
     private void initWhiteLists(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
-        if (securityWhiteListProperty.getWhiteList() != null
-                && securityWhiteListProperty.getWhiteList().size() != 0) {
-            for (Map.Entry<String, ServicePath> entry : this.securityWhiteListProperty.getWhiteList().entrySet()) {
+        if (resourceAccessProperties.getWhiteList() != null
+                && resourceAccessProperties.getWhiteList().size() != 0) {
+            for (Map.Entry<String, AccessPatternProperties> entry : this.resourceAccessProperties.getWhiteList().entrySet()) {
                 if (entry.getKey().equals("emptyPrefix")) {
                     addWhiteListByHttpMethod("", entry.getValue(), expressionInterceptUrlRegistry);
                 } else {
-                    addWhiteListByHttpMethod("/"+entry.getKey(), entry.getValue(), expressionInterceptUrlRegistry);
+                    addWhiteListByHttpMethod("/" + entry.getKey(), entry.getValue(), expressionInterceptUrlRegistry);
                 }
             }
         }
 
     }
 
-    private void addWhiteListByHttpMethod(String prefix, ServicePath servicePath, ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+    private void addWhiteListByHttpMethod(String prefix, AccessPatternProperties accessPatternProperties, ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
 
-        if (servicePath.getSwaggerUrl() != null) {
-            if (servicePath.getSwaggerUrl().length == 1 &&
-                    servicePath.getSwaggerUrl()[0].equals("default")) {
+        if (accessPatternProperties.getSwaggerUrl() != null) {
+            if (accessPatternProperties.getSwaggerUrl().length == 1 &&
+                    accessPatternProperties.getSwaggerUrl()[0].equals("default")) {
                 expressionInterceptUrlRegistry
                         .antMatchers(HttpMethod.GET, jointPrefix(prefix, Swagger2Constants.swaggerPattern)).permitAll();
             } else {
                 expressionInterceptUrlRegistry
-                        .antMatchers(HttpMethod.GET, jointPrefix(prefix, servicePath.getSwaggerUrl())).permitAll();
+                        .antMatchers(HttpMethod.GET, jointPrefix(prefix, accessPatternProperties.getSwaggerUrl())).permitAll();
             }
         }
-        if (servicePath.getHttpGet() != null) {
+        if (accessPatternProperties.getHttpGet() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.GET, jointPrefix(prefix, servicePath.getHttpGet())).permitAll();
+                    .antMatchers(HttpMethod.GET, jointPrefix(prefix, accessPatternProperties.getHttpGet())).permitAll();
         }
-        if (servicePath.getHttpPost() != null) {
+        if (accessPatternProperties.getHttpPost() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.POST, jointPrefix(prefix, servicePath.getHttpPost())).permitAll();
+                    .antMatchers(HttpMethod.POST, jointPrefix(prefix, accessPatternProperties.getHttpPost())).permitAll();
         }
-        if (servicePath.getHttpPut() != null) {
+        if (accessPatternProperties.getHttpPut() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.PUT, jointPrefix(prefix, servicePath.getHttpPut())).permitAll();
+                    .antMatchers(HttpMethod.PUT, jointPrefix(prefix, accessPatternProperties.getHttpPut())).permitAll();
         }
-        if (servicePath.getHttpDelete() != null) {
+        if (accessPatternProperties.getHttpDelete() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(HttpMethod.DELETE, jointPrefix(prefix, servicePath.getHttpDelete())).permitAll();
+                    .antMatchers(HttpMethod.DELETE, jointPrefix(prefix, accessPatternProperties.getHttpDelete())).permitAll();
         }
-        if (servicePath.getHttpAllMethod() != null) {
+        if (accessPatternProperties.getHttpAllMethod() != null) {
             expressionInterceptUrlRegistry
-                    .antMatchers(jointPrefix(prefix, servicePath.getHttpAllMethod())).permitAll();
+                    .antMatchers(jointPrefix(prefix, accessPatternProperties.getHttpAllMethod())).permitAll();
         }
     }
 

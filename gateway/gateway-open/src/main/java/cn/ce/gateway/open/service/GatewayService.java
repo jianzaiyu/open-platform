@@ -13,6 +13,8 @@ public interface GatewayService {
 
     Map<String, String> getClientToSaas();
 
+    Map<String, Integer> getClientToRate();
+
     Map<String, String> getPathVersionToResourceType();
 
     Map<String, String> getSaasTypeToUrl();

@@ -19,18 +19,22 @@ public class GatewayServiceImpl implements GatewayService {
     @Autowired
     private GatewayDao gatewayDao;
     @Getter
+    private Map<String, Integer> clientToRate = new HashMap<>();
+    @Getter
     private Map<String, String> clientToSaas = new HashMap<>();
     @Getter
     private Map<String, String> pathVersionToResourceType = new HashMap<>();
     @Getter
     private Map<String, String> saasTypeToUrl = new HashMap<>();
+
     @Override
     public void builtMeta() {
-        List<Map<String, String>> list1 = gatewayDao.selectClientProductMap();
+        List<Map<String, Object>> list1 = gatewayDao.selectClientProductMap();
         List<Map<String, String>> list2 = gatewayDao.selectPathVersionResourceMap();
         List<Map<String, String>> list3 = gatewayDao.selectSaasResourceTargetMap();
-        for (Map<String, String> map1 : list1) {
-            clientToSaas.put(map1.get("client_id"), map1.get("product_instance_id"));
+        for (Map<String, Object> map1 : list1) {
+            clientToSaas.put((String) map1.get("client_id"), (String) map1.get("product_instance_id"));
+            clientToRate.put((String) map1.get("client_id"), (Integer) map1.get("rate"));
         }
         for (Map<String, String> map2 : list2) {
             pathVersionToResourceType.put(map2.get("listen_path") + map2.get("version"), map2.get("resource_type"));

@@ -15,20 +15,20 @@ mybatis:
   scanPackages: cn.ce.**.dao
   typeAliasesPackage: cn.ce.**.entity
 
-security:
-  oauth2:
-    client:
-      clientId: inner_service
-      clientSecret: 123456
-    resource:
-      tokenInfoUri: http://service-auth/oauth/check_token
-      white-list:
-        swaggerUrl: default
-        httpAllMethod: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**,/static/file/*
+#security:
+#  oauth2:
+#    client:
+#      clientId: inner_service
+#      clientSecret: 123456
+#    resource:
+#      tokenInfoUri: ${uaa.uri}/oauth/check_token
+#      white-list:
+#        swaggerUrl: default
+#        httpAllMethod: /user/**,/test/**,/open/**,/diyapplyProduct/findPagedApps,/guideConsole/guideList,/guideConsole/guide/**,/api/showApiList,/api/showApi,/api/showDocApiList,/monitor/**,/dubboInfo/**,/dubboDateController/manualUpdataData,/data/migra/**,/statistics/**,/document/**,/static/file/*
 
 spring:
   zipkin:
-    enabled: true
+    enabled: false
   resources:
     add-mappings: false
   mvc:

@@ -3,7 +3,7 @@ server:
 
 spring:
   zipkin:
-    enabled: true
+    enabled: false
 
 swagger2:
   gateway: true
@@ -18,7 +18,7 @@ security:
       clientId: inner_service
       clientSecret: 123456
     resource:
-      tokenInfoUri: http://service-auth/oauth/check_token
+      tokenInfoUri: ${uaa.uri}/oauth/check_token
       white-list:
         emptyPrefix:
           swaggerUrl: default

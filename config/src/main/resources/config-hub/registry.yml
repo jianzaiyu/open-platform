@@ -6,7 +6,7 @@ swagger2:
 
 spring:
   zipkin:
-    enabled: true
+    enabled: false
 
 #多实例
 eureka:

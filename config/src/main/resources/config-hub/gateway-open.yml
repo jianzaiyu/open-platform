@@ -11,7 +11,19 @@ mybatis:
 
 spring:
   zipkin:
-    enabled: true
+    enabled: false
+  cache:
+    type: redis
+  redis:
+    host: 10.12.40.82
+    password: 12345
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 20
+        min-idle: 0
+        max-wait: 10s
+        max-idle: 20
   datasource:
       url: jdbc:mysql://10.12.40.224:3306/openplatform?useSSL=false&useUnicode=true&characterEncoding=utf8
       username: onlineDB
@@ -69,7 +81,7 @@ security:
       clientId: inner_service
       clientSecret: 123456
     resource:
-      tokenInfoUri: http://service-auth/oauth/check_token
+      tokenInfoUri: ${uaa.uri}/oauth/check_token
       white-list:
         emptyPrefix:
           httpAllMethod: /actuator/**

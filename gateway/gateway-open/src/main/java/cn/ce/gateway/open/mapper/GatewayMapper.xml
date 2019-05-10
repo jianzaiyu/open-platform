@@ -3,7 +3,7 @@
 <mapper namespace="cn.ce.gateway.open.dao.GatewayDao">
   <select id="selectClientProductMap" parameterType="java.lang.String" resultType="java.util.Map">
     select
-    client_id,product_instance_id
+    client_id,product_instance_id,rate
     from diy_apply
     group by client_id,product_instance_id
   </select>

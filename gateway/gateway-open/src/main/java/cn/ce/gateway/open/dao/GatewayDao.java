@@ -9,7 +9,7 @@ import java.util.Map;
  **/
 public interface GatewayDao {
 
-    List<Map<String,String>> selectClientProductMap();
+    List<Map<String,Object>> selectClientProductMap();
 
     List<Map<String,String>> selectPathVersionResourceMap();
 

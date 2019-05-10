@@ -20,7 +20,7 @@ swagger2:
 
 spring:
   zipkin:
-    enabled: true
+    enabled: false
   resources:
       add-mappings: false
   mvc:

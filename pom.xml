@@ -116,6 +116,10 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -210,6 +214,7 @@
             <properties>
                 <security.username>user</security.username>
                 <security.password>password</security.password>
+                <uaa.uri>http://localhost:8011</uaa.uri>
                 <config.uri>http://localhost:8000</config.uri>
                 <config.search>config-hub</config.search>
                 <!--<registry.uri1>http://${security.username}:${security.password}@10.12.40.82:8001/eureka/</registry.uri1>-->
@@ -226,6 +231,7 @@
             <properties>
                 <security.username>user</security.username>
                 <security.password>password</security.password>
+                <uaa.uri>http://10.12.51.210/uaa</uaa.uri>
                 <config.uri>http://172.22.146.20:8000</config.uri>
                 <config.search>config-hub</config.search>
                 <registry.uri1>http://${security.username}:${security.password}@10.12.51.210:8001/eureka/</registry.uri1>

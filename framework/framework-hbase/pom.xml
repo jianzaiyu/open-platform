@@ -51,9 +51,5 @@
             <artifactId>aviator</artifactId>
             <version>3.3.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
     </dependencies>
 </project>

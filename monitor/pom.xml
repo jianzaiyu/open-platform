@@ -9,7 +9,7 @@
 
 	<parent>
 		<groupId>cn.ce</groupId>
-		<artifactId>open-platform</artifactId>
+		<artifactId>open-platform-cloud</artifactId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>

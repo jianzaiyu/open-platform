@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
-        <artifactId>open-platform</artifactId>
+        <artifactId>open-platform-cloud</artifactId>
         <groupId>cn.ce</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
